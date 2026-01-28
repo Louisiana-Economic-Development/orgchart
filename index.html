@@ -4526,43 +4526,51 @@ stageEl.addEventListener("touchend", () => {
 
 
 // --- Responsive resize handling ---
-// Goal: resizing the window must NOT re-center the chart or accumulate drift.
-// We preserve the current viewport by anchoring the world-point at the viewport center.
+// Goal: resizing the window must NOT change node geometry (i.e., must not re-run any layout JSON/algorithm).
+// We only preserve the current viewport by anchoring the world-point at the viewport center.
 let __RESIZE_RAF__ = null;
+let __STAGE_W__ = 0;
+let __STAGE_H__ = 0;
+
+function __syncStageRect__(){
+  const rect = stageEl.getBoundingClientRect();
+  __STAGE_W__ = rect.width;
+  __STAGE_H__ = rect.height;
+  VIEW.w = __STAGE_W__;
+  VIEW.h = __STAGE_H__;
+  CENTER.x = VIEW.w / 2;
+  CENTER.y = VIEW.h / 2 + 10;
+}
+
 window.addEventListener("resize", ()=>{
   if(__RESIZE_RAF__) cancelAnimationFrame(__RESIZE_RAF__);
   __RESIZE_RAF__ = requestAnimationFrame(()=>{
     __RESIZE_RAF__ = null;
 
+    // Use the *previous* stage size as the "old" viewport.
+    const oldW = __STAGE_W__ || VIEW.w || stageEl.getBoundingClientRect().width;
+    const oldH = __STAGE_H__ || VIEW.h || stageEl.getBoundingClientRect().height;
+
     // Anchor world point currently at the old viewport center
-    const oldW = VIEW.w || stageEl.getBoundingClientRect().width;
-    const oldH = VIEW.h || stageEl.getBoundingClientRect().height;
     const anchorWorldX = (oldW/2 - panX) / zoom;
     const anchorWorldY = (oldH/2 - panY) / zoom;
 
-    // Update stage dimensions
-    const rect = stageEl.getBoundingClientRect();
-    VIEW.w = rect.width;
-    VIEW.h = rect.height;
-    CENTER.x = VIEW.w / 2;
-    CENTER.y = VIEW.h / 2 + 10;
-
-    // If no saved baseline layout exists, we may need to re-run the responsive starburst layout,
-    // but we still preserve the user's current viewport via the anchor restore below.
-    if(!getBaselineLayout()){
-      layoutStarburst();
-      render();
-    }
+    // Update stage dimensions (new viewport)
+    __syncStageRect__();
 
     // Restore the anchor world point back to the new viewport center
     panX = (VIEW.w/2) - anchorWorldX * zoom;
     panY = (VIEW.h/2) - anchorWorldY * zoom;
     applyTransform();
 
-    // Defensive: if dept focus is active, re-apply focus classes after any render.
+    // Defensive: if dept focus is active, re-apply focus classes after any size change.
     if(document.body.classList.contains("dept-focus")) applyDeptFocus();
   });
 });
+
+// Init stage rect after DOM paints (prevents 0x0 on first load)
+requestAnimationFrame(__syncStageRect__);
+
 // init
 
 
