@@ -1,7 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-<script>window.selectedStaffManager = window.selectedStaffManager ?? null;
+<script>window.LAYOUT_MODE = window.LAYOUT_MODE || "traditional";
+window.selectedStaffManager = window.selectedStaffManager ?? null;
 window.addEventListener('load', () => {
   const t = document.querySelector('.header-title')?.textContent || 'ORGANIZATIONAL CHART';
   setHeaderTitleText(t);
@@ -65,6 +66,8 @@ button,label{
     border-color 140ms ease,
     box-shadow 140ms ease,
     transform 140ms ease,
+    width 220ms ease,
+    max-width 220ms ease,
     filter 140ms ease;
 }
 
@@ -95,18 +98,66 @@ svg{
   z-index:0;
   overflow:visible;
 }
+
+#handlesSvg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:5; /* above nodes */
+  overflow:visible;
+  pointer-events:none; /* don't block node dragging */
+}
+#handlesSvg .line-handle,
+#handlesSvg .line-handle-hit{
+  pointer-events:all !important;
+}
 .line{
   stroke:rgba(255,255,255,.35);
   stroke-width:2;
+  fill:none;
+  /* Critical: lines should not steal clicks/drags from nodes.
+     Enable hit-testing only when explicitly editing lines. */
+  pointer-events: none;
 }
+
+/* Only allow clicking/targeting lines when Line Edit mode is on */
+body.line-edit .line{
+  cursor:pointer;
+  pointer-events: stroke;
+}
+
+/* In dept-focus, keep non-thread lines completely non-interactive even in line-edit */
+body.dept-focus.line-edit .line:not(.focused-line){
+  pointer-events:none !important;
+}
+
+.line-handle{
+  pointer-events: all;
+  cursor: grab;
+}
+.line-handle:active{ cursor: grabbing; }
+
+.line-handle-end{ fill: rgba(45,212,191,.95); stroke: rgba(0,0,0,.45); stroke-width: 2; }
+.line-handle-mid{ fill: rgba(255,255,255,.90); stroke: rgba(0,0,0,.45); stroke-width: 2; }
+
 .line.root{ stroke: rgba(45,212,191,.55); stroke-width:2.6; }
 
-#nodes{position:absolute;inset:0;z-index:1}
+.line-bus-guide{
+  stroke: rgba(255,255,255,.22);
+  stroke-width: 2;
+  stroke-dasharray: 5 5;
+}
+.line-handle-bus{ fill: rgba(250,204,21,.95); stroke: rgba(0,0,0,.45); stroke-width:2; cursor: ns-resize; }
+.line-handle-wp{ fill: rgba(147,197,253,.95); stroke: rgba(0,0,0,.45); stroke-width:2; }
+
+#nodes{position:absolute;inset:0;z-index:1;pointer-events:none}
 
 .node{
   position:absolute;
   transform:translate(-50%,-50%);
   cursor:grab;
+  pointer-events:auto;
   user-select:none;
 }
 .node:active{cursor:grabbing}
@@ -318,6 +369,9 @@ header img{
   z-index:6000;
   backdrop-filter:blur(12px);
   box-shadow:0 18px 40px rgba(0,0,0,.45);
+  /* never force internal scrolling */
+  max-height:none;
+  overflow:visible;
 }
 .hamburger-menu.open{ display:block; }
 .hamburger-menu button,
@@ -329,6 +383,16 @@ header img{
 }
 .hamburger-menu label{ cursor:pointer; }
 .hamburger-menu label input{ display:none; }
+
+/* "Disabled" look without disabling click (used for Traditional-only tools) */
+.soft-disabled{
+  opacity:.45;
+  filter:grayscale(1);
+}
+.soft-disabled:hover{
+  background:rgba(255,255,255,.10);
+  border-color:rgba(255,255,255,.20);
+}
 
 
 #searchInput::placeholder{color:rgba(247,250,252,.6)}
@@ -360,7 +424,8 @@ header img{
   top:96px; /* under header */
   left:16px;
   z-index:900;
-  max-width:320px;
+  width:auto;
+  max-width:170px;
   font-size:11px;
   line-height:1.45;
   color:rgba(247,250,252,.8);
@@ -456,21 +521,40 @@ header img{
 }
 
 
-/* --- How to use toggle (replaces boxed instructions) --- */
+/* --- How to use panel (border + grow) --- */
 #instructions.howto{
   position:fixed;
-  top:96px;
+  top:116px;              /* below header */
   left:16px;
   z-index:900;
-  max-width:320px;
-  font-size:11px;
+  width:auto;
+  max-width:170px;
+  font-size:10.5px;
   line-height:1.45;
   color:rgba(247,250,252,.9);
-  background:transparent;
-  border:1px solid transparent;
-  padding:0;
-  backdrop-filter:none;
+
+  /* match header button outline + hover feel */
+  background-color: rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:10px;
+  padding:10px 12px;
+
+  backdrop-filter: blur(6px);
+
+  transition:
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease,
+    transform 140ms ease,
+    filter 140ms ease;
 }
+#instructions.howto:hover{
+  background-color: rgba(255,255,255,.18);
+  border-color: rgba(255,255,255,.26);
+  box-shadow:0 10px 22px rgba(0,0,0,.22);
+  transform:none;
+}
+
 .howto-toggle{
   display:flex;
   align-items:center;
@@ -479,58 +563,54 @@ header img{
   user-select:none;
 }
 .howto-icon{
-  width:20px;
-  height:20px;
+  width:18px;
+  height:18px;
   border-radius:50%;
-  border:1.5px solid rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.9);
   display:inline-flex;
   align-items:center;
   justify-content:center;
   font-weight:900;
-  font-size:13px;
+  font-size:12px;
   line-height:1;
 }
 .howto-title{
   font-weight:800;
-  letter-spacing:.9px;
-  font-size:11px;
+  letter-spacing:1px;
+  font-size:10px;
 }
+
+/* Grow/collapse animation */
 .howto-body{
-  margin-top:10px;
+  font-size:10.2px;
   max-width:260px;
   color:rgba(247,250,252,.85);
   text-shadow:0 1px 2px rgba(0,0,0,.45);
+
+  overflow:hidden;
+  max-height:0;
+  opacity:0;
+  margin-top:0;
+  transform:scaleY(.98);
+  transform-origin: top;
+  transition:
+    max-height 220ms ease,
+    opacity 180ms ease,
+    margin-top 180ms ease,
+    transform 220ms ease;
 }
 
-
-/* --- How-to size + spacing refinement --- */
-#instructions.howto{
-  top:116px;            /* push down from header */
-  font-size:10.5px;     /* slightly smaller overall */
-}
-
-.howto-title{
-  font-size:10px;
-  letter-spacing:1px;
-}
-
-.howto-body{
-  font-size:10.2px;
+#instructions.open .howto-body{
+  max-height:520px;
+  opacity:1;
   margin-top:8px;
+  transform:scaleY(1);
+}
+/* Expand container width only when open */
+#instructions.open.howto{
+  max-width:340px;
 }
 
-.howto-icon{
-  width:18px;
-  height:18px;
-  font-size:12px;
-}
-
-
-/* --- Center the X icon more precisely --- */
-.howto-icon{
-  line-height: 1;
-  padding-bottom: 1px; /* nudges × visually to center */
-}
 
 
 /* --- Header layout fixes --- */
@@ -651,14 +731,6 @@ header{
 .hamburger-menu label:hover{
   background: rgba(255,255,255,.14);
 }
-@media (max-height: 700px){
-  .hamburger-menu{
-    max-height: 70vh;
-    overflow-y: auto;
-  }
-}
-
-
 /* ===============================
    Premium Person Card
    =============================== */
@@ -1482,11 +1554,12 @@ button, label { font-weight: 600; }
 
 
 /* ===============================
-   Thinner connector lines
+   Connector line stroke width (starburst + traditional)
    =============================== */
-svg line,
-svg path{
-  stroke-width: 0.4 !important;
+#svg #lines line,
+#svg #lines path,
+#svg #lines polyline{
+  stroke-width: 1.3 !important;
 }
 
 
@@ -1571,7 +1644,11 @@ body.dept-focus .node{
   opacity: 0.1;
   filter:blur(1.4px) saturate(0.9);
   transition:opacity .25s ease, filter .25s ease;
+  /* Ensure interactive (focused) nodes are always on top when things overlap */
+  z-index: 1;
 }
+body.dept-focus .node.focused{ z-index: 40; }
+body.dept-focus .node.root{ z-index: 45; }
 body.dept-focus .node.focused{
   opacity:1 !important;
   filter:none !important;
@@ -1579,8 +1656,9 @@ body.dept-focus .node.focused{
 
 /* In dept-focus, only focused nodes should be interactive.
    This prevents background (blurred) nodes from "stealing" clicks/drags under overlapping focused nodes. */
-body.dept-focus .node:not(.focused):not(.root){
-  pointer-events:none;
+body.dept-focus .node:not(.focused):not(.root),
+body.dept-focus .node:not(.focused):not(.root) *{
+  pointer-events:none !important;
 }
 body.dept-focus .node.focused,
 body.dept-focus .node.root{
@@ -1609,8 +1687,9 @@ body.dept-focus .node.focused.deemph{
 }
 
 /* In dept-focus, deemphasized nodes are treated as background (non-interactive). */
-body.dept-focus .node.deemph:not(.root){
-  pointer-events: none;
+body.dept-focus .node.deemph:not(.root),
+body.dept-focus .node.deemph:not(.root) *{
+  pointer-events:none !important;
 }
 
 
@@ -1643,13 +1722,15 @@ body.dept-focus .node.root{
 
 /* Fade + blur ALL lines when in dept focus */
 body.dept-focus .line{
-  opacity:0.15;
-  filter:blur(1px);
+  opacity:0.075;
+  stroke-opacity:0.075;
+  filter:blur(2px);
 }
 
 /* Keep active branch lines crisp */
 body.dept-focus .line.focused-line{
   opacity:1 !important;
+  stroke-opacity:1 !important;
   filter:none !important;
 }
 
@@ -1657,6 +1738,7 @@ body.dept-focus .line.focused-line{
 /* --- Focused lines must always stay fully visible --- */
 body.dept-focus .line.focused-line{
   opacity:1 !important;
+  stroke-opacity:1 !important;
   filter:none !important;
 }
 
@@ -1729,32 +1811,11 @@ button[aria-label="Reset Layout"]{
 }
 
 
-/* === Dept Halo (SVG) === */
-#haloG circle{
-  fill: rgba(45,212,191,0.14);
-}
 
 
-/* === Dept Halo Label === */
-#haloG text{
-  fill: rgba(255,255,255,0.95);
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  pointer-events: none;
-}
 
 
 /* === Curved Dept Halo Label === */
-#haloG text{
-  fill: rgba(255,255,255,0.95);
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  pointer-events: none;
-}
 
 /* --- Header Search: match button hover polish + small all-caps typography --- */
 #searchInput{
@@ -2042,26 +2103,9 @@ body.is-dragging{ cursor: grabbing; }
 }
 
 
-/* === Dept Halo Label === */
-#haloG text{
-  fill: rgba(255,255,255,0.95);
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  pointer-events: none;
-}
 
 
 /* === Curved Dept Halo Label === */
-#haloG text{
-  fill: rgba(255,255,255,0.95);
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  pointer-events: none;
-}
 
 
 /* --- Header title color (department name / ORGANIZATIONAL CHART) --- */
@@ -2114,6 +2158,23 @@ function autoLoadLayout(mode, opts){
 }
 
 
+
+// Dept-focus hard isolation: block any background node interaction at capture phase
+(function(){
+  function blockBackgroundInteraction(e){
+    if(!document.body.classList.contains("dept-focus")) return;
+    const node = (e.target && e.target.closest) ? e.target.closest(".node") : null;
+    if(!node) return;
+    if(node.classList.contains("root")) return;
+    if(node.classList.contains("focused") && !node.classList.contains("deemph")) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if(typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
+  }
+  document.addEventListener("pointerdown", blockBackgroundInteraction, true);
+  document.addEventListener("click", blockBackgroundInteraction, true);
+})();
+
 // ===== MULTI-TIER ORG CHART SUPPORT =====
 function getTier(d){
   if(!d.reports_to) return 0;      // root
@@ -2157,7 +2218,7 @@ function revealForLeader(leader){
     <span class="howto-icon" aria-hidden="true">!</span>
     <span class="howto-title">HOW TO USE</span>
   </div>
-  <div id="instructionsBody" class="howto-body" hidden>
+  <div id="instructionsBody" class="howto-body">
         <div>• Drag background to pan chart</div>
     <div>• Scroll/Pinch to zoom</div>
     <div>• Click photo to expand/collapse direct reports</div>
@@ -2197,11 +2258,12 @@ function revealForLeader(leader){
   <button id="saveDefaultLayoutBtn" disabled title="Save current positions as the default Reset Layout baseline">Save Starburst Layout</button>
   <button id="exportDeptLayoutBtn" disabled>Export Dept Layout</button>
 
+  <button id="editConnectorsBtn" title="Traditional only: click a line to edit connectors">Edit Connectors: Off</button>
   <label id="loadLayoutLbl" title="Load a previously-saved layout.json">Load Layout JSON<input id="layoutInput" type="file" accept=".json"></label>
   <button id="clearDefaultLayoutBtn" title="Clear default layout and go back to starburst on Reset">Clear Default</button>
   
   
-  <button id="layoutToggleBtn" title="Toggle Starburst / Traditional" class="topaction">View in Traditional</button>
+  <button id="layoutToggleBtn" title="Toggle Starburst / Traditional" class="topaction">View in Starburst</button>
   <button id="homeBtn" class="topaction">RESET</button>
   <button id="resetLayoutBtn">Reset Layout</button>
 
@@ -2211,7 +2273,7 @@ function revealForLeader(leader){
   </div>
 
   <button id="isolateBtn" disabled style="display:none">Isolate Selected Dept</button>
-  <button id="backBtn" style="display:none" style="display:none">Back to Full Org</button>
+  <button id="backBtn" style="display:none">Back to Full Org</button>
   <button id="resetBtn">Reset Data</button>
 </header>
 
@@ -2221,8 +2283,10 @@ function revealForLeader(leader){
 <div id="stage">
   <div id="viewport">
   <svg id="svg" preserveAspectRatio="none">
-    <g id="haloG"></g>
     <g id="lines"></g>
+  </svg>
+  <svg id="handlesSvg" preserveAspectRatio="none" aria-hidden="true">
+    <g id="lineHandles"></g>
   </svg>
   <div id="nodes"></div>
   </div>
@@ -2236,11 +2300,211 @@ function revealForLeader(leader){
 
 <script>
 const svg = document.getElementById("svg");
+const handlesSvg = document.getElementById("handlesSvg") || svg;
 const linesG = document.getElementById("lines");
-const haloG = document.getElementById("haloG");
 const nodesDiv = document.getElementById("nodes");
 const fileInput = document.getElementById("fileInput");
 const resetBtn = document.getElementById("resetBtn");
+
+const lineHandlesG = document.getElementById("lineHandles");
+
+
+// --- Traditional connector overrides (manual line routing) ---
+window.TRAD_EDGE_OVERRIDES = window.TRAD_EDGE_OVERRIDES || {};
+let TRAD_EDGE_OVERRIDES = window.TRAD_EDGE_OVERRIDES;
+// Parent-level Traditional "bus/junction" overrides (one per parent, shared across its child branches)
+window.TRAD_PARENT_OVERRIDES = window.TRAD_PARENT_OVERRIDES || {};
+let TRAD_PARENT_OVERRIDES = window.TRAD_PARENT_OVERRIDES;
+
+let LINE_EDIT_MODE = false;
+let SELECTED_EDGE = null; // {from,to}
+let __LINE_HANDLE_DRAG__ = null;
+
+// Ensure the "Edit Connectors" button is always live (even if the hamburger/menu wiring changes)
+function __bindEditConnectorsBtn__(){
+  const b = document.getElementById("editConnectorsBtn");
+  if(!b) return;
+  // Never hard-disable; we gate functionality in the handler.
+  b.disabled = false;
+  b.classList.toggle("soft-disabled", false);
+
+  if(b.dataset.boundLineEdit === "1") return;
+  b.dataset.boundLineEdit = "1";
+
+  b.addEventListener("click", (ev)=>{
+    // If the button is inside the hamburger, don't let global click-to-close logic eat the click.
+    try{ ev.stopPropagation(); }catch(_e){}
+
+    LINE_EDIT_MODE = !LINE_EDIT_MODE;
+    try{ document.body.classList.toggle("line-edit", LINE_EDIT_MODE); }catch(_e){}
+
+    if(!LINE_EDIT_MODE){
+      SELECTED_EDGE = null;
+      try{ __clearLineHandles__(); }catch(_e){}
+      try{ renderLinesOnly(); }catch(_e){}
+      b.textContent = "Edit Connectors: Off";
+      toast("Edit connectors off");
+      return;
+    }
+
+    // On -> require Traditional+Author for actual editing
+    const isTrad = !!(document.body && document.body.classList.contains("traditional-mode"))
+      || ((window.LAYOUT_MODE||"starburst")==="traditional");
+    const isAuth = (typeof AUTHOR_MODE !== "undefined" ? !!AUTHOR_MODE : !!window.AUTHOR_MODE);
+
+    b.textContent = "Edit Connectors: On";
+
+    if(!(isTrad && isAuth)){
+      toast("Tip: switch to Traditional + Author Mode to edit connectors");
+      return;
+    }
+    toast("Click a line to edit; drag endpoints + bend");
+  }, {passive:true});
+}
+
+// Expose a tiny debug helper for the dev console
+window.__DBG_EDIT_CONNECTORS__ = function(){
+  const b = document.getElementById("editConnectorsBtn");
+  return {
+    exists: !!b,
+    disabled: b ? b.disabled : null,
+    text: b ? b.textContent : null,
+    lineEditMode: typeof LINE_EDIT_MODE !== "undefined" ? LINE_EDIT_MODE : null,
+    layoutMode: (typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : window.LAYOUT_MODE),
+    authorMode: (typeof AUTHOR_MODE !== "undefined" ? AUTHOR_MODE : window.AUTHOR_MODE),
+    inTraditionalClass: !!(document.body && document.body.classList.contains("traditional-mode")),
+    inLineEditClass: !!(document.body && document.body.classList.contains("line-edit")),
+    selectedEdge: (typeof SELECTED_EDGE !== "undefined" ? SELECTED_EDGE : null)
+  };
+};
+
+try{
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", __bindEditConnectorsBtn__, {once:true});
+  }else{
+    __bindEditConnectorsBtn__();
+  }
+}catch(_e){}
+
+
+// Line editing interactions (Traditional-only)
+(function(){
+  if(!svg || !linesG) return;
+
+  // Select a line to edit
+  linesG.addEventListener("pointerdown", (ev)=>{
+    const mode = (document.body && document.body.classList.contains("traditional-mode")) ? "traditional" : ((typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : null) || (window.LAYOUT_MODE || "starburst"));
+    if(!(mode === "traditional" && LINE_EDIT_MODE)) return;
+
+    const t = ev.target;
+    if(!t || t.tagName !== "polyline" || !t.classList || !t.classList.contains("line")) return;
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const fromId = t.getAttribute("data-from");
+    const toId = t.getAttribute("data-to");
+    if(!fromId || !toId) return;
+
+    SELECTED_EDGE = { from: fromId, to: toId };
+
+    const key = __edgeKey__(fromId, toId);
+    if(!TRAD_EDGE_OVERRIDES[key]) TRAD_EDGE_OVERRIDES[key] = { fromSide:"auto", toSide:"auto" };
+    window.TRAD_EDGE_OVERRIDES = TRAD_EDGE_OVERRIDES;
+
+    // Ctrl/Cmd+click the selected line to add an extra bend (waypoint)
+    if(ev.ctrlKey || ev.metaKey){
+      const p = __svgPointFromEvent__(ev);
+      const visible = getVisibleSet();
+      const guides = __collectTraditionalGuides__(visible, null);
+      const snapPx = 10;
+      const x = __snapValue__(p.x, guides.xs, snapPx);
+      const y = __snapValue__(p.y, guides.ys, snapPx);
+
+      const ov = TRAD_EDGE_OVERRIDES[key];
+      if(!Array.isArray(ov.waypoints)) ov.waypoints = [];
+      ov.waypoints.push({x,y});
+      __updateEdgeOverride__(key, { waypoints: ov.waypoints });
+
+      renderLinesOnly();
+      toast("Bend added (Shift+click bend to remove)");
+      return;
+    }
+
+    renderLinesOnly();
+    toast("Drag endpoints to choose sides; drag the white square (or blue bends) to shape; drag the yellow handle to move the shared bus");
+  }, {passive:false});
+
+  // Handle drag begin
+  (handlesSvg||svg).addEventListener("pointerdown", (ev)=>{
+    const mode = (document.body && document.body.classList.contains("traditional-mode")) ? "traditional" : ((typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : null) || (window.LAYOUT_MODE || "starburst"));
+    if(!(mode === "traditional" && LINE_EDIT_MODE)) return;
+
+    const t = ev.target;
+    if(!t || !t.classList || !(t.classList.contains("line-handle") || t.classList.contains("line-handle-hit"))) return;
+
+    ev.preventDefault();
+    ev.stopPropagation();
+
+    const handleType = t.dataset.handle;
+    const fromId = t.dataset.from;
+    const toId = t.dataset.to;
+    if(!handleType || !fromId || !toId) return;
+
+    // Shift+click a waypoint handle to delete it
+    if(handleType === "wp" && ev.shiftKey){
+      const idx = t.dataset.idx ? parseInt(t.dataset.idx,10) : null;
+      if(idx !== null){
+        const key = __edgeKey__(fromId, toId);
+        const ov = (TRAD_EDGE_OVERRIDES && TRAD_EDGE_OVERRIDES[key]) ? TRAD_EDGE_OVERRIDES[key] : null;
+        if(ov && Array.isArray(ov.waypoints) && idx >= 0 && idx < ov.waypoints.length){
+          ov.waypoints.splice(idx,1);
+          __updateEdgeOverride__(key, { waypoints: ov.waypoints });
+          renderLinesOnly();
+          toast("Bend removed");
+        }
+      }
+      return;
+    }
+
+    __beginLineHandleDrag__(handleType, fromId, toId, ev, (t.dataset.idx ? parseInt(t.dataset.idx,10) : null));
+  }, {passive:false});
+
+  (handlesSvg||svg).addEventListener("pointermove", (ev)=>{
+    if(!__LINE_HANDLE_DRAG__) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    __moveLineHandle__(ev);
+  }, {passive:false});
+
+  (handlesSvg||svg).addEventListener("pointerup", (ev)=>{
+    if(!__LINE_HANDLE_DRAG__) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    __endLineHandleDrag__(ev);
+  }, {passive:false});
+
+  (handlesSvg||svg).addEventListener("pointercancel", (ev)=>{
+    if(!__LINE_HANDLE_DRAG__) return;
+    __endLineHandleDrag__(ev);
+  });
+
+  // Escape to exit line edit mode
+  document.addEventListener("keydown", (e)=>{
+    if(e.key !== "Escape") return;
+    if(!LINE_EDIT_MODE) return;
+    LINE_EDIT_MODE = false;
+    SELECTED_EDGE = null;
+    document.body.classList.remove("line-edit");
+    __clearLineHandles__();
+    renderLinesOnly();
+    try{
+      const b = document.getElementById("editConnectorsBtn");
+      if(b) b.textContent = "Edit Connectors: Off";
+    }catch(_e){}
+    toast("Edit connectors off");
+  });
+})();
 
 let DATA = demoData();
 let SEARCH_INDEX = null; // immutable snapshot for site-wide search
@@ -2249,6 +2513,7 @@ let SEARCH_INDEX = null; // immutable snapshot for site-wide search
 const pos = new Map();
 const BASE_POS = new Map(); // immutable baseline starburst positions (for stable child-side placement)
 const CHILDREN_ALL = new Map(); // full org children map (independent of visibility)           // id -> {x,y}
+
 
 function exposeDebug(){
   try{
@@ -2431,77 +2696,8 @@ function rootPerson(){
 
 
 
-function clearDeptHaloSVG(){
-  // Do not clear halo if dragging the active expanded leader
-  if(drag && drag.id === expandedLeader) return;
-  if(haloG) haloG.innerHTML = "";
-}
-
-function drawDeptHaloSVG(leaderId, visibleSet){
-  if(!haloG || !leaderId) return;
-
-  const rootId = rootPerson().id;
-  if(leaderId === rootId){
-    clearDeptHaloSVG();
-    return;
-  }
-
-  // Collect all visible nodes in this leader's branch (exclude root and other top leaders)
-  const pts = [];
-  const subtree = collectDescendants(leaderId);
-  for(const p of DATA){
-    if(!visibleSet.has(p.id)) continue;
-    if(p.id === rootId) continue;
-    // exclude other top-level leaders (peers)
-    if(p.leader && p.reportsTo === rootId && p.id !== leaderId) continue;
-    if(!subtree.has(p.id)) continue;
-    const pp = pos.get(p.id);
-    if(pp) pts.push(pp);
-  }
-  if(!pts.length){
-    clearDeptHaloSVG();
-    return;
-  }
-
-  // LOCK halo center to leader position
-  const leaderPos = pos.get(leaderId);
-  if(!leaderPos) return;
-
-  const cx = leaderPos.x;
-  const cy = leaderPos.y;
-
-  // Compute radius from farthest visible dept member
-  let maxDist = 0;
-  for(const {x,y} of pts){
-    const d = Math.hypot(x - cx, y - cy);
-    maxDist = Math.max(maxDist, d);
-  }
-
-  const pad = 120;
-  const r = maxDist + pad;
-
-  haloG.innerHTML = "";
-  const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
-  c.setAttribute("cx", cx);
-  c.setAttribute("cy", cy);
-  c.setAttribute("r", r);
-  haloG.appendChild(c);
-
-  // Department label (straight, inside top of circle)
-  const leader = DATA.find(p => p.id === leaderId);
-  if(leader && leader.department){
-    const t = document.createElementNS("http://www.w3.org/2000/svg","text");
-    t.setAttribute("x", cx);
-    t.setAttribute("y", cy - r - 20);
-    t.setAttribute("text-anchor","middle");
-    t.setAttribute("font-size","14");
-    t.textContent = leader.department;
-    haloG.appendChild(t);
-  }
-
-}
-
-
+function clearDeptHaloSVG(){}
+function drawDeptHaloSVG(){/* halo removed */}
 
 function responsiveRadii(){
   const w = VIEW.w;
@@ -2619,22 +2815,11 @@ function render(){
   const visible = getVisibleSet();
   const rootId = rootPerson().id;
 
-  // lines (only between visible endpoints)
-  linesG.innerHTML="";
-  for(const e of edges){
-    if(!visible.has(e.from) || !visible.has(e.to)) continue;
-    const a=pos.get(e.from), b=pos.get(e.to);
-    if(!a||!b) continue;
-    const l=document.createElementNS("http://www.w3.org/2000/svg","line");
-    l.setAttribute("x1",a.x); l.setAttribute("y1",a.y);
-    l.setAttribute("x2",b.x); l.setAttribute("y2",b.y);
-    l.setAttribute("data-from", e.from);
-    l.setAttribute("data-to", e.to);
-    l.setAttribute("class","line"+(e.kind==="root"?" root":""));
-    linesG.appendChild(l);
-  }
+  // lines (mode-aware: orthogonal in Traditional, diagonal in Starburst)
+  renderLinesOnly();
 
   // nodes
+  try{ NODE_EL_BY_ID && NODE_EL_BY_ID.clear && NODE_EL_BY_ID.clear(); }catch(_e){}
   nodesDiv.innerHTML="";
   for(const p of DATA){
     if(!visible.has(p.id)) continue;
@@ -2694,6 +2879,7 @@ function render(){
 }
 
     d.dataset.id=p.id;
+    try{ NODE_EL_BY_ID && NODE_EL_BY_ID.set && NODE_EL_BY_ID.set(String(p.id), d); }catch(_e){}
     d.style.left=ppos.x+"px";
     d.style.top=ppos.y+"px";
 
@@ -2816,7 +3002,7 @@ return;
     render();
     maybePanToReveal(prevVisible, 140);
     ensureNodeVisible(p.id, 180);
-    // keep leader focus/halo/lines
+    // keep leader focus/lines
     applyDeptFocus(expandedLeader);
     ensureRootFocused();
     updateFocusedLines(expandedLeader);
@@ -2843,6 +3029,13 @@ return;
 
 d.addEventListener("click", (e) => {
   if(suppressClickIfDraggingOrJustDragged(e)) return;
+  // Hard gate: in dept-focus, only focused (thread) nodes are interactive
+  if(document.body.classList.contains('dept-focus')){
+    if(d.classList.contains('deemph')){ e.stopPropagation(); return; }
+    if(!d.classList.contains('focused') && !d.classList.contains('root')){ e.stopPropagation(); return; }
+  }
+  try{ if(document.body.classList.contains('dept-focus') && !__isNodeInteractive__(p.id)) { e.stopPropagation(); return; } }catch(_e){}
+
   // If the click originated in the label, the label handler owns it (card open).
   if (e.target && e.target.closest && e.target.closest(".label")) return;
 
@@ -2862,6 +3055,7 @@ d.addEventListener("click", (e) => {
   e.stopPropagation();
   if (typeof e.stopImmediatePropagation === "function") e.stopImmediatePropagation();
   if (moved) return;
+  try{ if(document.body.classList.contains('dept-focus') && !__isNodeInteractive__(p.id)) return; }catch(_e){}
   openPersonCard(p);
 });
 // Drag handles: photo circle and label move together (same node position)
@@ -3054,9 +3248,15 @@ function suppressClickIfDraggingOrJustDragged(e){
 
 function enableDrag(el){
   el.onpointerdown = (e)=>{
-    // In Traditional view, node positions are locked (no dragging).
-    const __mode__ = (typeof window !== "undefined" && window.LAYOUT_MODE) ? window.LAYOUT_MODE : (typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : "starburst");
-    if(__mode__ === "traditional") return;
+    // Starburst: dragging is always allowed.
+    // Traditional: dragging is ONLY allowed when Author Mode is ON.
+    const __mode__ = (document.body && document.body.classList.contains("traditional-mode")) ? "traditional" : ((typeof window !== "undefined" && window.LAYOUT_MODE) ? window.LAYOUT_MODE : (typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : "starburst"));
+
+    const __isTraditional__ = (__mode__ === "traditional");
+    const __isAuthor__ = (typeof AUTHOR_MODE !== "undefined") ? !!AUTHOR_MODE : !!window.AUTHOR_MODE;
+    if(__isTraditional__ && !__isAuthor__){
+      return;
+    }
 
     // Start a drag gesture. We suppress subsequent click events if the pointer moved.
     window.__DRAGGING__ = false;
@@ -3065,6 +3265,13 @@ function enableDrag(el){
 
     const p = pos.get(id);
     if(!id || !p) return;
+
+    // Dept-focus isolation: block drags on any node outside the active thread/branch.
+    try{
+      if(document.body.classList.contains('dept-focus') && typeof __isNodeInteractive__ === 'function' && !__isNodeInteractive__(id)){
+        return;
+      }
+    }catch(_e){}
 
     drag={id, nodeEl, sx:e.clientX, sy:e.clientY, ox:p.x, oy:p.y, pid: e.pointerId, moved:false};
     // Subtree drag: dragging any node with direct reports moves its entire subtree
@@ -3122,10 +3329,76 @@ function enableDrag(el){
     p.x = drag.ox + (e.clientX-drag.sx) / zoom;
     p.y = drag.oy + (e.clientY-drag.sy) / zoom;
 
+    // Traditional: snap dragged node to nearby guides (node centers + junction buses). Hold Alt to disable.
+    try{
+      const __mode2__ = (typeof window !== "undefined" && window.LAYOUT_MODE) ? window.LAYOUT_MODE : (typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : "starburst");
+      if(__mode2__ === "traditional" && drag.moved && !e.altKey && !(drag.groupStart && drag.groupIds)){
+        const visible = getVisibleSet();
+        const exclude = new Set([id]);
+        const guides = __collectTraditionalGuides__(visible, exclude);
+        const thresh = 12 / zoom;
+
+        p.x = __snapValue__(p.x, guides.xs, thresh);
+
+        // Prefer snapping the node's junction bus (if it has visible children) so branch "bends" line up.
+        try{
+          const jm = __traditionalJunctionMap__(visible);
+          const jSelf = jm ? jm.get(id) : null;
+          if(jSelf && typeof jSelf.yJ === "number"){
+            const snappedYJ = __snapValue__(jSelf.yJ, guides.ys, thresh);
+            p.y += (snappedYJ - jSelf.yJ);
+          }else{
+            p.y = __snapValue__(p.y, guides.ys, thresh);
+          }
+        }catch(_e2){
+          p.y = __snapValue__(p.y, guides.ys, thresh);
+        }
+      }
+    }catch(_e){}
+
     // Department group drag: translate all visible descendants together
     if(drag.groupStart && drag.groupIds){
-      const dx = (e.clientX-drag.sx) / zoom;
-      const dy = (e.clientY-drag.sy) / zoom;
+      let dx = (e.clientX-drag.sx) / zoom;
+      let dy = (e.clientY-drag.sy) / zoom;
+
+      // Traditional: snap to nearby existing connector "guides" (node centers + junction buses). Hold Alt to disable.
+      try{
+        const __mode2__ = (typeof window !== "undefined" && window.LAYOUT_MODE) ? window.LAYOUT_MODE : (typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : "starburst");
+        if(__mode2__ === "traditional" && drag.moved && !e.altKey){
+          const spSelf = drag.groupStart.get(id);
+          if(spSelf){
+            let mx = spSelf.x + dx;
+            let my = spSelf.y + dy;
+
+            const visible = getVisibleSet();
+            const exclude = new Set(drag.groupIds);
+            const guides = __collectTraditionalGuides__(visible, exclude);
+            const thresh = 12 / zoom;
+
+            mx = __snapValue__(mx, guides.xs, thresh);
+
+            // Prefer snapping the parent's junction bus (if present) so multiple branch bends line up across the chart.
+            try{
+              const jm = __traditionalJunctionMap__(visible);
+              const jSelf = jm ? jm.get(id) : null;
+              if(jSelf && typeof jSelf.yJ === "number"){
+                const yJTrans = jSelf.yJ + dy;
+                const snappedYJ = __snapValue__(yJTrans, guides.ys, thresh);
+                dy += (snappedYJ - yJTrans);
+                my = spSelf.y + dy;
+              }else{
+                my = __snapValue__(my, guides.ys, thresh);
+                dy = my - spSelf.y;
+              }
+            }catch(_e2){
+              my = __snapValue__(my, guides.ys, thresh);
+              dy = my - spSelf.y;
+            }
+
+            dx = mx - spSelf.x;
+          }
+        }
+      }catch(_e){}
 
       for(const gid of drag.groupIds){
         const sp = drag.groupStart.get(gid);
@@ -3210,7 +3483,6 @@ function enableDrag(el){
     // redraw lines only
     renderLinesOnly();
 
-    // FORCE halo to move with leader (dept-focus always recomputes halo)
     if(document.body.classList.contains('dept-focus') && typeof drawDeptHaloSVG === 'function'){
       try{
         drawDeptHaloSVG(FOCUSED_LEADER_ID || expandedLeader, getVisibleSet());
@@ -3356,35 +3628,580 @@ function getVisibleSet(){
   return visible;
 }
 
+function __nodeRadiusPx__(id){
+  // Approximate radii based on CSS sizes (keeps line endpoints on the edge of circles)
+  const rootId = rootPerson().id;
+  const rec = DATA.find(p=>p.id===id);
+  if(!rec) return 28;
+
+  if(id === rootId) return 75; // --size-root:150
+  if(rec.leader) return 45;    // --size-leader:90
+  if(rec.sub_leader) return 32; // --size-subleader:64
+  return 27;                   // --size-staff:54
+}
+
+function __traditionalJunctionMap__(visible){
+  // For Traditional layout: compute a shared "junction" (elbow Y) per parent so sibling branches line up.
+  const parentChildren = new Map();
+  for(const e of edges){
+    if(!visible.has(e.from) || !visible.has(e.to)) continue;
+    if(!parentChildren.has(e.from)) parentChildren.set(e.from, []);
+    parentChildren.get(e.from).push(e.to);
+  }
+
+  const junction = new Map();
+  for(const [from, kids] of parentChildren.entries()){
+    const a = pos.get(from);
+    if(!a || !kids || kids.length === 0) continue;
+
+    const r1 = __nodeRadiusPx__(from);
+
+    // Decide if this parent's children are mostly below or above (usually below in Traditional).
+    let sumY = 0, n = 0;
+    for(const kidId of kids){
+      const b = pos.get(kidId);
+      if(!b) continue;
+      sumY += b.y; n++;
+    }
+    if(!n) continue;
+    const avgY = sumY / n;
+    const sign = (avgY >= a.y) ? 1 : -1;
+
+    const y1Adj = a.y + sign * r1;
+
+    // Use the average child edge (instead of the "highest/closest" child) so one outlier doesn't dictate the bus height.
+    let sumAdj = 0, nAdj = 0;
+    for(const kidId of kids){
+      const b = pos.get(kidId);
+      if(!b) continue;
+      const r2 = __nodeRadiusPx__(kidId);
+      const y2Adj = b.y - sign * r2;
+      sumAdj += y2Adj; nAdj++;
+    }
+    if(!nAdj) continue;
+    const target = sumAdj / nAdj;
+
+    // Parent-level override (lets you move the shared bus/junction for ALL child branches)
+    let yJ = y1Adj + (target - y1Adj) / 2;
+    try{
+      const pov = (TRAD_PARENT_OVERRIDES && TRAD_PARENT_OVERRIDES[from]) ? TRAD_PARENT_OVERRIDES[from] : null;
+      if(pov && typeof pov.yJ === "number" && isFinite(pov.yJ)) yJ = pov.yJ;
+    }catch(_e){}
+junction.set(from, { yJ, sign });
+  }
+
+  return junction;
+}
+
+function __traditionalPoints__(a, b, fromId, toId, j){
+  // Orthogonal-only connectors with a shared per-parent junction in Traditional.
+  const r1 = __nodeRadiusPx__(fromId);
+  const r2 = __nodeRadiusPx__(toId);
+  const sign = (j && typeof j.sign === "number") ? j.sign : ((b.y >= a.y) ? 1 : -1);
+
+  const y1Adj = a.y + sign * r1;
+  const y2Adj = b.y - sign * r2;
+
+  const yJ = (j && typeof j.yJ === "number") ? j.yJ : (y1Adj + (y2Adj - y1Adj) / 2);
+
+  return [
+    [a.x, y1Adj],
+    [a.x, yJ],
+    [b.x, yJ],
+    [b.x, y2Adj]
+  ];
+}
+
+// Back-compat (used by older code paths if any remain)
+function __orthogonalPoints__(a, b, fromId, toId){
+  return __traditionalPoints__(a, b, fromId, toId, null);
+}
+
+function __collectTraditionalGuides__(visible, excludeSet){
+  // Guides are node centers + per-parent junction Ys (so you can align "buses" and branches).
+  const xs = [];
+  const ys = [];
+
+  for(const id of visible){
+    if(excludeSet && excludeSet.has(id)) continue;
+    const p = pos.get(id);
+    if(!p) continue;
+    xs.push(p.x);
+    ys.push(p.y);
+  }
+
+  try{
+    const jm = __traditionalJunctionMap__(visible);
+    for(const v of jm.values()){
+      if(v && typeof v.yJ === "number") ys.push(v.yJ);
+    }
+  }catch(_e){}
+
+  return { xs, ys };
+}
+
+function __collectTraditionalLineGuides__(visible){
+  // Richer guide set for connector editing: includes node centers, junction Ys,
+  // and existing connector vertical/horizontal segment coordinates.
+  const base = __collectTraditionalGuides__(visible, null);
+  const xs = base.xs.slice();
+  const ys = base.ys.slice();
+
+  try{
+    const jm = __traditionalJunctionMap__(visible);
+    for(const e of edges){
+      if(!visible.has(e.from) || !visible.has(e.to)) continue;
+      const a = pos.get(e.from), b = pos.get(e.to);
+      if(!a || !b) continue;
+      const key = __edgeKey__(e.from, e.to);
+      const ov = (TRAD_EDGE_OVERRIDES && TRAD_EDGE_OVERRIDES[key]) ? TRAD_EDGE_OVERRIDES[key] : null;
+      const j = jm ? jm.get(e.from) : null;
+      const pts = ov
+        ? __customTraditionalPoints__(a, b, e.from, e.to, ov, j)
+        : __traditionalPoints__(a, b, e.from, e.to, j);
+
+      for(let i=0;i<pts.length;i++){
+        const p = pts[i];
+        if(p && isFinite(p[0]) && isFinite(p[1])){ xs.push(p[0]); ys.push(p[1]); }
+      }
+      for(let i=0;i<pts.length-1;i++){
+        const p1 = pts[i], p2 = pts[i+1];
+        if(!p1 || !p2) continue;
+        if(Math.abs(p1[0]-p2[0]) < 0.001) xs.push(p1[0]);
+        if(Math.abs(p1[1]-p2[1]) < 0.001) ys.push(p1[1]);
+      }
+    }
+  }catch(_e){}
+
+  return { xs, ys };
+}
+
+function __snapValue__(v, guides, threshold){
+  let best = null;
+  for(let i=0;i<guides.length;i++){
+    const g = guides[i];
+    const d = Math.abs(g - v);
+    if(d <= threshold && (best === null || d < best.d)){
+      best = { v: g, d };
+    }
+  }
+  return best ? best.v : v;
+}
+
+
+function __edgeKey__(fromId, toId){ return `${fromId}->${toId}`; }
+
+function __autoSide__(a, b){
+  // Choose a reasonable default side based on relative position (traditional default is usually vertical).
+  const dx = b.x - a.x, dy = b.y - a.y;
+  if(Math.abs(dy) >= Math.abs(dx)) return (dy >= 0) ? "bottom" : "top";
+  return (dx >= 0) ? "right" : "left";
+}
+
+function __anchorPoint__(pt, id, side){
+  const r = __nodeRadiusPx__(id);
+  switch(side){
+    case "left":   return { x: pt.x - r, y: pt.y };
+    case "right":  return { x: pt.x + r, y: pt.y };
+    case "top":    return { x: pt.x, y: pt.y - r };
+    case "bottom": return { x: pt.x, y: pt.y + r };
+    default:       return { x: pt.x, y: pt.y };
+  }
+}
+
+function __customTraditionalPoints__(a, b, fromId, toId, ov, j){
+  // Orthogonal routing with selectable node sides + movable mid (midX/midY).
+  const fromSide = (ov && ov.fromSide && ov.fromSide !== "auto") ? ov.fromSide : __autoSide__(a, b);
+  const toSide   = (ov && ov.toSide   && ov.toSide   !== "auto") ? ov.toSide   : __autoSide__(b, a);
+
+  const fromVert = (fromSide === "top" || fromSide === "bottom");
+  const toVert   = (toSide   === "top" || toSide   === "bottom");
+
+  const S = __anchorPoint__(a, fromId, fromSide);
+  const E = __anchorPoint__(b, toId, toSide);
+
+  // Default midlines: keep the existing sibling junction behavior when possible.
+  let midY = (ov && typeof ov.midY === "number") ? ov.midY :
+             (j && typeof j.yJ === "number") ? j.yJ :
+             (S.y + (E.y - S.y) / 2);
+
+  let midX = (ov && typeof ov.midX === "number") ? ov.midX :
+             (S.x + (E.x - S.x) / 2);
+
+  // If the user added manual waypoints, honor them with Manhattan (orthogonal) routing.
+  // waypoints: [{x,y}, ...] in SVG coords (excludes endpoints).
+  if(ov && Array.isArray(ov.waypoints) && ov.waypoints.length){
+    const wps = ov.waypoints
+      .filter(p=>p && typeof p.x==="number" && typeof p.y==="number" && isFinite(p.x) && isFinite(p.y))
+      .map(p=>({x:p.x,y:p.y}));
+
+    const raw = [S, ...wps, E];
+
+    // Expand each segment into orthogonal steps (H then V). De-dupe consecutive points.
+    const out = [];
+    const pushPt = (p)=>{
+      if(!out.length) { out.push(p); return; }
+      const q = out[out.length-1];
+      if(Math.abs(p.x-q.x) < 0.001 && Math.abs(p.y-q.y) < 0.001) return;
+      out.push(p);
+    };
+
+    for(let i=0;i<raw.length-1;i++){
+      const P = raw[i], N = raw[i+1];
+      pushPt(P);
+      if(Math.abs(P.x - N.x) < 0.001 || Math.abs(P.y - N.y) < 0.001){
+        // already orthogonal
+      }else{
+        // insert elbow
+        pushPt({x:N.x, y:P.y});
+      }
+    }
+    pushPt(E);
+
+    return out.map(p=>[p.x,p.y]);
+  }
+
+  let pts = [];
+
+  if(fromVert && toVert){
+    // Classic Traditional: vertical out of parent, shared junction Y, horizontal to child, vertical in.
+    pts = [S, {x:S.x,y:midY}, {x:E.x,y:midY}, E];
+  }else if(!fromVert && !toVert){
+    // Horizontal-to-horizontal: horizontal out, shared junction X, vertical, horizontal in.
+    pts = [S, {x:midX,y:S.y}, {x:midX,y:E.y}, E];
+  }else{
+    // Mixed: 5-point Manhattan polyline: S -> S1 -> M -> E1 -> E
+    const S1 = fromVert ? { x: S.x, y: midY } : { x: midX, y: S.y };
+    const E1 = toVert   ? { x: E.x, y: midY } : { x: midX, y: E.y };
+    const M  = { x: midX, y: midY };
+    pts = [S, S1, M, E1, E];
+  }
+
+  // De-dupe consecutive identical points (clean SVG).
+  pts = pts.filter((p,i,arr)=>{
+    if(i===0) return true;
+    const q = arr[i-1];
+    return !(Math.abs(p.x-q.x) < 0.001 && Math.abs(p.y-q.y) < 0.001);
+  });
+
+  return pts.map(p=>[p.x,p.y]);
+}
+
+function __ensureHandleGroup__(){
+  let g = document.getElementById("lineHandles");
+  if(!g){
+    g = document.createElementNS("http://www.w3.org/2000/svg","g");
+    g.setAttribute("id","lineHandles");
+    handlesSvg.appendChild(g);
+  }
+  return g;
+}
+
+function __clearLineHandles__(){
+  const g = __ensureHandleGroup__();
+  g.innerHTML = "";
+}
+
+function __renderLineHandles__(visible){
+  const g = __ensureHandleGroup__();
+  g.innerHTML = "";
+
+  const mode = (document.body && document.body.classList.contains("traditional-mode")) ? "traditional" : ((typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : null) || (window.LAYOUT_MODE || "starburst"));
+  if(!(mode === "traditional" && LINE_EDIT_MODE && SELECTED_EDGE)) return;
+
+  const fromId = SELECTED_EDGE.from, toId = SELECTED_EDGE.to;
+  if(!visible.has(fromId) || !visible.has(toId)) return;
+
+  const a = pos.get(fromId), b = pos.get(toId);
+  if(!a || !b) return;
+
+  const key = __edgeKey__(fromId, toId);
+  const ov = (TRAD_EDGE_OVERRIDES && TRAD_EDGE_OVERRIDES[key]) ? TRAD_EDGE_OVERRIDES[key] : null;
+
+  const __juncMap__ = __traditionalJunctionMap__(visible);
+  const j = __juncMap__ ? __juncMap__.get(fromId) : null;
+
+  const fromSide = (ov && ov.fromSide && ov.fromSide !== "auto") ? ov.fromSide : __autoSide__(a, b);
+  const toSide   = (ov && ov.toSide   && ov.toSide   !== "auto") ? ov.toSide   : __autoSide__(b, a);
+  const fromVert = (fromSide === "top" || fromSide === "bottom");
+  const toVert   = (toSide   === "top" || toSide   === "bottom");
+
+  const S = __anchorPoint__(a, fromId, fromSide);
+  const E = __anchorPoint__(b, toId, toSide);
+
+  const midY = (ov && typeof ov.midY === "number") ? ov.midY :
+               (j && typeof j.yJ === "number") ? j.yJ :
+               (S.y + (E.y - S.y) / 2);
+
+  const midX = (ov && typeof ov.midX === "number") ? ov.midX :
+               (S.x + (E.x - S.x) / 2);
+
+  let M = { x: midX, y: midY };
+  if(fromVert && toVert){
+    M = { x: (S.x + E.x) / 2, y: midY };
+  }else if(!fromVert && !toVert){
+    M = { x: midX, y: (S.y + E.y) / 2 };
+  }
+
+  // End handles (circles)
+  const h1 = document.createElementNS("http://www.w3.org/2000/svg","circle");
+  h1.setAttribute("cx", S.x); h1.setAttribute("cy", S.y); h1.setAttribute("r","6");
+  h1.setAttribute("class","line-handle line-handle-end");
+  h1.setAttribute("pointer-events","all");
+  h1.dataset.handle = "from";
+  h1.dataset.from = fromId; h1.dataset.to = toId;
+
+  const h1hit = document.createElementNS("http://www.w3.org/2000/svg","circle");
+  h1hit.setAttribute("cx", S.x); h1hit.setAttribute("cy", S.y); h1hit.setAttribute("r","18");
+  h1hit.setAttribute("fill","transparent");
+  h1hit.setAttribute("class","line-handle-hit");
+  h1hit.setAttribute("pointer-events","all");
+  h1hit.dataset.handle = "from";
+  h1hit.dataset.from = fromId; h1hit.dataset.to = toId;
+
+
+  const h2 = document.createElementNS("http://www.w3.org/2000/svg","circle");
+  h2.setAttribute("cx", E.x); h2.setAttribute("cy", E.y); h2.setAttribute("r","6");
+  h2.setAttribute("class","line-handle line-handle-end");
+  h2.setAttribute("pointer-events","all");
+  h2.dataset.handle = "to";
+  h2.dataset.from = fromId; h2.dataset.to = toId;
+
+  const h2hit = document.createElementNS("http://www.w3.org/2000/svg","circle");
+  h2hit.setAttribute("cx", E.x); h2hit.setAttribute("cy", E.y); h2hit.setAttribute("r","18");
+  h2hit.setAttribute("fill","transparent");
+  h2hit.setAttribute("class","line-handle-hit");
+  h2hit.setAttribute("pointer-events","all");
+  h2hit.dataset.handle = "to";
+  h2hit.dataset.from = fromId; h2hit.dataset.to = toId;
+
+
+  // Mid handle (square)
+  const hm = document.createElementNS("http://www.w3.org/2000/svg","rect");
+  hm.setAttribute("x", M.x - 6); hm.setAttribute("y", M.y - 6);
+  hm.setAttribute("width","12"); hm.setAttribute("height","12");
+  hm.setAttribute("rx","2");
+  hm.setAttribute("class","line-handle line-handle-mid");
+  hm.setAttribute("pointer-events","all");
+  hm.dataset.handle = "mid";
+  hm.dataset.from = fromId; hm.dataset.to = toId;
+
+
+  // Waypoint handles (extra bends)
+  if(ov && Array.isArray(ov.waypoints) && ov.waypoints.length){
+    ov.waypoints.forEach((wp, idx)=>{
+      if(!wp || typeof wp.x!=="number" || typeof wp.y!=="number") return;
+      const hw = document.createElementNS("http://www.w3.org/2000/svg","rect");
+      hw.setAttribute("x", wp.x - 5); hw.setAttribute("y", wp.y - 5);
+      hw.setAttribute("width","10"); hw.setAttribute("height","10");
+      hw.setAttribute("rx","2");
+      hw.setAttribute("class","line-handle line-handle-wp");
+      hw.setAttribute("pointer-events","all");
+      hw.dataset.handle = "wp";
+      hw.dataset.idx = String(idx);
+      hw.dataset.from = fromId; hw.dataset.to = toId;
+      g.appendChild(hw);
+    });
+  }
+
+  // Parent bus/junction guide + handle (shared across all branches from this parent)
+  try{
+    const kids = [];
+    for(const e of edges){
+      if(e.from === fromId && visible.has(e.to)) kids.push(e.to);
+    }
+    if(kids.length >= 2){
+      const jm2 = __traditionalJunctionMap__(visible);
+      const jj = jm2 ? jm2.get(fromId) : null;
+      const yBus = (jj && typeof jj.yJ === "number") ? jj.yJ : midY;
+
+      let xMin = null, xMax = null;
+      for(const kidId of kids){
+        const kp = pos.get(kidId);
+        if(!kp) continue;
+        if(xMin === null){ xMin = kp.x; xMax = kp.x; }
+        else { xMin = Math.min(xMin, kp.x); xMax = Math.max(xMax, kp.x); }
+      }
+      if(xMin !== null && xMax !== null){
+        const bus = document.createElementNS("http://www.w3.org/2000/svg","line");
+        bus.setAttribute("x1", xMin); bus.setAttribute("y1", yBus);
+        bus.setAttribute("x2", xMax); bus.setAttribute("y2", yBus);
+        bus.setAttribute("class","line-bus-guide");
+        g.appendChild(bus);
+
+        const hb = document.createElementNS("http://www.w3.org/2000/svg","rect");
+        const mx = (xMin + xMax) / 2;
+        hb.setAttribute("x", mx - 6); hb.setAttribute("y", yBus - 6);
+        hb.setAttribute("width","12"); hb.setAttribute("height","12");
+        hb.setAttribute("rx","2");
+        hb.setAttribute("class","line-handle line-handle-bus");
+        hb.setAttribute("pointer-events","all");
+        hb.dataset.handle = "bus";
+        hb.dataset.from = fromId; hb.dataset.to = toId;
+        g.appendChild(hb);
+      }
+    }
+  }catch(_e){}
+  g.appendChild(h1hit);
+  g.appendChild(h2hit);
+  g.appendChild(h1);
+  g.appendChild(hm);
+  g.appendChild(h2);
+}
+
+__LINE_HANDLE_DRAG__ = null;
+
+function __svgPointFromEvent__(ev){
+  const owner = (ev && ev.target && ev.target.ownerSVGElement) ? ev.target.ownerSVGElement : handlesSvg;
+  const pt = owner.createSVGPoint();
+  pt.x = ev.clientX; pt.y = ev.clientY;
+  const ctm = owner.getScreenCTM();
+  if(!ctm) return {x:0,y:0};
+  const inv = ctm.inverse();
+  const p = pt.matrixTransform(inv);
+  return { x: p.x, y: p.y };
+}
+
+function __sideFromPointer__(center, p){
+  const dx = p.x - center.x;
+  const dy = p.y - center.y;
+  return (Math.abs(dx) > Math.abs(dy)) ? (dx >= 0 ? "right" : "left") : (dy >= 0 ? "bottom" : "top");
+}
+
+function __beginLineHandleDrag__(handleType, fromId, toId, ev){
+  __LINE_HANDLE_DRAG__ = { handleType, fromId, toId };
+  try{ (handlesSvg||svg).setPointerCapture(ev.pointerId); }catch(_e){}
+}
+
+function __updateEdgeOverride__(key, patch){
+  if(!TRAD_EDGE_OVERRIDES) TRAD_EDGE_OVERRIDES = {};
+  if(!TRAD_EDGE_OVERRIDES[key]) TRAD_EDGE_OVERRIDES[key] = { fromSide:"auto", toSide:"auto" };
+  Object.assign(TRAD_EDGE_OVERRIDES[key], patch);
+  window.TRAD_EDGE_OVERRIDES = TRAD_EDGE_OVERRIDES;
+}
+
+function __moveLineHandle__(ev){
+  if(!__LINE_HANDLE_DRAG__) return;
+  const { handleType, fromId, toId } = __LINE_HANDLE_DRAG__;
+  const key = __edgeKey__(fromId, toId);
+
+  const a = pos.get(fromId), b = pos.get(toId);
+  if(!a || !b) return;
+
+  const p = __svgPointFromEvent__(ev);
+  if(handleType === "from"){
+    const side = __sideFromPointer__(a, p);
+    __updateEdgeOverride__(key, { fromSide: side });
+  }else if(handleType === "to"){
+    const side = __sideFromPointer__(b, p);
+    __updateEdgeOverride__(key, { toSide: side });
+  }else if(handleType === "mid"){
+    // Snap midX/midY to nearby guides (node centers + junction Ys)
+    const visible = getVisibleSet();
+    const guides = __collectTraditionalLineGuides__(visible);
+    const snapPx = 10;
+
+    const midX = __snapValue__(p.x, guides.xs, snapPx);
+    const midY = __snapValue__(p.y, guides.ys, snapPx);
+
+    __updateEdgeOverride__(key, { midX, midY });
+  }else if(handleType === "wp"){
+    const ov = (TRAD_EDGE_OVERRIDES && TRAD_EDGE_OVERRIDES[key]) ? TRAD_EDGE_OVERRIDES[key] : null;
+    if(!ov) return;
+    if(!Array.isArray(ov.waypoints)) ov.waypoints = [];
+
+    const p = __svgPointFromEvent__(ev);
+    const visible = getVisibleSet();
+    const guides = __collectTraditionalLineGuides__(visible);
+    const snapPx = 10;
+
+    const x = __snapValue__(p.x, guides.xs, snapPx);
+    const y = __snapValue__(p.y, guides.ys, snapPx);
+
+    const idx = (__LINE_HANDLE_DRAG__ && typeof __LINE_HANDLE_DRAG__.idx === 'number') ? __LINE_HANDLE_DRAG__.idx : null;
+    if(idx === null || idx < 0 || idx >= ov.waypoints.length) return;
+    ov.waypoints[idx] = { x, y };
+    __updateEdgeOverride__(key, { waypoints: ov.waypoints });
+  }else if(handleType === "bus"){
+    // Parent-level bus/junction Y (shared by all child branches from this parent)
+    const visible = getVisibleSet();
+    const guides = __collectTraditionalLineGuides__(visible);
+    const snapPx = 10;
+
+    const p = __svgPointFromEvent__(ev);
+    const y = __snapValue__(p.y, guides.ys, snapPx);
+
+    if(!TRAD_PARENT_OVERRIDES) TRAD_PARENT_OVERRIDES = {};
+    if(!TRAD_PARENT_OVERRIDES[fromId]) TRAD_PARENT_OVERRIDES[fromId] = {};
+    TRAD_PARENT_OVERRIDES[fromId].yJ = y;
+    window.TRAD_PARENT_OVERRIDES = TRAD_PARENT_OVERRIDES;
+  }
+
+  renderLinesOnly(); // redraw lines + handles
+}
+
+function __endLineHandleDrag__(ev){
+  if(!__LINE_HANDLE_DRAG__) return;
+  try{ (handlesSvg||svg).releasePointerCapture(ev.pointerId); }catch(_e){}
+  __LINE_HANDLE_DRAG__ = null;
+}
+
+
 function renderLinesOnly(){
   const visible = getVisibleSet();
+  const __mode__ = (document.body && document.body.classList.contains("traditional-mode")) ? "traditional" : ((typeof window !== "undefined" && window.LAYOUT_MODE) ? window.LAYOUT_MODE : (typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : "starburst"));
+
   linesG.innerHTML="";
+
+  const __juncMap__ = (__mode__ === "traditional") ? __traditionalJunctionMap__(visible) : null;
+
   for(const e of edges){
     if(!visible.has(e.from) || !visible.has(e.to)) continue;
 
     // If a specific subleader branch is selected, do not draw leader→other-subleader lines.
-// (Avoids stray subleader spokes, while keeping leader→direct-staff lines intact.)
-try{
-  if(typeof selectedSubleader !== "undefined" && selectedSubleader &&
-     typeof expandedLeader !== "undefined" && expandedLeader &&
-     e.from === expandedLeader){
-    const toP = DATA.find(x=>x.id===e.to);
-    if(toP && toP.sub_leader === true && e.to !== selectedSubleader){
-      continue;
-    }
-  }
-}catch(_e){}
+    // (Avoids stray subleader spokes, while keeping leader→direct-staff lines intact.)
+    try{
+      if(typeof selectedSubleader !== "undefined" && selectedSubleader &&
+         typeof expandedLeader !== "undefined" && expandedLeader &&
+         e.from === expandedLeader){
+        const toP = DATA.find(x=>x.id===e.to);
+        if(toP && toP.sub_leader === true && e.to !== selectedSubleader){
+          continue;
+        }
+      }
+    }catch(_e){}
 
     const a = pos.get(e.from), b = pos.get(e.to);
     if(!a || !b) continue;
-    const l = document.createElementNS("http://www.w3.org/2000/svg","line");
-    l.setAttribute("x1", a.x); l.setAttribute("y1", a.y);
-    l.setAttribute("x2", b.x); l.setAttribute("y2", b.y);
-    l.setAttribute("data-from", e.from);
-    l.setAttribute("data-to", e.to);
-    l.setAttribute("class", "line" + (e.kind === "root" ? " root" : ""));
-    linesG.appendChild(l);
+
+    if(__mode__ === "traditional"){
+      const key = __edgeKey__(e.from, e.to);
+      const ov = (TRAD_EDGE_OVERRIDES && TRAD_EDGE_OVERRIDES[key]) ? TRAD_EDGE_OVERRIDES[key] : null;
+      const pts = ov
+        ? __customTraditionalPoints__(a, b, e.from, e.to, ov, __juncMap__ ? __juncMap__.get(e.from) : null)
+        : __traditionalPoints__(a, b, e.from, e.to, __juncMap__ ? __juncMap__.get(e.from) : null);
+      const pl = document.createElementNS("http://www.w3.org/2000/svg","polyline");
+      pl.setAttribute("points", pts.map(p=>`${p[0]},${p[1]}`).join(" "));
+      pl.setAttribute("fill","none");
+      pl.setAttribute("data-from", e.from);
+      pl.setAttribute("data-to", e.to);
+      pl.setAttribute("data-edgekey", __edgeKey__(e.from, e.to));
+      pl.setAttribute("class", "line" + (e.kind === "root" ? " root" : ""));
+      linesG.appendChild(pl);
+    }else{
+      const l = document.createElementNS("http://www.w3.org/2000/svg","line");
+      l.setAttribute("x1", a.x); l.setAttribute("y1", a.y);
+      l.setAttribute("x2", b.x); l.setAttribute("y2", b.y);
+      l.setAttribute("data-from", e.from);
+      l.setAttribute("data-to", e.to);
+      l.setAttribute("class", "line" + (e.kind === "root" ? " root" : ""));
+      linesG.appendChild(l);
+    }
   }
+
+  // Draw line edit handles (Traditional-only)
+  try{ __renderLineHandles__(visible); }catch(_e){}
+
   // Re-apply focused line styling after redraw (dept-focus mode)
   if(document.body.classList.contains('dept-focus') && typeof updateFocusedLines === 'function' && FOCUSED_LEADER_ID){
     updateFocusedLines(FOCUSED_LEADER_ID);
@@ -3392,6 +4209,7 @@ try{
 }
 
 // Upload
+
 function normalizeRows(rows){
   return rows.map(r=>{
     const o={};
@@ -3564,12 +4382,36 @@ function snapshotLayout(){
   for(const [id,off] of relOffset.entries()){
     out.rel[id] = { dx: off.dx, dy: off.dy };
   }
+  try{
+    const ov = (window.TRAD_EDGE_OVERRIDES || TRAD_EDGE_OVERRIDES || {});
+    if(ov && typeof ov === 'object') out.edge_overrides = ov;
+  }catch(_e){}
+  try{
+    const pov = (window.TRAD_PARENT_OVERRIDES || TRAD_PARENT_OVERRIDES || {});
+    if(pov && typeof pov === 'object') out.trad_parent_overrides = pov;
+  }catch(_e){} 
   return out;
 }
 
 // Apply a layout snapshot to current DATA
 function applyLayout(layout){
   if(!layout || !layout.nodes) return false;
+
+  // If the loaded layout contains manual connector overrides, apply them (Traditional mode only).
+  try{
+    if(layout.edge_overrides && typeof layout.edge_overrides === "object"){
+      window.TRAD_EDGE_OVERRIDES = JSON.parse(JSON.stringify(layout.edge_overrides));
+      TRAD_EDGE_OVERRIDES = window.TRAD_EDGE_OVERRIDES;
+    }
+  }catch(_e){}
+
+  // If the loaded layout contains Traditional parent bus/junction overrides, apply them.
+  try{
+    if(layout.trad_parent_overrides && typeof layout.trad_parent_overrides === "object"){
+      window.TRAD_PARENT_OVERRIDES = JSON.parse(JSON.stringify(layout.trad_parent_overrides));
+      TRAD_PARENT_OVERRIDES = window.TRAD_PARENT_OVERRIDES;
+    }
+  }catch(_e){}
 
   pos.clear();
   relOffset.clear();
@@ -3771,9 +4613,9 @@ function loadHostedCSV(){
             if(!SEARCH_INDEX) SEARCH_INDEX = rows.map(x=>({...x}));
             localStorage.setItem("orgchartData", JSON.stringify(DATA));
             layoutStarburst();
-            autoLoadLayout('starburst');
+            autoLoadLayout(window.LAYOUT_MODE || "traditional");
             render();
-            requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, 200, true); }));
+            requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
             if(!SEARCH_INDEX) SEARCH_INDEX = DATA.map(x=>({...x}));
             // Apply embedded/saved default layout baseline if present
             
@@ -3781,7 +4623,7 @@ function loadHostedCSV(){
 
             if(baseline && applyLayout(baseline)){
               render();
-              requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, 200, true); }));
+              requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
             }
 
           }
@@ -3795,6 +4637,7 @@ function loadHostedCSV(){
         try { DATA = JSON.parse(saved); } catch(e){}
       }
       layoutStarburst();
+      autoLoadLayout(window.LAYOUT_MODE || "traditional");
       render();
       centerChart();
       if(!SEARCH_INDEX) SEARCH_INDEX = DATA.map(x=>({...x}));
@@ -3804,7 +4647,7 @@ function loadHostedCSV(){
 
             if(baseline && applyLayout(baseline)){
               render();
-              requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, 200, true); }));
+              requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
             }
 
     });
@@ -3961,6 +4804,9 @@ function applyTransform(){
 
 
 let FOCUSED_LEADER_ID = null;
+// Fast lookup for nodes rebuilt each render()
+let NODE_EL_BY_ID = new Map();
+
 
 
 // Ensure staff reappear when a leader is clicked
@@ -4053,25 +4899,99 @@ function ensurePosFromBaseline(id){
 
 
 function applyDeptFocus(leaderId){
+  // Dept focus = keep only the active reporting thread (ancestors) + the active branch (descendants) crisp.
+  // Everything else in the department stays blurred/low-opacity.
   FOCUSED_LEADER_ID = leaderId;
   document.body.classList.add("dept-focus");
 
-  document.querySelectorAll(".node").forEach(n=>{
-    n.classList.remove("focused");
-  });
+  // Clear prior focus flags
+  document.querySelectorAll(".node").forEach(n=>n.classList.remove("focused"));
 
   const visible = getVisibleSet();
-  const subtree = collectDescendants(leaderId);
 
-  // Focus leader + all visible descendants
-  for(const id of subtree){
-    if(!visible.has(id)) continue;
-    const el = document.querySelector(`.node[data-id="${CSS.escape(id)}"]`);
+  // Determine the deepest active node in the current drill path.
+  // Priority: staff-manager selection > selected subleader > leader.
+  let activeId = null;
+  try{
+    if(typeof selectedStaffManager !== "undefined" && selectedStaffManager) activeId = selectedStaffManager;
+  }catch(_e){}
+  try{
+    if(!activeId && window.selectedStaffManager) activeId = window.selectedStaffManager;
+  }catch(_e){}
+  try{
+    if(!activeId && typeof selectedSubleader !== "undefined" && selectedSubleader) activeId = selectedSubleader;
+  }catch(_e){}
+  if(!activeId) activeId = leaderId;
+
+  const focusIds = new Set();
+
+  // Root always stays crisp
+  try{
+    const r = rootPerson();
+    if(r && r.id) focusIds.add(r.id);
+  }catch(_e){}
+
+  // Ancestor chain (active thread)
+  const seen = new Set();
+  let cur = activeId;
+  let guard = 0;
+  while(cur && !seen.has(cur) && guard++ < 80){
+    seen.add(cur);
+    focusIds.add(cur);
+    const rec = (DATA || []).find(x=>x && x.id === cur);
+    cur = rec ? rec.reportsTo : null;
+  }
+
+  // Active branch descendants (only those currently visible)
+  try{
+    const branch = collectDescendants(activeId);
+    for(const id of branch){
+      if(!visible.has(id)) continue;
+      focusIds.add(id);
+    }
+  }catch(_e){}
+
+  // Persist focus set for interaction gating
+  try{ window.__FOCUS_IDS__ = new Set(focusIds); window.__FOCUS_ACTIVE_ID__ = activeId; window.__FOCUS_LEADER_ID__ = leaderId; }catch(_e){}
+
+  // Apply focus classes
+  for(const id of focusIds){
+    if(id !== (rootPerson && rootPerson() ? rootPerson().id : null) && !visible.has(id)) continue;    let el = null;
+    try{ el = (NODE_EL_BY_ID && NODE_EL_BY_ID.get) ? NODE_EL_BY_ID.get(String(id)) : null; }catch(_e){}
+    if(!el){
+      try{ el = document.querySelector(`.node[data-id="${CSS.escape(String(id))}"]`); }catch(_e){}
+    }
     if(el) el.classList.add("focused");
   }
 
   updateFocusedLines(leaderId);
   try{ drawDeptHaloSVG(leaderId, visible); }catch(e){}
+}
+
+
+
+function __isNodeInteractive__(id){
+  if(!document.body.classList.contains("dept-focus")) return true;
+
+  // Root always stays interactive
+  let rootId = null;
+  try{ const r = (typeof rootPerson === "function") ? rootPerson() : null; rootId = (r && r.id) ? r.id : null; }catch(_e){}
+  if(rootId != null && id === rootId) return true;
+
+  // In dept-focus, only nodes marked .focused and not .deemph are interactive.
+  let el = null;
+  try{ el = (NODE_EL_BY_ID && NODE_EL_BY_ID.get) ? NODE_EL_BY_ID.get(String(id)) : null; }catch(_e){}
+  if(!el){
+    try{
+      const all = document.querySelectorAll(".node");
+      for(const n of all){
+        if(n && n.dataset && String(n.dataset.id) === String(id)){ el = n; break; }
+      }
+    }catch(_e){}
+  }
+  if(!el) return false;
+  if(el.classList.contains("deemph")) return false;
+  return el.classList.contains("focused");
 }
 
 
@@ -4082,89 +5002,85 @@ function ensureRootFocused(){
 
 
 function updateFocusedLines(leaderId){
-  // Reset
+  // In dept-focus, fade/blur all lines EXCEPT the current reporting thread (ancestors)
+  // + the active branch (descendants of the deepest clicked person).
   document.querySelectorAll(".line").forEach(l=>l.classList.remove("focused-line"));
 
-  const root = rootPerson();
-  if(root){
-    document.querySelectorAll(`.line[data-from="${root.id}"][data-to="${leaderId}"]`)
-      .forEach(l=>l.classList.add("focused-line"));
+  const visibleNow = getVisibleSet();
+
+  // Determine the deepest active node in the current drill path.
+  let activeId = null;
+  try{ if(typeof selectedStaffManager !== "undefined" && selectedStaffManager) activeId = selectedStaffManager; }catch(_e){}
+  try{ if(!activeId && window.selectedStaffManager) activeId = window.selectedStaffManager; }catch(_e){}
+  try{ if(!activeId && typeof selectedSubleader !== "undefined" && selectedSubleader) activeId = selectedSubleader; }catch(_e){}
+  if(!activeId) activeId = leaderId;
+
+  const focusEdges = new Set();
+  const ek = (a,b)=> `${a}>>${b}`;
+  const addEdge = (a,b)=>{ if(a && b) focusEdges.add(ek(a,b)); };
+
+  // Root -> leader edge always stays crisp (when present)
+  try{
+    const r = rootPerson();
+    if(r && r.id) addEdge(r.id, leaderId);
+  }catch(_e){}
+
+  // Ancestor chain edges (active thread)
+  const seen = new Set();
+  let cur = activeId;
+  let guard = 0;
+  while(cur && !seen.has(cur) && guard++ < 120){
+    seen.add(cur);
+    const rec = (DATA || []).find(x=>x && x.id === cur);
+    const parent = rec ? rec.reportsTo : null;
+    if(parent){
+      addEdge(parent, cur);
+      cur = parent;
+    }else{
+      break;
+    }
   }
 
-  // If a subleader is selected (expanded), only keep that branch crisp
-  if(typeof selectedSubleader !== "undefined" && selectedSubleader && expandedLeader === leaderId){
-    // leader -> selected subleader
-    document.querySelectorAll(`.line[data-from="${leaderId}"][data-to="${selectedSubleader}"]`)
-      .forEach(l=>l.classList.add("focused-line"));
+  // Descendant branch edges from activeId (visible only)
+  try{
+    const childrenBy = new Map();
+    for(const p of (DATA || [])){
+      if(!p || !p.id) continue;
+      const par = p.reportsTo;
+      if(!par) continue;
+      if(!childrenBy.has(par)) childrenBy.set(par, []);
+      childrenBy.get(par).push(p.id);
+    }
 
-    // selected subleader -> its visible staff (direct reports)
-    const visibleNow = getVisibleSet();
-    document.querySelectorAll(`.line[data-from="${selectedSubleader}"]`).forEach(l=>{
-      const to = l.getAttribute("data-to");
-      if(visibleNow.has(to)) l.classList.add("focused-line");
-    });
-    // If a staff manager is selected, keep the entire manager "trail" crisp
-    // (nested staff-managers: staff -> staff -> ...), including sibling context lines.
-    if(selectedStaffManager){
-      const rootId = rootPerson().id;
-      const managerTrail = [];
-      try{
-        let curId = selectedStaffManager;
-        while(curId){
-          managerTrail.push(curId);
-
-          const cur = DATA.find(p => p.id === curId);
-          if(!cur) break;
-
-          const parentId = cur.reportsTo;
-
-          // Stop climbing once we reach the subleader/leader boundary, or the root.
-          if(!parentId || parentId === rootId || parentId === expandedLeader || parentId === selectedSubleader) break;
-
-          // Continue climbing only if the parent is itself a staff manager (has direct reports).
-          if(!hasDirectReports(parentId)) break;
-
-          curId = parentId;
-        }
-      }catch(_e){}
-
-      if(managerTrail.length === 0) managerTrail.push(selectedStaffManager);
-
-      // Focus inbound edges along the trail (parent -> manager)
-      for(const mid of managerTrail){
-        try{
-          const mrec = DATA.find(p => p.id === mid);
-          const parentId = (mrec && mrec.reportsTo) ? mrec.reportsTo : null;
-          if(parentId && visibleNow.has(parentId) && visibleNow.has(mid)){
-            document.querySelectorAll(`.line[data-from="${parentId}"][data-to="${mid}"]`)
-              .forEach(l=>l.classList.add("focused-line"));
-          }
-        }catch(_e){}
-      }
-
-      // Focus outgoing edges for every manager in the trail (manager -> visible direct reports)
-      for(const mid of managerTrail){
-        document.querySelectorAll(`.line[data-from="${mid}"]`).forEach(l=>{
-          const to = l.getAttribute("data-to");
-          if(visibleNow.has(to)) l.classList.add("focused-line");
-        });
+    const q = [activeId];
+    const visited = new Set([activeId]);
+    while(q.length){
+      const pid = q.shift();
+      const kids = childrenBy.get(pid) || [];
+      for(const kid of kids){
+        if(visited.has(kid)) continue;
+        visited.add(kid);
+        if(visibleNow.has(pid) && visibleNow.has(kid)) addEdge(pid, kid);
+        if(visibleNow.has(kid)) q.push(kid);
       }
     }
-return;
-  }
+  }catch(_e){}
 
-  // Otherwise (leader view), keep leader -> visible subleaders crisp
-  const visibleNow = getVisibleSet();
-  document.querySelectorAll(`.line[data-from="${leaderId}"]`).forEach(l=>{
+  // Apply focused-line class
+  document.querySelectorAll(".line").forEach(l=>{
+    const from = l.getAttribute("data-from");
     const to = l.getAttribute("data-to");
-    if(visibleNow.has(to)) l.classList.add("focused-line");
+    if(focusEdges.has(ek(from, to))) l.classList.add("focused-line");
   });
 }
 
 function clearDeptFocus(){
+
   clearDeptHaloSVG();
   FOCUSED_LEADER_ID = null;
   document.body.classList.remove("dept-focus");
+  try{ window.__FOCUS_IDS__ = null; window.__FOCUS_ACTIVE_ID__ = null; window.__FOCUS_LEADER_ID__ = null; }catch(_e){}
+
   document.querySelectorAll(".node.focused").forEach(n=>n.classList.remove("focused"));
 }
 
@@ -4354,7 +5270,7 @@ function centerChart(){
 
 stageEl.addEventListener("pointerdown", (e) => {
   const nodeEl = e.target.closest && e.target.closest(".node");
-  // Clicking any node should not clear focus/halo/lines (nodes handle their own click)
+  // Clicking any node should not clear focus/lines (nodes handle their own click)
   if (nodeEl) return;
 
   bgPointer = { sx: e.clientX, sy: e.clientY, moved: false };
@@ -4391,47 +5307,6 @@ stageEl.addEventListener("pointerup", (e) => {
   try { stageEl.releasePointerCapture(e.pointerId); } catch {}
 
   if (wasClick) {
-    // If a dept is expanded, clicking OUTSIDE the halo collapses back to just the leader (keeps focus).
-    const haloCircle = document.querySelector("#haloG circle");
-    const inDeptFocus = document.body.classList.contains("dept-focus");
-    const leaderId = (typeof expandedLeader !== "undefined" && expandedLeader) ? expandedLeader : (typeof FOCUSED_LEADER_ID !== "undefined" ? FOCUSED_LEADER_ID : null);
-
-    if (inDeptFocus && haloCircle && leaderId) {
-      const rect = stageEl.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-
-      // Convert to world coords (viewport transform is translate(panX, panY) scale(zoom))
-      const wx = (mx - panX) / zoom;
-      const wy = (my - panY) / zoom;
-
-      const cx = parseFloat(haloCircle.getAttribute("cx") || "0");
-      const cy = parseFloat(haloCircle.getAttribute("cy") || "0");
-      const r  = parseFloat(haloCircle.getAttribute("r")  || "0");
-
-      const dist = Math.hypot(wx - cx, wy - cy);
-
-      if (dist > r) {
-        // Clicked outside halo: fully reset back to Susan + overview (halo disappears)
-        clearSelection(); clearDeptFocus();
-        clearDeptHaloSVG();
-
-        expandedLeader = null;
-        expandedSubleaders.clear();
-        selectedSubleader = null;
-        selectedStaffManager = null; window.selectedStaffManager = selectedStaffManager;
-
-        setHeaderTitleText('ORGANIZATIONAL CHART');
-        render();
-        restoreHomeViewport(window.LAYOUT_MODE || "starburst", true);
-        bgPointer = null;
-        return;
-      }
-
-      // Click inside halo: do nothing (allows users to pan/drag nodes without losing focus)
-      bgPointer = null;
-      return;
-    }
 
     // Default: background click resets to org overview
     clearSelection(); clearDeptFocus();
@@ -4564,7 +5439,17 @@ window.addEventListener("resize", ()=>{
     applyTransform();
 
     // Defensive: if dept focus is active, re-apply focus classes after any size change.
-    if(document.body.classList.contains("dept-focus")) applyDeptFocus();
+    // IMPORTANT: applyDeptFocus requires the active leader id; calling it without an id
+    // will cause everything except the root to be treated as "non-thread".
+    if(document.body.classList.contains("dept-focus")){
+      const lid = (
+        (typeof FOCUSED_LEADER_ID !== "undefined" && FOCUSED_LEADER_ID) ? FOCUSED_LEADER_ID :
+        (typeof expandedLeader !== "undefined" && expandedLeader) ? expandedLeader :
+        (typeof CURRENT_LEADER_ID !== "undefined" && CURRENT_LEADER_ID) ? CURRENT_LEADER_ID :
+        null
+      );
+      if(lid) applyDeptFocus(lid);
+    }
   });
 });
 
@@ -5144,6 +6029,31 @@ function revealForLeader(leader){
 
   toMove.forEach(el=> menu.appendChild(el));
 
+  // Ensure "Save Traditional Layout" exists and sits directly under "Save Starburst Layout"
+  // (the menu is built by moving header controls into #hamburgerMenu above)
+  (function ensureSaveTraditionalLayoutBtn(){
+    let btn = document.getElementById("saveTraditionalLayoutBtn");
+    if(!btn){
+      btn = document.createElement("button");
+      btn.id = "saveTraditionalLayoutBtn";
+      btn.textContent = "Save Traditional Layout";
+      btn.disabled = true;
+    }
+
+    const starburstBtn = document.getElementById("saveDefaultLayoutBtn");
+    if(starburstBtn && starburstBtn.parentElement === menu){
+      starburstBtn.insertAdjacentElement("afterend", btn);
+    }else if(!menu.contains(btn)){
+      menu.appendChild(btn);
+    }
+
+    // Keep Edit Connectors directly under Save Traditional (if present)
+    const editBtn = document.getElementById("editConnectorsBtn");
+    if(editBtn && editBtn.parentElement === menu){
+      btn.insertAdjacentElement("afterend", editBtn);
+    }
+  })();
+
   // Toggle open/close
   toggle.addEventListener("click", (e)=>{
     e.stopPropagation();
@@ -5300,10 +6210,30 @@ function revealForLeader(leader){
 
     const x = e.clientX, y = e.clientY;
 
-    // Find the closest photo circle under the pointer.
+    // In dept-focus, ONLY allow interaction with focused (thread) nodes.
+    // IMPORTANT: this click-router must respect that, otherwise it can "synthetically click"
+    // a blurred/background node even when CSS pointer-events are disabled.
+    function isNodeInteractive(node){
+      if(!node) return false;
+      if(document.body.classList.contains("dept-focus")){
+        if(node.classList.contains("deemph")) return false;
+        if(node.classList.contains("root")) return true;
+        return node.classList.contains("focused");
+      }
+      return true;
+    }
+
+    const hitNode = (e.target && e.target.closest) ? e.target.closest(".node") : null;
+    // If the user actually clicked inside an interactive node (label, circle, etc), don't reroute.
+    if(hitNode && isNodeInteractive(hitNode)) return;
+
+    // Find the closest *interactive* photo circle under the pointer.
     let best = null;
     let bestDist = Infinity;
     stage.querySelectorAll(".circle-wrap").forEach(wrap => {
+      const node = wrap.closest(".node");
+      if(!isNodeInteractive(node)) return;
+
       const r = wrap.getBoundingClientRect();
       const rad = Math.min(r.width, r.height) / 2;
       const cx = r.left + r.width / 2;
@@ -5322,7 +6252,7 @@ function revealForLeader(leader){
     // If the event already hit this photo, do nothing (normal path).
     if(e.target && e.target.closest && e.target.closest(".circle-wrap") === best) return;
 
-    // Route the click to the underlying photo.
+    // Route the click to the underlying (interactive) photo.
     __routingPhotoClick = true;
     try{
       e.preventDefault();
@@ -5406,12 +6336,13 @@ function revealForLeader(leader){
 
 <script>
 (function(){
+  const wrap = document.getElementById("instructions");
   const t = document.getElementById("instructionsToggle");
   const b = document.getElementById("instructionsBody");
-  if(!t || !b) return;
+  if(!wrap || !t || !b) return;
 
   function setOpen(open){
-    b.hidden = !open;
+    wrap.classList.toggle("open", !!open);
     t.setAttribute("aria-expanded", open ? "true" : "false");
     const icon = t.querySelector(".howto-icon");
     if(icon){
@@ -5419,18 +6350,31 @@ function revealForLeader(leader){
     }
   }
 
-  t.addEventListener("click", ()=>{
-    setOpen(b.hidden);
+  // start collapsed
+  setOpen(false);
+
+  // Toggle (prevent the global click-to-close from immediately firing)
+  t.addEventListener("click", (e)=>{
+    e.stopPropagation();
+    setOpen(!wrap.classList.contains("open"));
   });
 
   t.addEventListener("keydown", (e)=>{
     if(e.key === "Enter" || e.key === " "){
       e.preventDefault();
-      setOpen(b.hidden);
+      e.stopPropagation();
+      setOpen(!wrap.classList.contains("open"));
     }
   });
-})();
 
+  // Close when clicking anywhere else on the canvas OR inside the open window body.
+  // (Clicking the toggle itself is handled above.)
+  document.addEventListener("click", (e)=>{
+    if(!wrap.classList.contains("open")) return;
+    if(t.contains(e.target)) return;
+    setOpen(false);
+  }, true);
+})();
 // ===== MULTI-TIER ORG CHART SUPPORT =====
 function getTier(d){
   if(!d.reports_to) return 0;      // root
@@ -5582,13 +6526,19 @@ function revealForLeader(leader){
 
 <script>
 
-let LAYOUT_MODE = "starburst";
+let LAYOUT_MODE = "traditional";
 
 
 // Per-mode vertical viewport offset (traditional sits ~200px higher)
 const MODE_YOFFSET = { starburst: 0, traditional: -200 };
 window.LAYOUT_MODE = LAYOUT_MODE;
 const layoutToggleBtn = document.getElementById("layoutToggleBtn");
+
+// Set initial toggle label based on the starting mode
+if(layoutToggleBtn){
+  layoutToggleBtn.textContent = (LAYOUT_MODE === "starburst") ? "View in Traditional" : "View in Starburst";
+}
+
 
 function layoutTraditional(){
   pos.clear(); relOffset.clear(); edges = [];
@@ -5661,6 +6611,13 @@ function __preserveAnchorScreen__(anchorId, anchorScreen){
 }
 
 async function __applyModeLayoutSeamless__(mode, anchorId, anchorScreen){
+  try{ document.body.classList.toggle("traditional-mode", mode === "traditional"); }catch(_e){}
+  if(mode !== "traditional"){
+    LINE_EDIT_MODE = false; SELECTED_EDGE = null;
+    try{ document.body.classList.remove("line-edit"); }catch(_e){}
+    try{ __clearLineHandles__(); }catch(_e){}
+  }
+
   // 1) Prefer explicit per-mode layout JSON (layout_starburst.json / layout_traditional.json).
   // 2) Fallback to algorithmic layout if the JSON is missing.
   const file = mode === "traditional" ? "layout_traditional.json" : "layout_starburst.json";
@@ -5708,6 +6665,13 @@ layoutToggleBtn.onclick = ()=>{
   // Flip mode
   LAYOUT_MODE = nextMode;
   window.LAYOUT_MODE = LAYOUT_MODE;
+  try{ document.body.classList.toggle("traditional-mode", nextMode === "traditional"); }catch(_e){}
+  if(nextMode !== "traditional"){
+    // Leaving Traditional: exit line edit mode.
+    LINE_EDIT_MODE = false; SELECTED_EDGE = null;
+    try{ document.body.classList.remove("line-edit"); }catch(_e){}
+    try{ __clearLineHandles__(); }catch(_e){}
+  }
 
   // Button text describes the *next* action
   layoutToggleBtn.textContent =
@@ -5736,6 +6700,8 @@ function __applyMobilePortraitMode__(){
 
       LAYOUT_MODE = "traditional";
       window.LAYOUT_MODE = LAYOUT_MODE;
+      try{ document.body.classList.add("traditional-mode"); }catch(_e){}
+
 
       if(layoutToggleBtn){
         layoutToggleBtn.textContent = "View in Starburst";
@@ -5807,26 +6773,64 @@ function revealForLeader(leader){
 
 <script>
 document.addEventListener("DOMContentLoaded", ()=>{
+  try{ document.body.classList.toggle("traditional-mode", (window.LAYOUT_MODE||"starburst")==="traditional"); }catch(_e){}
   const menu = document.getElementById("hamburgerMenu");
   if(!menu) return;
 
-  const btn = document.createElement("button");
-  btn.id = "saveTraditionalLayoutBtn";
-  btn.textContent = "Save Traditional Layout";
-  btn.disabled = true;
+  // Robust mode/auth detection (some flows set body class before window.LAYOUT_MODE updates)
+  function __isTraditional__(){
+    try{
+      if(document.body && document.body.classList && document.body.classList.contains("traditional-mode")) return true;
+    }catch(_e){}
+    try{ return (window.LAYOUT_MODE || (typeof LAYOUT_MODE !== "undefined" ? LAYOUT_MODE : "starburst")) === "traditional"; }catch(_e){}
+    return false;
+  }
+  function __isAuthor__(){
+    try{ if(typeof AUTHOR_MODE !== "undefined") return !!AUTHOR_MODE; }catch(_e){}
+    try{ return !!window.AUTHOR_MODE; }catch(_e){}
+    return false;
+  }
+
+  let btn = document.getElementById("saveTraditionalLayoutBtn");
+  const createdNow = !btn;
+  if(!btn){
+    btn = document.createElement("button");
+    btn.id = "saveTraditionalLayoutBtn";
+    btn.textContent = "Save Traditional Layout";
+    btn.disabled = true;
+  }
 
   // Place directly under "Save Starburst Layout" in the hamburger menu
   const starburstBtn = document.getElementById("saveDefaultLayoutBtn");
-  if(starburstBtn && starburstBtn.parentElement === menu){
-    starburstBtn.insertAdjacentElement("afterend", btn);
-  } else {
-    menu.appendChild(btn);
+  if(createdNow || !menu.contains(btn)){
+    if(starburstBtn && starburstBtn.parentElement === menu){
+      starburstBtn.insertAdjacentElement("afterend", btn);
+    } else {
+      menu.appendChild(btn);
+    }
+  }
+
+  // Place "Edit Connectors" directly under "Save Traditional Layout"
+  const editBtn = document.getElementById("editConnectorsBtn");
+  if(editBtn){
+    if(btn && btn.parentElement === menu){
+      btn.insertAdjacentElement("afterend", editBtn);
+    }else{
+      menu.appendChild(editBtn);
+    }
   }
 
   function update(){
-    const isAuth = !!window.AUTHOR_MODE;
-    const mode = window.LAYOUT_MODE || "starburst";
-    btn.disabled = !(isAuth && mode === "traditional");
+    const isAuth = __isAuthor__();
+    const isTrad = __isTraditional__();
+    btn.disabled = !(isAuth && isTrad);
+    const editBtn = document.getElementById("editConnectorsBtn");
+    if(editBtn){
+      // Keep clickable even if our mode/auth detection lags; we gate functionality in the handler.
+      editBtn.disabled = false;
+      editBtn.classList.toggle("soft-disabled", !(isAuth && isTrad));
+      editBtn.textContent = LINE_EDIT_MODE ? "Edit Connectors: On" : "Edit Connectors: Off";
+    }
   }
   update();
 
@@ -5835,6 +6839,9 @@ document.addEventListener("DOMContentLoaded", ()=>{
   const layoutBtn = document.getElementById("layoutToggleBtn");
   authorBtn && authorBtn.addEventListener("click", ()=>setTimeout(update, 0));
   layoutBtn && layoutBtn.addEventListener("click", ()=>setTimeout(update, 0));
+  // Also refresh when opening the hamburger (password gate can cause timing quirks)
+  const hambBtn = document.getElementById("hamburgerBtn");
+  hambBtn && hambBtn.addEventListener("click", ()=>setTimeout(update, 0));
 
   btn.onclick = ()=>{
     if(btn.disabled) return;
@@ -5842,6 +6849,36 @@ document.addEventListener("DOMContentLoaded", ()=>{
     downloadJSON("layout_traditional.json", snap);
     toast("Saved layout_traditional.json");
   };
+
+  const editBtn = document.getElementById("editConnectorsBtn");
+  if(editBtn){
+    editBtn.onclick = ()=>{
+      // Always allow the toggle to flip. If the user isn't in Traditional+Author,
+      // line editing simply won't activate (and we provide a hint).
+      LINE_EDIT_MODE = !LINE_EDIT_MODE;
+      try{ document.body.classList.toggle("line-edit", LINE_EDIT_MODE); }catch(_e){}
+
+      if(!LINE_EDIT_MODE){
+        SELECTED_EDGE = null;
+        try{ __clearLineHandles__(); }catch(_e){}
+        try{ renderLinesOnly(); }catch(_e){}
+        toast("Edit connectors off");
+      }else{
+        const isAuth = __isAuthor__();
+        const isTrad = __isTraditional__();
+        if(!(isAuth && isTrad)){
+          // Don't force it off; just tell the user what they need.
+          toast("Tip: switch to Traditional + Author Mode to edit connectors");
+        }else{
+          toast("Click a line to edit; drag endpoints + bend");
+        }
+      }
+      update();
+    };
+  }
+
+  // Expose for other parts of the app to refresh button state after re-renders.
+  window.__UPDATE_EDIT_CONNECTORS_UI__ = update;
 });
 
 // ===== MULTI-TIER ORG CHART SUPPORT =====

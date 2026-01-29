@@ -50,37 +50,37 @@ ileana_ledet,Ileana Ledet,CHIEF ECONOMIC COMPETITIVENESS OFFICER,Economic Compet
 landon_lemoine,Landon Lemoine,"DIRECTOR, STRATEGIC INVESTMENTS",Economic Competitiveness,ileana_ledet,FALSE,TRUE,FALSE,FALSE,342-5478,landon.lemoine@la.gov,photos/Landon%20Lemoine-12.jpg
 keely_mcgibboney,Keely McGibboney,SEC SENIOR PROJECT MANAGER,Economic Competitiveness,ileana_ledet,FALSE,TRUE,FALSE,FALSE,342-6268,keely.mcgibboney@la.gov,photos/Keely%20McGibboney%2328.jpg
 mary_robinson,Mary Robinson,"ASSISTANT DIRECTOR, COMPETITIVENESS  INITIATIVES",Economic Competitiveness,ileana_ledet,FALSE,TRUE,FALSE,FALSE,342-5543,mary.robinson2@la.gov,photos/Mary%20Robinson-29.jpg
-tedra_cheatham,Tedra Cheatham,EXECUTIVE DIRECTOR   ,Faststart,anne_villa,FALSE,TRUE,FALSE,FALSE,342-5405,tedra.cheatham@la.gov,photos/Tedra%20Cheatham-3.jpg
+tedra_cheatham,Tedra Cheatham,EXECUTIVE DIRECTOR OF FASTSTART,Faststart,anne_villa,FALSE,TRUE,FALSE,FALSE,342-5405,tedra.cheatham@la.gov,photos/Tedra%20Cheatham-3.jpg
 gail_williams,Gail Williams,EXECUTIVE ASSISTANT,Faststart,tedra_cheatham,FALSE,FALSE,TRUE,FALSE,342-5552,gailb.williams@la.gov,photos/Gail%20Williams-31.jpg
 eugenia_navarre,Eugenia Navarre,BUSINESS OPERATIONS COORDINATOR,Faststart,tedra_cheatham,FALSE,FALSE,FALSE,TRUE,342-5731,eugenia.navarre@la.gov,photos/Eugenia%20Navarre-14.jpg
-estella_williams,Estella Williams,DIRECTOR OF FOCUS,Faststart,tedra_cheatham,FALSE,TRUE,FALSE,FALSE,342-5729,estella.williams@la.gov,photos/Estella%20Williams-18.jpg
-madeleine_bergeron,Madeleine Bergeron,SENIOR PROGAM MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,342-9259,madeleine.bergeron@la.gov,photos/Madeleine%20Bergeron-29.jpg
-john_brown,John Brown,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,219-4633,john.brown2@la.gov,photos/John%20Brown-10.jpg
-kyle_comeaux,Kyle Comeaux,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,342-8420,kyle.comeaux@la.gov,photos/Kyle%20Comeaux-72.jpg
-dane_gross,Dane Gross,LEAD PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,342-8794,dane.gross@la.gov,photos/Dane%20Gross-17.jpg
-will_seaman,Will Seaman,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,342-0621,will.seaman@la.gov,https://randomuser.me/api/portraits/women/39.jpg
-jack_smith,Jack Smith,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,342-8855,jack.smith@la.gov,photos/Jack%20Smith-17.jpg
-jacob_trickey,Jacob Trickey,REGIONAL PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,318-678-6433,jacob.trickey@la.gov,photos/Jacob%20Trickey%2025b.jpg
-albert_vanzant,Albert Vanzant,DIRECTOR OF PROJECT OPERATIONS,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,342-4357,albert.vanzant@la.gov,photos/Albert%20Vanzant-26.jpg
-howard_veeder,Howard Veeder,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,219-4648,howard.veeder@la.gov,photos/Howard%20Veeder-32.jpg
-susan_white,Susan White,PROJECTS & SOFTWARE MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,219-1015,susan.white@la.gov,photos/Susan%20White-8.jpg
-edward_wick,Edward Wick,SENIOR PROJECT MANAGER,Faststart,albert_vanzant,FALSE,TRUE,FALSE,FALSE,342-4331,eward.wick@la.gov,photos/Ed%20Wick-19.jpg
+estella_williams,Estella Williams,DIRECTOR OF FOCUS,Faststart,tedra_cheatham,FALSE,FALSE,FALSE,TRUE,342-5729,estella.williams@la.gov,photos/Estella%20Williams-18.jpg
+madeleine_bergeron,Madeleine Bergeron,SENIOR PROGAM MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,342-9259,madeleine.bergeron@la.gov,photos/Madeleine%20Bergeron-29.jpg
+john_brown,John Brown,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,219-4633,john.brown2@la.gov,photos/John%20Brown-10.jpg
+kyle_comeaux,Kyle Comeaux,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,342-8420,kyle.comeaux@la.gov,photos/Kyle%20Comeaux-72.jpg
+dane_gross,Dane Gross,LEAD PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,342-8794,dane.gross@la.gov,photos/Dane%20Gross-17.jpg
+will_seaman,Will Seaman,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,342-0621,will.seaman@la.gov,https://randomuser.me/api/portraits/women/39.jpg
+jack_smith,Jack Smith,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,342-8855,jack.smith@la.gov,photos/Jack%20Smith-17.jpg
+jacob_trickey,Jacob Trickey,REGIONAL PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,318-678-6433,jacob.trickey@la.gov,photos/Jacob%20Trickey%2025b.jpg
+albert_vanzant,Albert Vanzant,DIRECTOR OF PROJECT OPERATIONS,Faststart,tedra_cheatham,FALSE,FALSE,FALSE,TRUE,342-4357,albert.vanzant@la.gov,photos/Albert%20Vanzant-26.jpg
+howard_veeder,Howard Veeder,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,219-4648,howard.veeder@la.gov,photos/Howard%20Veeder-32.jpg
+susan_white,Susan White,PROJECTS & SOFTWARE MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,219-1015,susan.white@la.gov,photos/Susan%20White-8.jpg
+edward_wick,Edward Wick,SENIOR PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,342-4331,eward.wick@la.gov,photos/Ed%20Wick-19.jpg
 patrick_bardwell,Patrick Bardwell,RECRUITMENT SPECIALIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,342-9097,patrick.bardwell@la.gov,https://randomuser.me/api/portraits/women/8.jpg
 todd_barrow,Todd Barrow,RECRUITMENT SPECIALIST,Faststart,lisa_ryan,FALSE,FALSE,FALSE,TRUE,219-4643,todd.barrow@la.gov,photos/Todd%20Barrow-20.jpg
 brody_falcon,Brody Falcon,RECRUITMENT SPECIALIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,342-0107,brody.falcon@la.gov,photos/Brody%20Falcon-14.jpg
 lindsay_guillot,Lindsay Guillot,RECRUITMENT SPECIALIST,Faststart,lisa_ryan,FALSE,FALSE,FALSE,TRUE,342-5600,lindsay.guillot@la.gov,photos/Lindsay%20Guillot-17.jpg
 bethany_hyde_hafeez,Bethany Hyde-Hafeez,RECRUITMENT SPECIALIST,Faststart,lisa_ryan,FALSE,FALSE,FALSE,TRUE,342-3333,bethany.hyde@la.gov,photos/Bethany%20Hyde-2.jpg
 jeremy_krail,Jeremy Krail,SENIOR TALENT STRATEGIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,219-4629,jeremy.krail@la.gov,photos/Jeremy%20Krail-70.jpg
-jamie_nakamoto,Jamie Nakamoto,SENIOR DIRECTOR OF TALENT ATTRACTION,Faststart,tedra_cheatham,FALSE,TRUE,FALSE,FALSE,342-1575,jamie.nakamoto@la.gov,photos/Jamie%20Nakamoto.jpg
-lisa_ryan,Lisa Ryan,RECRUITMENT MANAGER,Faststart,jamie_nakamoto,FALSE,TRUE,FALSE,FALSE,342-0212,lisa.ryan@la.gov,photos/Lisa%20O%27Beirne%20Ryan-37.jpg
-amy_tressitt,Amy Tressitt,TALENT CAMPAIGNS DIRECTOR,Faststart,jamie_nakamoto,FALSE,TRUE,FALSE,FALSE,342-1628,amy.tressitt@la.gov,photos/Amy%20Tressitt-21.jpg
+jamie_nakamoto,Jamie Nakamoto,SENIOR DIRECTOR OF TALENT ATTRACTION,Faststart,tedra_cheatham,FALSE,FALSE,FALSE,TRUE,342-1575,jamie.nakamoto@la.gov,photos/Jamie%20Nakamoto.jpg
+lisa_ryan,Lisa Ryan,RECRUITMENT MANAGER,Faststart,jamie_nakamoto,FALSE,FALSE,FALSE,TRUE,342-0212,lisa.ryan@la.gov,photos/Lisa%20O%27Beirne%20Ryan-37.jpg
+amy_tressitt,Amy Tressitt,TALENT CAMPAIGNS DIRECTOR,Faststart,jamie_nakamoto,FALSE,FALSE,FALSE,TRUE,342-1628,amy.tressitt@la.gov,photos/Amy%20Tressitt-21.jpg
 megan_warde,Megan Warde,RECRUITMENT SPECIALIST,Faststart,lisa_ryan,FALSE,FALSE,FALSE,TRUE,219-4649,megan.warde@la.gov,photos/Megan%20Warde-35.jpg
-brannan_webb,Brannan Webb,TALENT OPERATIONS DIRECTOR,Faststart,jamie_nakamoto,FALSE,TRUE,FALSE,FALSE,342-5443,brannan.webb@la.gov,photos/Brannan%20Webb-30.jpg
+brannan_webb,Brannan Webb,TALENT OPERATIONS DIRECTOR,Faststart,jamie_nakamoto,FALSE,FALSE,FALSE,TRUE,342-5443,brannan.webb@la.gov,photos/Brannan%20Webb-30.jpg
 vince_abadie,Vince Abadie,SENIOR TRAINING & DEVELOPMENT SPECIALIST,Faststart,judy_cephus,FALSE,FALSE,FALSE,TRUE,219-2541,vince.abadie@la.gov,photos/Vince%20Abadie-19.jpg
-rick_allen,Rick Allen,SENIOR MANAGER OF TRAINING & DEVELOPMENT,Faststart,judy_cephus,FALSE,TRUE,FALSE,FALSE,985-750-6210,rick.allen@la.gov,photos/Rick%20Allen%2024b-2.jpg
+rick_allen,Rick Allen,SENIOR MANAGER OF TRAINING & DEVELOPMENT,Faststart,judy_cephus,FALSE,FALSE,FALSE,TRUE,985-750-6210,rick.allen@la.gov,photos/Rick%20Allen%2024b-2.jpg
 dannell_calhoun,Dannell Calhoun,TRAINING & DEVELOPMENT SPECIALIST,Faststart,rick_allen,FALSE,FALSE,FALSE,TRUE,318-678-6626,dannell.calhoun@la.gov,photos/Dannell%20Calhoun%2014b.jpg
 troy_caraccioli,Troy Caraccioli,TRAINING & DEVELOPMENT SPECIALIST,Faststart,rick_allen,FALSE,FALSE,FALSE,TRUE,342-5766,troy.caraccioli@la.gov,photos/Troy%20Caraccioli-19.jpg
-judy_cephus,Judy Cephus,SENIOR DIRECTOR OF TRAINING & DEVELOPMENT,Faststart,tedra_cheatham,FALSE,TRUE,FALSE,FALSE,342-5626,judy.cephus@la.gov,photos/Judy%20Cephus-4.jpg
+judy_cephus,Judy Cephus,SENIOR DIRECTOR OF TRAINING & DEVELOPMENT,Faststart,tedra_cheatham,FALSE,FALSE,FALSE,TRUE,342-5626,judy.cephus@la.gov,photos/Judy%20Cephus-4.jpg
 lane_gunnels,Lane Gunnels,TRAINING & DEVELOPMENT SPECIALIST,Faststart,rick_allen,FALSE,FALSE,FALSE,TRUE,342-4758,lane.gunnels@la.gov,photos/Lane%20Gunnels-30.jpg
 jennifer_lear,Jennifer Lear,SYSTEMS SPECIALIST,Faststart,judy_cephus,FALSE,FALSE,FALSE,TRUE,342-0290,jennifer.lear@la.gov,photos/Jennifer%20Lear-9.jpg
 jay_marcin,Jay Marcin,SENIOR TRAINING & DEVELOPMENT SPECIALIST,Faststart,judy_cephus,FALSE,FALSE,FALSE,TRUE,342-4732,john.marcin@la.gov,photos/John%20%28Jay%29%20Marcin-1.jpg
@@ -89,19 +89,19 @@ doug_perkins,Doug Perkins,SENIOR TRAINING & DEVELOPMENT SPECIALIST,Faststart,jud
 guy_robison,Guy Robison,SENIOR TRAINING & DEVELOPMENT SPECIALIST,Faststart,rick_allen,FALSE,FALSE,FALSE,TRUE,318-678-6621,guy.robison@la.gov,photos/Guy%20Robison%2010b.jpg
 a_kimberly_short,A'Kimberly Short,TRAINING & DEVELOPMENT COORDINATOR,Faststart,judy_cephus,FALSE,FALSE,FALSE,TRUE,342-2870,A'Kimberly.short3@la.gov,photos/A%27Kimberly%20Short-19.jpg
 marsha_andrews,Marsha Andrews,DATA & DEVELOPMENT ANALYST,Faststart,mark_bond,FALSE,FALSE,FALSE,TRUE,342-8913,marsha.andrews@la.gov,photos/Marsha%20Andrews-23.jpg
-mark_bond,Mark Bond,SENIOR DIRECTOR OF WORKFORCE SOLUTIONS,Faststart,tedra_cheatham,FALSE,TRUE,FALSE,FALSE,219-4628,mark.bond@la.gov,photos/Mark%20Bond-12.jpg
-justin_dedden,Justin Dedden,PROGRAM MANAGER,Faststart,mark_bond,FALSE,TRUE,FALSE,FALSE,342-5607,justin.dedden@la.gov,photos/Justin%20Dedden-27.jpg
+mark_bond,Mark Bond,SENIOR DIRECTOR OF WORKFORCE SOLUTIONS,Faststart,tedra_cheatham,FALSE,FALSE,FALSE,TRUE,219-4628,mark.bond@la.gov,photos/Mark%20Bond-12.jpg
+justin_dedden,Justin Dedden,PROGRAM MANAGER,Faststart,mark_bond,FALSE,FALSE,FALSE,TRUE,342-5607,justin.dedden@la.gov,photos/Justin%20Dedden-27.jpg
 katreena_moses,Katreena Moses,WORKFORCE INITIATIVES COORDINATOR,Faststart,mark_bond,FALSE,FALSE,FALSE,TRUE,342-5549,katreena.moses@la.gov,photos/Katreena%20Moses-22.jpg
-jayson_purdy,Jayson Purdy,WORKFORCE INITIATIVES MANAGER,Faststart,mark_bond,FALSE,TRUE,FALSE,FALSE,342-4719,jayson.purdy@la.gov,photos/Jayson%20Purdy-2.jpg
-amanda_stanley,Amanda Stanley,WORKFORCE INITIATIVES MANAGER,Faststart,mark_bond,FALSE,TRUE,FALSE,FALSE,342-6268,amanda.stanley@la.gov,photos/Amanda%20Stanley-10.jpg
+jayson_purdy,Jayson Purdy,WORKFORCE INITIATIVES MANAGER,Faststart,mark_bond,FALSE,FALSE,FALSE,TRUE,342-4719,jayson.purdy@la.gov,photos/Jayson%20Purdy-2.jpg
+amanda_stanley,Amanda Stanley,WORKFORCE INITIATIVES MANAGER,Faststart,mark_bond,FALSE,FALSE,FALSE,TRUE,342-6268,amanda.stanley@la.gov,photos/Amanda%20Stanley-10.jpg
 cylie_bozarth,Cylie Bozarth,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,342-0176,cylie.bozarth@la.gov,photos/Cylie%20Bozarth-17.jpg
 betsy_reiprecht,Betsy Reiprecht,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,342-5411,betsy.reiprecht@la.gov,photos/Betsy%20Reiprecht-21.jpg
 susan_roberts,Susan Roberts,HUMAN RESOURCES SPECIALIST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,342-9659,susan.roberts@la.gov,photos/Susan%20Roberts%2021b.jpg
 dawn_thibodeaux,Dawn Thibodeaux,DIRECTOR HUMAN RESOURCES,Human Resources,anne_villa,FALSE,TRUE,FALSE,FALSE,342-3740,dawn.thibodeaux@la.gov,photos/Dawn%20Thibodeaux-13.jpg
 michaela_adegbe,Michaela Adegbe,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,342-3571,michaela.adegbe@la.gov,photos/Michaela%20Adegbe-124.jpg
 joleasia_campbell,Joleasia Campbell,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,342-6070,joleasia.campbell2@la.gov,photos/Joleasia%20Campbell-21.jpg
-frank_favaloro,Frank Favaloro,"MANAGER, BUSINESS INCENTIVE SERVICES",Incentive Services,christina_smith,FALSE,TRUE,FALSE,FALSE,342-5402,frank.favaloro@la.gov,photos/Frank%20Favaloro-1.jpg
-stephen_hamner,Stephen Hamner,"DIVISION DIRECTOR, FILM & TELEVISION",Incentive Services,christina_smith,FALSE,TRUE,FALSE,FALSE,342-4838,stephen.hamner@la.gov,photos/Stephen%20Hamner-10.jpg
+frank_favaloro,Frank Favaloro,"MANAGER, BUSINESS INCENTIVE SERVICES",Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,342-5402,frank.favaloro@la.gov,photos/Frank%20Favaloro-1.jpg
+stephen_hamner,Stephen Hamner,"DIVISION DIRECTOR, FILM & TELEVISION",Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,342-4838,stephen.hamner@la.gov,photos/Stephen%20Hamner-10.jpg
 rebecca_kleinpeter,Rebecca Kleinpeter,BUSINESS DEVELOPMENT OFFICER,Incentive Services,amanda_hafford,FALSE,FALSE,FALSE,TRUE,342-4323,rebecca.kleinpeter@la.gov,photos/Rebecca%20Kleinpeter-8.jpg
 joyce_metoyer,Joyce Metoyer,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,342-0485,joyce.metoyer@la.gov,photos/Joyce%20Metoyer-14.jpg
 travis_rosenberg,Travis Rosenberg,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,342-4710,travis.rosenberg@la.gov,photos/Travis%20Rosenberg-18.jpg
