@@ -5623,6 +5623,50 @@ function searchSelectPerson(p){
   const root = rootPerson();
   const isRoot = root && p.id === root.id;
 
+
+  // Leader picked from search: do NOT auto-expand their department.
+  // Leaders are already visible on the home view, so we keep the global layout and simply
+  // center + open the card (avoids the "explosion" effect).
+  if(!isRoot && p.leader === true){
+    try{
+      // If we were in a department-only filtered view, restore the full org dataset
+      if(SEARCH_INDEX && Array.isArray(SEARCH_INDEX) && SEARCH_INDEX.length){
+        DATA = SEARCH_INDEX.map(x=>({...x}));
+      }
+    }catch(_e){}
+    try{ if(typeof FULL_DATA !== 'undefined') FULL_DATA = null; }catch(_e){}
+    try{ if(typeof backBtn !== 'undefined' && backBtn) backBtn.style.display = 'none'; }catch(_e){}
+
+    try{ if(typeof clearSelection === 'function') clearSelection(); }catch(_e){}
+    try{ clearDeptFocus(); }catch(_e){}
+    try{ clearDeptHaloSVG(); }catch(_e){}
+
+    expandedLeader = null;
+    try{ expandedSubleaders && expandedSubleaders.clear && expandedSubleaders.clear(); }catch(_e){}
+    selectedSubleader = null;
+    selectedStaffManager = null;
+
+    setHeaderTitleText('ORGANIZATIONAL CHART');
+    try{
+      const baseline = (typeof getBaselineLayout === 'function') ? getBaselineLayout() : null;
+      if(baseline) applyLayout(baseline);
+    }catch(_e){}
+
+    render();
+    ensureNodeVisible(p.id, 180);
+
+    document.querySelectorAll('.node.selected').forEach(n=>n.classList.remove('selected'));
+    const nodeEl = document.querySelector(`.node[data-id="${CSS.escape(p.id)}"]`);
+    if(nodeEl) nodeEl.classList.add('selected');
+
+    if(typeof __MOBILE_PORTRAIT__ !== 'undefined' && __MOBILE_PORTRAIT__){
+      try{ __mobileFramePerson__(p.id); }catch(_e){}
+    }
+
+    openPersonCard(p);
+    return;
+  }
+
   // Helper: get person by id
   const byId = (id)=> (DATA || []).find(x=>x.id===id) || null;
 
@@ -5698,10 +5742,13 @@ function searchSelectPerson(p){
       expandedSubleaders.add(subId);
     }
 
-    // If the direct manager has reports, expand it so the searched person is visible
-    if(managerId && hasDirectReports(managerId)){
+    // If the direct manager has reports, expand it so the searched person is visible.
+    // IMPORTANT: do NOT do this when the selected person is a LEADER (their manager is the root,
+    // which would explode the view by showing all leaders).
+    const rootId = root ? root.id : null;
+    const isLeaderLike = (p.leader === true) || (p.sub_leader === true);
+    if(!isLeaderLike && managerId && hasDirectReports(managerId) && managerId !== rootId){
       selectedStaffManager = managerId;
-      // Ensure the manager node itself is visible by virtue of subleader expansion;
       // selectedStaffManager will add its direct reports in getVisibleSet.
     }
 
