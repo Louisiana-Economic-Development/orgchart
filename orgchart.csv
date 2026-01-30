@@ -1,10 +1,10 @@
 id,name,title,department,reports_to,leader,sub_leader,assistant,staff,phone,email,photo
 first_last,FIRST LAST,TITLE,Led Group Contact List,reports_to,FALSE,FALSE,FALSE,TRUE,PHONE,EMAIL,https://randomuser.me/api/portraits/men/78.jpg
 susan_bourgeois,Susan Bourgeois,SECRETARY,Office Of Secretary,,TRUE,FALSE,FALSE,FALSE,342-5388,susan.bourgeois@la.gov,photos/Susan%20Bourgeois-17.jpg
-sandra_granata,Sandra Granata,EXECUTIVE ASSISTANT,Office Of Secretary,susan_bourgeois,FALSE,FALSE,TRUE,FALSE,342-5388,sandra.granata@la.gov,photos/Sandra%20Granata-30-2.jpg
+sandra_granata,Sandra Granata,EXECUTIVE ASSISTANT,Office Of Secretary,susan_bourgeois,FALSE,FALSE,FALSE,TRUE,342-5388,sandra.granata@la.gov,photos/Sandra%20Granata-30-2.jpg
 libby_heebe,Libby Heebe,STUDENT,Office Of Secretary,susan_bourgeois,FALSE,FALSE,FALSE,TRUE,555-555-5555,libby.heebe@la.gov,photos/Elizabeth%20Heebe-14.jpg
-christi_impastato,Christi Impastato,SPECIAL ASSISTANT TO THE SECRETARY,Office Of Secretary,susan_bourgeois,FALSE,FALSE,TRUE,FALSE,342-3039,christi.impastato@la.gov,photos/Christi%20Impastato-5.jpg
-chris_stelly,Chris Stelly,"DIRECTOR, LEGISLATIVE AFFAIRS",Office Of Secretary,susan_bourgeois,FALSE,TRUE,FALSE,FALSE,342-5555,chris.stelly@la.gov,photos/Christopher%20Stelly-11.jpg
+christi_impastato,Christi Impastato,SPECIAL ASSISTANT TO THE SECRETARY,Office Of Secretary,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,342-3039,christi.impastato@la.gov,photos/Christi%20Impastato-5.jpg
+chris_stelly,Chris Stelly,"DIRECTOR, LEGISLATIVE AFFAIRS",Office Of Secretary,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,342-5555,chris.stelly@la.gov,photos/Christopher%20Stelly-11.jpg
 jenny_landreneau,Jenny Landreneau,"CONFIDENTIAL ASSISTANT, SPECIAL PROJECT OFFICER",Deputy Secretary,anne_villa,FALSE,FALSE,TRUE,FALSE,342-4322,jenny.landreneau@la.gov,photos/Jenny%20Landreneau-7.jpg
 anne_villa,Anne Villa,DEPUTY SECRETARY/CFO,Deputy Secretary,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,342-5395,anne.villa@la.gov,photos/Anne%20Villa.jpg
 olivia_bamburg,Olivia Bamburg,"DIRECTOR, BUSINESS DEVELOPMENT",Business Development,audrey_hutchinson,FALSE,FALSE,FALSE,TRUE,342-6079,olivia.bamburg@la.gov,photos/Olivia%20Bamburg-33.jpg
@@ -133,11 +133,11 @@ shamelda_pete,Shamelda Pete,BUSINESS DEVELOPMENT OFFICER,Innovation & Small Busi
 kelly_raney,Kelly Raney,BUSINESS DEVELOPMENT MANAGER,Innovation & Small Business,josh_fleig,FALSE,TRUE,FALSE,FALSE,342-0411,kelly.raney@la.gov,photos/Kelly%20Raney-1437.jpg
 blaine_smith,Blaine Smith,BUSINESS DEVELOPMENT OFFICER,Innovation & Small Business,stephanie_hartman,FALSE,FALSE,FALSE,TRUE,342-4492,blaine.smith@la.gov,photos/Blaine%20Smith-12.jpg
 frank_roberts,Frank Roberts,AUDITOR- INTERNAL,Internal Audit,anne_villa,FALSE,FALSE,FALSE,TRUE,342-5578,frank.roberts@la.gov,photos/Frank%20Roberts-21.jpg
-rodney_barnes,Rodney Barnes,ATTORNEY,Legal Services,robin_porter,FALSE,FALSE,FALSE,TRUE,342-5444,rodney.barnes@la.gov,photos/Rodney%20Barnes-12-2.jpg
-leticia_johnson,Leticia Johnson,ATTORNEY,Legal Services,robin_porter,FALSE,FALSE,FALSE,TRUE,342-6499,leticia.johnson@la.gov,photos/Leticia%20Johnson-6.jpg
-stephanie_le_grange,Stephanie Le Grange,ATTORNEY-DEPUTY GENERAL COUNSEL,Legal Services,robin_porter,FALSE,FALSE,FALSE,TRUE,342-5406,stephanie.legrange@la.gov,https://randomuser.me/api/portraits/men/72.jpg
-lauren_mcdonald,Lauren McDonald,PARALEGAL,Legal Services,robin_porter,FALSE,FALSE,FALSE,TRUE,342-5675,lauren.mcdonald@la.gov,photos/Lauren%20McDonald-5.jpg
-robin_porter,Robin Porter,EXECUTIVE COUNSEL,Legal Services,susan_bourgeois,FALSE,FALSE,FALSE,TRUE,342-3060,robin.porter@la.gov,photos/Robin%20Porter-8-2.jpg
+rodney_barnes,Rodney Barnes,ATTORNEY,Legal Services,stephanie_le_grange,FALSE,FALSE,FALSE,TRUE,342-5444,rodney.barnes@la.gov,photos/Rodney%20Barnes-12-2.jpg
+leticia_johnson,Leticia Johnson,ATTORNEY,Legal Services,stephanie_le_grange,FALSE,FALSE,FALSE,TRUE,342-6499,leticia.johnson@la.gov,photos/Leticia%20Johnson-6.jpg
+stephanie_le_grange,Stephanie Le Grange,ATTORNEY-DEPUTY GENERAL COUNSEL,Legal Services,robin_porter,FALSE,TRUE,FALSE,FALSE,342-5406,stephanie.legrange@la.gov,https://randomuser.me/api/portraits/men/72.jpg
+lauren_mcdonald,Lauren McDonald,PARALEGAL,Legal Services,stephanie_le_grange,FALSE,FALSE,FALSE,TRUE,342-5675,lauren.mcdonald@la.gov,photos/Lauren%20McDonald-5.jpg
+robin_porter,Robin Porter,EXECUTIVE COUNSEL,Legal Services,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,342-3060,robin.porter@la.gov,photos/Robin%20Porter-8-2.jpg
 anna_kate_anderson,Anna Kate Anderson,GRAPHIC DESIGNER II,Marketing & Creative,phuong_vo,FALSE,FALSE,FALSE,TRUE,342-1854,annakate.anderson@la.gov,photos/Anna%20Kate%20Anderson-14.jpg
 carolyn_blakley,Carolyn Blakley,"SENIOR DIRECTOR, INTEGRATED MARKETING",Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,342-5926,carolyn.blakley@la.gov,photos/Carolyn%20Blakley-9.jpg
 michael_bourgeois,Michael Bourgeois,AI & DIGITAL PRODUCTION DIRECTOR,Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,219-0392,michael.bourgeois3@la.gov,photos/Mike%20Bourgeois-29.jpg
@@ -188,5 +188,5 @@ marlene_janetos,Marlene Janetos,DIRECTOR OF ENGAGEMENT,Partnership & Engagement,
 sarah_mule,Sarah Mule,EXECUTIVE ASSISTANT,Partnership & Engagement,rachel_shields,FALSE,FALSE,TRUE,FALSE,342-4315,sarah.mule2@la.gov,photos/Sarah%20Mule-11.jpg
 rachel_shields,Rachel Shields,CHIEF ENGAGEMENT OFFICER,Partnership & Engagement,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,342-3023,rachel.shields@la.gov,photos/Rachel%20Shields.jpg
 monica_champagne,Monica Champagne,PROJECT MANAGER,Strategic Communications,emma_wagner,FALSE,TRUE,FALSE,FALSE,342-5372,monica.champagne@la.gov,photos/Monica%20Champagne-25.jpg
-emma_wagner,Emma Wagner,DIRECTOR OF COMMUNICATIONS,Strategic Communications,susan_bourgeois,FALSE,TRUE,FALSE,FALSE,342-5678,emma.wagner@la.gov,photos/Emma%20Wagner-25-2.jpg
+emma_wagner,Emma Wagner,DIRECTOR OF COMMUNICATIONS,Strategic Communications,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,342-5678,emma.wagner@la.gov,photos/Emma%20Wagner-25-2.jpg
 jacey_wesley,Jacey Wesley,STRATEGIC COMMUNICATIONS MANAGER,Strategic Communications,emma_wagner,FALSE,TRUE,FALSE,FALSE,342-5536,jacey.wesley@la.gov,photos/Jacey%20Wesley-31.jpg
