@@ -6346,6 +6346,21 @@ function revealForLeader(leader){
       const circle = node.querySelector(".circle");
       if(!circle) return;
 
+      // Only highlight (glow) nodes that can drill down (have direct reports).
+      const id = node.getAttribute("data-id") || (node.dataset ? node.dataset.id : null);
+      if(!id || !hasDirectReports(id)){
+        circle.classList.remove("glow");
+        return;
+      }
+
+      // In dept-focus mode, never glow background/blurred nodes.
+      if(document.body.classList.contains("dept-focus")){
+        if(node.classList.contains("deemph") || (!node.classList.contains("root") && !node.classList.contains("focused"))){
+          circle.classList.remove("glow");
+          return;
+        }
+      }
+
       const r = circle.getBoundingClientRect();
       const cx = r.left + r.width/2;
       const cy = r.top + r.height/2;
