@@ -3527,14 +3527,15 @@ function getVisibleSet(){
   const visible = new Set();
   const rootId = rootPerson().id;
 
-  // Root + top leaders always visible
+  // Root + direct reports to Root always visible on initial load
+  // (This lets you attach subleaders/staff directly to Susan and have them appear without clicking.)
   for(const p of DATA){
     const isRoot = !p.reportsTo;
-    const isLeader = !!p.leader && p.reportsTo === rootId;
-    if(isRoot || isLeader) visible.add(p.id);
+    const isDirectToRoot = (p.reportsTo === rootId);
+    if(isRoot || isDirectToRoot) visible.add(p.id);
   }
 
-  // Expanded leader reveals ALL direct reports (not only subleaders)
+// Expanded leader reveals ALL direct reports (not only subleaders)
   if(expandedLeader){
     const directChildIds = new Set();
     for(const p of DATA){
