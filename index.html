@@ -2043,6 +2043,262 @@ body.is-dragging{ cursor: grabbing; }
     left:12px !important;
   }
 }
+
+/* ===============================
+   Mobile Drilldown Mode (portrait-first)
+   =============================== */
+body.mobile-mode{ overflow:hidden; }
+body.mobile-mode header,
+body.mobile-mode main,
+body.mobile-mode #searchOverlay{ display:none !important; }
+
+#mobileApp{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  display:none;
+  flex-direction:column;
+  background:
+    radial-gradient(900px 600px at 15% 15%,rgba(96,165,250,.18),transparent 60%),
+    radial-gradient(900px 600px at 85% 20%,rgba(56,189,248,.45),transparent 60%),
+    radial-gradient(900px 600px at 65% 85%,rgba(245,158,11,.14),transparent 55%),
+    linear-gradient(180deg,#0b1d36,#071427);
+  color:#f7fafc;
+  overflow:hidden;
+}
+
+body.mobile-mode #mobileApp{ display:flex; }
+
+#mobileTop{
+  position:sticky;
+  top:0;
+  z-index:5;
+  padding:10px 12px 12px;
+  background:rgba(10,16,30,.78);
+  border-bottom:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(12px);
+}
+
+#mobileTop .m-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+#mobileTop .m-title{
+  font-weight:900;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  font-size:13px;
+  line-height:1.1;
+  opacity:.95;
+  flex:1;
+  min-width:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+#mobileTop .m-btn{
+  height:38px;
+  padding:0 10px;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:800;
+  font-size:11px;
+  letter-spacing:1.1px;
+  text-transform:uppercase;
+  cursor:pointer;
+}
+
+#mobileSearch{
+  margin-top:10px;
+  width:100%;
+  height:44px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  padding:0 12px;
+  outline:none;
+  font-size:14px;
+}
+
+#mobileSearch::placeholder{ color:rgba(247,250,252,.62); }
+
+#mobileSearchResults{
+  margin-top:10px;
+  display:none;
+  max-height:40vh;
+  overflow:auto;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(10,16,30,.65);
+}
+
+#mobileSearchResults.open{ display:block; }
+
+.m-sr-item{
+  padding:10px 12px;
+  border-top:1px solid rgba(255,255,255,.08);
+  cursor:pointer;
+}
+.m-sr-item:first-child{ border-top:none; }
+.m-sr-item:hover{ background:rgba(96,165,250,.14); }
+.m-sr-item .name{ font-weight:900; font-size:13px; }
+.m-sr-item .meta{ opacity:.72; font-size:12px; margin-top:2px; }
+
+#mobileCrumb{
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+#mobileBack{
+  display:none;
+  height:36px;
+  padding:0 12px;
+  border-radius:12px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:900;
+  letter-spacing:1.1px;
+  text-transform:uppercase;
+  font-size:11px;
+  cursor:pointer;
+}
+
+#mobilePath{
+  flex:1;
+  min-width:0;
+  opacity:.85;
+  font-size:12px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+#mobileBody{
+  flex:1;
+  overflow:auto;
+  padding:12px;
+}
+
+#mCard{
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(180deg,#0f172a,#0b1220);
+  box-shadow:0 18px 50px rgba(0,0,0,.45);
+  padding:14px;
+}
+
+#mCardTop{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.m-avatar{
+  width:64px;height:64px;border-radius:50%;
+  overflow:hidden;
+  background:#0b1220;
+  border:5px solid rgba(45,212,191,.85);
+  box-shadow:0 10px 22px rgba(0,0,0,.35), 0 0 0 2px rgba(255,255,255,.10);
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+}
+.m-avatar img{ width:100%; height:100%; object-fit:cover; display:block; }
+.m-avatar .ini{ font-weight:900; letter-spacing:.6px; }
+
+#mCardName{ font-weight:950; font-size:16px; line-height:1.1; }
+#mCardTitle{ opacity:.78; font-size:13px; margin-top:3px; line-height:1.2; }
+
+#mCardBadges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+.m-chip{
+  border-radius:999px;
+  padding:6px 10px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  font-size:11px;
+  opacity:.9;
+}
+.m-chip strong{ font-weight:950; margin-right:6px; opacity:.9; }
+
+#mCardActions{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+.m-action{
+  flex:1;
+  height:40px;
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.16);
+  color:#fff;
+  font-weight:950;
+  letter-spacing:1.0px;
+  text-transform:uppercase;
+  font-size:11px;
+  cursor:pointer;
+}
+
+#mobileSectionTitle{
+  margin:14px 2px 8px;
+  font-weight:950;
+  font-size:12px;
+  letter-spacing:1.1px;
+  text-transform:uppercase;
+  opacity:.86;
+}
+
+#mobileReports{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding-bottom:24px;
+}
+
+.m-report{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+}
+
+.m-report:hover{ background:rgba(255,255,255,.08); }
+
+.m-report .ra{
+  width:44px;height:44px;border-radius:50%;
+  overflow:hidden;
+  background:#0b1220;
+  border:4px solid rgba(45,212,191,.70);
+  display:grid;
+  place-items:center;
+  flex:0 0 auto;
+}
+.m-report .ra img{ width:100%; height:100%; object-fit:cover; display:block; }
+.m-report .ra .ini{ font-weight:950; font-size:13px; }
+
+.m-report .txt{ flex:1; min-width:0; }
+.m-report .txt .n{ font-weight:950; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.m-report .txt .t{ opacity:.72; font-size:12px; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.m-report .chev{ opacity:.75; font-weight:950; }
+
 </style>
 
 
@@ -2272,6 +2528,53 @@ function revealForLeader(leader){
 </header>
 
 <div id="searchOverlay" aria-hidden="true"><div id="searchResults" role="listbox" aria-label="Search results"></div></div>
+
+
+<div id="mobileApp" aria-hidden="true">
+  <div id="mobileTop">
+    <div class="m-row">
+      <img id="mobileLogo" src="photos/LED_logoFULL_COLOR.svg" alt="Logo" style="height:30px;width:auto;">
+      <div class="m-title">OFFICE OF THE SECRETARY</div>
+      <button id="mobileDesktopBtn" class="m-btn" title="Switch to desktop canvas view">Desktop</button>
+    </div>
+
+    <input id="mobileSearch" type="search" placeholder="Search people…" aria-label="Search people"
+      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="search">
+
+    <div id="mobileSearchResults" role="listbox" aria-label="Search results"></div>
+
+    <div id="mobileCrumb">
+      <button id="mobileBack" aria-label="Back">Back</button>
+      <div id="mobilePath"></div>
+    </div>
+  </div>
+
+  <div id="mobileBody">
+    <div id="mCard">
+      <div id="mCardTop">
+        <div class="m-avatar" id="mAvatar">
+          <div class="ini" id="mInitials">??</div>
+          <img id="mPhoto" alt="" style="display:none;">
+        </div>
+        <div style="flex:1;min-width:0">
+          <div id="mCardName"></div>
+          <div id="mCardTitle"></div>
+        </div>
+      </div>
+
+      <div id="mCardBadges"></div>
+
+      <div id="mCardActions">
+        <button id="mInfoBtn" class="m-action" title="Open info card">Info</button>
+        <button id="mHomeBtn" class="m-action" title="Go to the top (root)">Home</button>
+      </div>
+    </div>
+
+    <div id="mobileSectionTitle">Direct Reports</div>
+    <div id="mobileReports"></div>
+  </div>
+</div>
+
 
 <main>
 <div id="stage">
@@ -4314,6 +4617,7 @@ fileInput.onchange = async ()=>{
     localStorage.setItem('orgchartData', JSON.stringify(DATA));
     layoutStarburst();
     render();
+    try{ if(window.__MOBILE_SYNC__) window.__MOBILE_SYNC__(); }catch(e){}
   }catch(err){
     console.error(err);
     alert("Upload failed. Need headers: id,name,title,leader,reportsTo,photo");
@@ -4552,6 +4856,7 @@ layoutInput && (layoutInput.onchange = async ()=>{
     const ok = applyLayout(getBaselineLayout());
     if(ok){
       render();
+      try{ if(window.__MOBILE_SYNC__) window.__MOBILE_SYNC__(); }catch(e){}
       centerChart();
       toast("Layout loaded");
     }else{
@@ -4633,6 +4938,7 @@ function loadHostedCSV(){
             layoutStarburst();
             autoLoadLayout(window.LAYOUT_MODE || "traditional");
             render();
+            try{ if(window.__MOBILE_SYNC__) window.__MOBILE_SYNC__(); }catch(e){}
             requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
             if(!SEARCH_INDEX) SEARCH_INDEX = DATA.map(x=>({...x}));
             // Apply embedded/saved default layout baseline if present
@@ -7050,6 +7356,362 @@ function revealForLeader(leader){
   });
 }
 
+</script>
+
+
+<script>
+/* ===============================
+   Mobile Drilldown Mode
+   =============================== */
+(function(){
+  const BP = 820;
+  let inited = false;
+
+  let stack = [];
+  let selectedId = null;
+
+  function getReportsTo(p){
+    return (p && (p.reportsTo || p.reports_to || p.reports_to_id || p.reports_toId)) ? (p.reportsTo || p.reports_to || p.reports_to_id || p.reports_toId) : null;
+  }
+
+  function pool(){
+    const s = (typeof SEARCH_INDEX !== "undefined" && Array.isArray(SEARCH_INDEX) && SEARCH_INDEX && SEARCH_INDEX.length) ? SEARCH_INDEX : null;
+    return s || (typeof DATA !== "undefined" && Array.isArray(DATA) ? DATA : []);
+  }
+
+  function buildMaps(list){
+    const byId = new Map();
+    const kids = new Map();
+    for(const raw of (list||[])){
+      const id = String(raw.id||"").trim();
+      if(!id) continue;
+      const p = Object.assign({}, raw);
+      // normalize id + reportsTo
+      p.id = id;
+      const rt = getReportsTo(p);
+      if(rt != null) p.reportsTo = String(rt).trim();
+      byId.set(id, p);
+    }
+    for(const p of byId.values()){
+      const rt = getReportsTo(p);
+      if(!rt) continue;
+      const parent = String(rt).trim();
+      if(!kids.has(parent)) kids.set(parent, []);
+      kids.get(parent).push(p.id);
+    }
+    // stable sort by name
+    for(const [k,v] of kids.entries()){
+      v.sort((a,b)=>{
+        const pa = byId.get(a) || {};
+        const pb = byId.get(b) || {};
+        return String(pa.name||"").localeCompare(String(pb.name||""), undefined, {sensitivity:"base"});
+      });
+    }
+    return { byId, kids };
+  }
+
+  function findRoot(byId){
+    for(const p of byId.values()){
+      if(!getReportsTo(p)) return p.id;
+    }
+    // fallback: common ids
+    if(byId.has("susan")) return "susan";
+    return (byId.keys().next().value) || null;
+  }
+
+  function pathToRoot(id, byId){
+    const out = [];
+    const seen = new Set();
+    let cur = id;
+    while(cur && !seen.has(cur)){
+      seen.add(cur);
+      out.push(cur);
+      const p = byId.get(cur);
+      if(!p) break;
+      const rt = getReportsTo(p);
+      if(!rt) break;
+      cur = String(rt).trim();
+      if(cur && !byId.has(cur)) break;
+    }
+    out.reverse();
+    return out;
+  }
+
+  function ensureSelected(){
+    const { byId } = buildMaps(pool());
+    if(selectedId && byId.has(selectedId)) return selectedId;
+    const r = findRoot(byId);
+    selectedId = r;
+    stack = r ? [r] : [];
+    return selectedId;
+  }
+
+  function setMode(on){
+    document.body.classList.toggle("mobile-mode", !!on);
+    const app = document.getElementById("mobileApp");
+    if(app) app.setAttribute("aria-hidden", on ? "false" : "true");
+    if(on){
+      initOnce();
+      sync(true);
+    }else{
+      // close mobile search results if open
+      try{
+        const sr = document.getElementById("mobileSearchResults");
+        if(sr) sr.classList.remove("open");
+      }catch(e){}
+    }
+  }
+
+  function wantsMobile(){
+    return window.innerWidth <= BP;
+  }
+
+  function initOnce(){
+    if(inited) return;
+    inited = true;
+
+    const mobileSearch = document.getElementById("mobileSearch");
+    const mobileSearchResults = document.getElementById("mobileSearchResults");
+    const mobileBack = document.getElementById("mobileBack");
+    const mobileDesktopBtn = document.getElementById("mobileDesktopBtn");
+    const mInfoBtn = document.getElementById("mInfoBtn");
+    const mHomeBtn = document.getElementById("mHomeBtn");
+
+    if(mobileDesktopBtn){
+      mobileDesktopBtn.addEventListener("click", ()=>{
+        // force desktop for this session until resize changes it
+        setMode(false);
+      });
+    }
+
+    if(mobileBack){
+      mobileBack.addEventListener("click", ()=>{
+        if(stack.length > 1){
+          stack.pop();
+          selectedId = stack[stack.length-1] || selectedId;
+          renderMobile();
+        }
+      });
+    }
+
+    if(mHomeBtn){
+      mHomeBtn.addEventListener("click", ()=>{
+        const maps = buildMaps(pool());
+        const r = findRoot(maps.byId);
+        if(r){
+          selectedId = r;
+          stack = [r];
+          renderMobile();
+        }
+      });
+    }
+
+    if(mInfoBtn){
+      mInfoBtn.addEventListener("click", ()=>{
+        try{
+          const maps = buildMaps(pool());
+          const p = maps.byId.get(selectedId);
+          if(p && typeof openPersonCard === "function") openPersonCard(p);
+        }catch(e){}
+      });
+    }
+
+    // Search behavior
+    let searchTimer = null;
+    function runSearch(){
+      const q = (mobileSearch?.value || "").trim().toLowerCase();
+      const list = pool();
+      const maps = buildMaps(list);
+      if(!q){
+        if(mobileSearchResults){
+          mobileSearchResults.innerHTML = "";
+          mobileSearchResults.classList.remove("open");
+        }
+        return;
+      }
+      const hits = [];
+      for(const p of maps.byId.values()){
+        const hay = (String(p.name||"") + " " + String(p.title||"") + " " + String(p.department||"")).toLowerCase();
+        if(hay.includes(q)) hits.push(p);
+      }
+      hits.sort((a,b)=>String(a.name||"").localeCompare(String(b.name||""), undefined, {sensitivity:"base"}));
+      const top = hits.slice(0, 14);
+      if(mobileSearchResults){
+        mobileSearchResults.innerHTML = top.map(p=>{
+          const meta = [p.title, p.department].filter(Boolean).join(" • ");
+          return '<div class="m-sr-item" role="option" data-id="'+String(p.id).replaceAll('"',"&quot;")+'">' +
+                   '<div class="name">'+escapeHtml(p.name||"")+'</div>' +
+                   '<div class="meta">'+escapeHtml(meta||"")+'</div>' +
+                 '</div>';
+        }).join("");
+        mobileSearchResults.classList.add("open");
+      }
+    }
+
+    if(mobileSearch){
+      mobileSearch.addEventListener("input", ()=>{
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(runSearch, 60);
+      });
+      mobileSearch.addEventListener("keydown", (e)=>{
+        if(e.key === "Escape"){
+          mobileSearch.value = "";
+          if(mobileSearchResults){
+            mobileSearchResults.innerHTML = "";
+            mobileSearchResults.classList.remove("open");
+          }
+          mobileSearch.blur();
+        }
+      });
+    }
+
+    if(mobileSearchResults){
+      mobileSearchResults.addEventListener("click", (e)=>{
+        const item = e.target && e.target.closest ? e.target.closest(".m-sr-item") : null;
+        if(!item) return;
+        const id = item.getAttribute("data-id");
+        const maps = buildMaps(pool());
+        if(maps.byId.has(id)){
+          selectedId = id;
+          stack = pathToRoot(id, maps.byId);
+          // hide results
+          if(mobileSearchResults){
+            mobileSearchResults.classList.remove("open");
+            mobileSearchResults.innerHTML = "";
+          }
+          if(mobileSearch) mobileSearch.value = "";
+          renderMobile();
+        }
+      });
+    }
+
+    // tap outside results closes
+    document.addEventListener("click", (e)=>{
+      if(!document.body.classList.contains("mobile-mode")) return;
+      const within = e.target && (e.target.closest && (e.target.closest("#mobileSearchResults") || e.target.closest("#mobileSearch")));
+      if(!within){
+        try{
+          if(mobileSearchResults) mobileSearchResults.classList.remove("open");
+        }catch(_e){}
+      }
+    }, true);
+  }
+
+  function renderMobile(){
+    if(!document.body.classList.contains("mobile-mode")) return;
+
+    const list = pool();
+    const maps = buildMaps(list);
+    if(!selectedId || !maps.byId.has(selectedId)){
+      const r = findRoot(maps.byId);
+      selectedId = r;
+      stack = r ? [r] : [];
+    }
+    const p = maps.byId.get(selectedId);
+    if(!p) return;
+
+    // Back button
+    const backBtn = document.getElementById("mobileBack");
+    if(backBtn) backBtn.style.display = (stack.length > 1) ? "inline-flex" : "none";
+
+    // Path
+    const pathEl = document.getElementById("mobilePath");
+    if(pathEl){
+      const names = stack.map(id => (maps.byId.get(id)?.name || id)).filter(Boolean);
+      pathEl.textContent = names.join("  ›  ");
+    }
+
+    // Card header
+    const nameEl = document.getElementById("mCardName");
+    const titleEl = document.getElementById("mCardTitle");
+    if(nameEl) nameEl.textContent = p.name || "";
+    if(titleEl) titleEl.textContent = p.title || "";
+
+    // Avatar
+    const img = document.getElementById("mPhoto");
+    const ini = document.getElementById("mInitials");
+    const initials = (p.name||"").trim().split(/\s+/).slice(0,2).map(s=>s[0]||"").join("").toUpperCase() || "??";
+    if(img && ini){
+      if(p.photo){
+        img.src = p.photo;
+        img.style.display = "block";
+        ini.style.display = "none";
+        img.onerror = ()=>{ img.style.display="none"; ini.textContent = initials; ini.style.display="block"; };
+      }else{
+        img.style.display = "none";
+        ini.textContent = initials;
+        ini.style.display = "block";
+      }
+    }
+
+    // Badges
+    const badges = document.getElementById("mCardBadges");
+    if(badges){
+      const mgr = maps.byId.get(getReportsTo(p) ? String(getReportsTo(p)).trim() : "");
+      const chips = [];
+      if(p.department) chips.push('<div class="m-chip"><strong>DEPT</strong> '+escapeHtml(p.department)+'</div>');
+      chips.push('<div class="m-chip"><strong>REPORTS TO</strong> '+escapeHtml(mgr ? (mgr.name||"—") : "—")+'</div>');
+      badges.innerHTML = chips.join("");
+    }
+
+    // Direct reports list
+    const repWrap = document.getElementById("mobileReports");
+    if(repWrap){
+      const kids = (maps.kids.get(p.id) || []).slice();
+      if(!kids.length){
+        repWrap.innerHTML = '<div style="opacity:.72;font-size:13px;padding:10px 4px;">No direct reports.</div>';
+      }else{
+        repWrap.innerHTML = kids.map(cid=>{
+          const c = maps.byId.get(cid) || {};
+          const ini2 = (c.name||"").trim().split(/\s+/).slice(0,2).map(s=>s[0]||"").join("").toUpperCase() || "??";
+          const photo = c.photo ? ('<img alt="" src="'+String(c.photo).replaceAll('"',"&quot;")+'" onerror="this.style.display=\'none\'; this.parentElement.querySelector(\'.ini\').style.display=\'block\';">') : '';
+          const iniHtml = '<div class="ini" style="'+(c.photo?'display:none;':'')+'">'+escapeHtml(ini2)+'</div>';
+          return '<div class="m-report" data-id="'+String(c.id).replaceAll('"',"&quot;")+'">' +
+                   '<div class="ra">'+ photo + iniHtml + '</div>' +
+                   '<div class="txt"><div class="n">'+escapeHtml(c.name||"")+'</div><div class="t">'+escapeHtml(c.title||"")+'</div></div>' +
+                   '<div class="chev">›</div>' +
+                 '</div>';
+        }).join("");
+      }
+
+      repWrap.onclick = (e)=>{
+        const row = e.target && e.target.closest ? e.target.closest(".m-report") : null;
+        if(!row) return;
+        const id = row.getAttribute("data-id");
+        if(!id || !maps.byId.has(id)) return;
+        selectedId = id;
+        // If this target is already in stack, truncate to it; else push
+        const idx = stack.indexOf(id);
+        if(idx >= 0){
+          stack = stack.slice(0, idx+1);
+        }else{
+          stack.push(id);
+        }
+        renderMobile();
+      };
+    }
+  }
+
+  function sync(forceRender){
+    ensureSelected();
+    if(forceRender) renderMobile();
+  }
+
+  // Expose sync hook for CSV loads / uploads
+  window.__MOBILE_SYNC__ = function(){
+    try{ if(document.body.classList.contains("mobile-mode")) sync(true); }catch(e){}
+  };
+
+  function handleResize(){
+    setMode(wantsMobile());
+  }
+
+  // Boot
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("orientationchange", handleResize);
+  // initial
+  setMode(wantsMobile());
+})();
 </script>
 
 </body>
