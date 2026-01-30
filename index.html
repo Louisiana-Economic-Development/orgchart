@@ -4,7 +4,7 @@
 <script>window.LAYOUT_MODE = window.LAYOUT_MODE || "traditional";
 window.selectedStaffManager = window.selectedStaffManager ?? null;
 window.addEventListener('load', () => {
-  const t = document.querySelector('.header-title')?.textContent || 'ORGANIZATIONAL CHART';
+  const t = document.querySelector('.header-title')?.textContent || 'OFFICE OF THE SECRETARY';
   setHeaderTitleText(t);
 });
 </script>
@@ -2102,7 +2102,7 @@ body.is-dragging{ cursor: grabbing; }
 /* === Curved Dept Halo Label === */
 
 
-/* --- Header title color (department name / ORGANIZATIONAL CHART) --- */
+/* --- Header title color (department name / OFFICE OF THE SECRETARY) --- */
 header .header-title{ color: rgba(45,212,191,.95) !important; }
 </style>
 
@@ -2226,7 +2226,7 @@ function revealForLeader(leader){
 <header>
   
 <img id="homeLogo" src="photos/LED_logoFULL_COLOR.svg" alt="Logo" style="height:56px;margin-right:14px;cursor:pointer;">
-<div class="header-title">ORGANIZATIONAL CHART</div>
+<div class="header-title">OFFICE OF THE SECRETARY</div>
 
 <strong></strong>
   <span style="opacity:.7;font-size:12px"></span>
@@ -2962,7 +2962,7 @@ if(isRoot){
   selectedSubleader = null;
   selectedStaffManager = null; window.selectedStaffManager = selectedStaffManager;
 
-  setHeaderTitleText('ORGANIZATIONAL CHART');
+  setHeaderTitleText('OFFICE OF THE SECRETARY');
 
   // Hard reset to the per-mode JSON (layout_starburst.json / layout_traditional.json)
   resetToHomeFromJson(window.LAYOUT_MODE || "starburst", true);
@@ -2982,7 +2982,7 @@ if(expandedLeader === p.id && document.body.classList.contains('dept-focus')){
   expandedSubleaders.clear();
   selectedSubleader = null;
   selectedStaffManager = null; window.selectedStaffManager = selectedStaffManager;
-  setHeaderTitleText('ORGANIZATIONAL CHART');
+  setHeaderTitleText('OFFICE OF THE SECRETARY');
   render();
   restoreHomeViewport(window.LAYOUT_MODE || "starburst", true);
 return;
@@ -3230,7 +3230,7 @@ viewBtn.onclick = ()=>{
     expandedLeader = null;
   expandedSubleaders.clear();
     const headerTitle = document.querySelector('.header-title');
-    setHeaderTitleText('ORGANIZATIONAL CHART');
+    setHeaderTitleText('OFFICE OF THE SECRETARY');
     DATA.forEach(x=>{ if(x.leader) expandedLeaders.add(x.id); });
 
     render();
@@ -4256,7 +4256,7 @@ function setHeaderTitleText(text){
   const el = document.querySelector('.header-title');
   if(!el) return;
 
-  el.textContent = text || 'ORGANIZATIONAL CHART';
+  el.textContent = text || 'OFFICE OF THE SECRETARY';
 
   // Always start from CSS-defined size (prevents tiny first-load caching)
   el.style.fontSize = '';
@@ -4342,7 +4342,7 @@ window.selectedStaffManager = selectedStaffManager;
   expandedSubleaders.clear();
 expandedSubleaders = (typeof expandedSubleaders !== 'undefined' && expandedSubleaders) ? expandedSubleaders : new Set(); // subleaderId -> expanded staff
     const headerTitle = document.querySelector('.header-title');
-    setHeaderTitleText('ORGANIZATIONAL CHART'); // single leader expanded (sub_leaders only)
+    setHeaderTitleText('OFFICE OF THE SECRETARY'); // single leader expanded (sub_leaders only)
 
 // Default layout baseline comes from the embedded JSON tag (server-authoritative when you hardcode it)
 let DEFAULT_LAYOUT = null;
@@ -5332,7 +5332,7 @@ stageEl.addEventListener("pointerup", (e) => {
     expandedSubleaders.clear();
     selectedSubleader = null;
     selectedStaffManager = null; window.selectedStaffManager = selectedStaffManager;
-    setHeaderTitleText('ORGANIZATIONAL CHART');
+    setHeaderTitleText('OFFICE OF THE SECRETARY');
     render();
   }
 
@@ -5587,7 +5587,7 @@ function ensureFullOrgForNavigation(){
   expandedLeader = null;
   expandedSubleaders.clear();
     const headerTitle = document.querySelector('.header-title');
-    setHeaderTitleText('ORGANIZATIONAL CHART');
+    setHeaderTitleText('OFFICE OF THE SECRETARY');
   layoutStarburst();
   render();
   centerChart();
@@ -5664,7 +5664,7 @@ function searchSelectPerson(p){
     selectedSubleader = null;
     selectedStaffManager = null;
 
-    setHeaderTitleText('ORGANIZATIONAL CHART');
+    setHeaderTitleText('OFFICE OF THE SECRETARY');
     try{
       const baseline = (typeof getBaselineLayout === 'function') ? getBaselineLayout() : null;
       if(baseline) applyLayout(baseline);
@@ -5730,7 +5730,7 @@ function searchSelectPerson(p){
 
   if(isRoot){
     // Reset view to root
-    setHeaderTitleText('ORGANIZATIONAL CHART');
+    setHeaderTitleText('OFFICE OF THE SECRETARY');
     render();
     ensureNodeVisible(p.id, 180);
     applyDeptFocus(root.id);
