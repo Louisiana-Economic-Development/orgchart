@@ -138,10 +138,10 @@ body.dept-focus.line-edit .line:not(.focused-line){
 }
 .line-handle:active{ cursor: grabbing; }
 
-.line-handle-end{ fill: rgba(45,212,191,.95); stroke: rgba(0,0,0,.45); stroke-width: 2; }
+.line-handle-end{ fill: rgba(56,189,248,.95); stroke: rgba(0,0,0,.45); stroke-width: 2; }
 .line-handle-mid{ fill: rgba(255,255,255,.90); stroke: rgba(0,0,0,.45); stroke-width: 2; }
 
-.line.root{ stroke: rgba(45,212,191,.55); stroke-width:2.6; }
+.line.root{ stroke: rgba(56,189,248,.55); stroke-width:2.6; }
 
 .line-bus-guide{
   stroke: rgba(255,255,255,.22);
@@ -174,7 +174,7 @@ body.dept-focus.line-edit .line:not(.focused-line){
   height:var(--size-staff);
   border-radius:50%;
   background:#0b1220;
-  border:6px solid rgba(45,212,191,.85);
+  border:4px solid rgba(156,163,175,0.65);
   overflow:hidden;
   display:grid;
   place-items:center;
@@ -235,7 +235,7 @@ body.dept-focus.line-edit .line:not(.focused-line){
   font-size:11px;
   letter-spacing:2px;
   text-transform:uppercase;
-  color:rgba(45,212,191,.95);
+  color:rgba(56,189,248,.95);
   font-weight:900;
   margin:0 0 4px 0;
 }
@@ -472,7 +472,7 @@ header img{
 
 /* --- Department hierarchy tweak --- */
 .dept{
-  color: rgba(45,212,191,.9); /* same green family as root lines */
+  color: rgba(56,189,248,.9); /* same green family as root lines */
   font-weight: 800;
   letter-spacing: .6px;
   font-size: 10px;
@@ -946,7 +946,7 @@ header label,
   font-weight: 700;
   letter-spacing: .8px;
   text-transform: uppercase;
-  color: rgba(45,212,191,.9);
+  color: rgba(56,189,248,.9);
   text-shadow: 0 1px 2px rgba(0,0,0,.45);
 }
 
@@ -1181,7 +1181,7 @@ button, label { font-weight: 600; }
 .zoom-high .dept{ opacity:0; }
 
 /* Very high zoom: show all */
-.zoom-full .label *{ opacity:1; max-height:40px; }
+.zoom-full .label *{ opacity:1; max-height:none; }
 
 
 /* ===============================
@@ -1887,6 +1887,7 @@ button[aria-label="Reset Layout"]{
 /* Clickability color cue + role sizing */
 .circle{
   border-color: rgba(156,163,175,0.65); /* gray for non-expandable */
+  border-width: 4px;
 }
 
 /* Role sizing */
@@ -1909,14 +1910,14 @@ button[aria-label="Reset Layout"]{
 
 /* Green ring for anything expandable */
 .node.expandable .circle{
-  border-color: rgba(45,212,191,0.95); /* teal */
-  border-width: 4px;
+  border-color: rgba(56,189,248,0.95); /* teal */
+  border-width: 6px;
 }
 
 /* Susan should be green too */
 .node.root .circle{
-  border-color: rgba(45,212,191,0.95);
-  border-width: 5px;
+  border-color: rgba(56,189,248,0.95);
+  border-width: 6px;
 }
 
 
@@ -2206,7 +2207,7 @@ body.mobile-mode #mobileApp{ display:flex; }
   width:64px;height:64px;border-radius:50%;
   overflow:hidden;
   background:#0b1220;
-  border:5px solid rgba(45,212,191,.85);
+  border:6px solid rgba(56,189,248,.85);
   box-shadow:0 10px 22px rgba(0,0,0,.35), 0 0 0 2px rgba(255,255,255,.10);
   display:grid;
   place-items:center;
@@ -2286,7 +2287,7 @@ body.mobile-mode #mobileApp{ display:flex; }
   width:44px;height:44px;border-radius:50%;
   overflow:hidden;
   background:#0b1220;
-  border:4px solid rgba(45,212,191,.70);
+  border:6px solid rgba(56,189,248,.70);
   display:grid;
   place-items:center;
   flex:0 0 auto;
@@ -2307,7 +2308,7 @@ body.mobile-mode #mobileApp{ display:flex; }
 <style>
 /* --- Card visual refresh --- */
 .dept-chip span{
-  color: rgb(45,212,191);
+  color: rgb(56,189,248);
   font-weight: 800;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -2359,7 +2360,7 @@ body.mobile-mode #mobileApp{ display:flex; }
 
 
 /* --- Header title color (department name / OFFICE OF THE SECRETARY) --- */
-header .header-title{ color: rgba(45,212,191,.95) !important; }
+header .header-title{ color: rgba(56,189,248,.95) !important; }
 </style>
 
 
