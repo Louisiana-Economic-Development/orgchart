@@ -4901,13 +4901,20 @@ layoutInput && (layoutInput.onchange = async ()=>{
 });
 
 
-resetLayoutBtn.onclick = ()=>{
+resetLayoutBtn.onclick = (e)=>{
+  // Prevent the global/background click reset logic from also firing when the
+  // user clicks the Reset button (that secondary handler can re-center/pan and
+  // "fling" the traditional view up/right on GH Pages).
+  try{ e && e.preventDefault && e.preventDefault(); }catch(_e){}
+  try{ e && e.stopPropagation && e.stopPropagation(); }catch(_e){}
   // Reset view/layout to the per-mode saved JSON (and its saved viewport if present)
   // This avoids mode-dependent center/pan math that could fling the traditional layout off-screen.
   resetToHomeFromJson(window.LAYOUT_MODE || "starburst", true);
 };
 
-resetBtn.onclick = ()=>{
+resetBtn.onclick = (e)=>{
+  try{ e && e.preventDefault && e.preventDefault(); }catch(_e){}
+  try{ e && e.stopPropagation && e.stopPropagation(); }catch(_e){}
   localStorage.removeItem('orgchartData');
   DATA = demoData();
   layoutStarburst();
