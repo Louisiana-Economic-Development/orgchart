@@ -6624,10 +6624,27 @@ function revealForLeader(leader){
 <script>
 const homeBtn = document.getElementById("homeBtn");
 if(homeBtn){
-  homeBtn.onclick = () => {
-    // Full page reload so hosted CSV + layout.json reapply cleanly
-    window.location.replace(window.location.pathname + "?home=" + Date.now());
-  };
+  homeBtn.addEventListener("click", async (e) => {
+    try{ e.preventDefault(); e.stopPropagation(); }catch(_e){}
+
+    // Clear any open dept/thread UI state before reloading the per-mode layout JSON
+    try{ if(typeof clearSelection === "function") clearSelection(); }catch(_e){}
+    try{ if(typeof clearDeptFocus === "function") clearDeptFocus(); }catch(_e){}
+    try{ expandedLeaders = new Set(); }catch(_e){}
+    try{ expandedLeader = null; }catch(_e){}
+    try{ selectedSubleader = null; }catch(_e){}
+    try{ selectedStaffManager = null; window.selectedStaffManager = null; }catch(_e){}
+    try{ selectedLeaderId = null; }catch(_e){}
+    try{
+      const iso = document.getElementById("isolateBtn");
+      if(iso){ iso.disabled = true; iso.style.display = "none"; }
+      const back = document.getElementById("backBtn");
+      if(back){ back.style.display = "none"; }
+    }catch(_e){}
+
+    // Reload the correct layout JSON for the current mode
+    await resetToHomeFromJson(window.LAYOUT_MODE || "traditional", true);
+  });
 }
 
 // ===== MULTI-TIER ORG CHART SUPPORT =====
