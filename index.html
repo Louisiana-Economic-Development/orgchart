@@ -4900,24 +4900,9 @@ layoutInput && (layoutInput.onchange = async ()=>{
 
 
 resetLayoutBtn.onclick = ()=>{
-  // reset pan
-  panX = 0; panY = 0;
-  zoom = 1;
-  applyTransform();
-
-  // reset layout: prefer saved/embedded baseline, else starburst
-  
-  const baseline = ACTIVE_DEPT_LAYOUT || getBaselineLayout();
-
-  if(baseline && applyLayout(baseline)){
-    // applied baseline
-  }else{
-    layoutStarburst();
-  }
-
-  render();
-  centerChart();
-  centerChart();
+  // Reset view/layout to the per-mode saved JSON (and its saved viewport if present)
+  // This avoids mode-dependent center/pan math that could fling the traditional layout off-screen.
+  resetToHomeFromJson(window.LAYOUT_MODE || "starburst", true);
 };
 
 resetBtn.onclick = ()=>{
