@@ -2403,7 +2403,6 @@ function autoLoadLayout(mode, opts){
           const v = layout.viewport;
           const vz = Number(v.zoom), vx = Number(v.panX), vy = Number(v.panY);
           if(isFinite(vz) && isFinite(vx) && isFinite(vy)){
-            HAS_SAVED_VIEWPORT[mode] = true;
             zoom = vz; panX = vx; panY = vy;
             applyTransform();
             try{ snapshotHomeViewport(mode); }catch(_e){}
@@ -2411,7 +2410,6 @@ function autoLoadLayout(mode, opts){
           }
         }
       }catch(_e){}
-      HAS_SAVED_VIEWPORT[mode] = false;
 
 
       // Seamless mode switches should NOT recenter the chart.
@@ -4901,20 +4899,13 @@ layoutInput && (layoutInput.onchange = async ()=>{
 });
 
 
-resetLayoutBtn.onclick = (e)=>{
-  // Prevent the global/background click reset logic from also firing when the
-  // user clicks the Reset button (that secondary handler can re-center/pan and
-  // "fling" the traditional view up/right on GH Pages).
-  try{ e && e.preventDefault && e.preventDefault(); }catch(_e){}
-  try{ e && e.stopPropagation && e.stopPropagation(); }catch(_e){}
+resetLayoutBtn.onclick = ()=>{
   // Reset view/layout to the per-mode saved JSON (and its saved viewport if present)
   // This avoids mode-dependent center/pan math that could fling the traditional layout off-screen.
   resetToHomeFromJson(window.LAYOUT_MODE || "starburst", true);
 };
 
-resetBtn.onclick = (e)=>{
-  try{ e && e.preventDefault && e.preventDefault(); }catch(_e){}
-  try{ e && e.stopPropagation && e.stopPropagation(); }catch(_e){}
+resetBtn.onclick = ()=>{
   localStorage.removeItem('orgchartData');
   DATA = demoData();
   layoutStarburst();
@@ -4962,7 +4953,7 @@ function loadHostedCSV(){
             render();
             try{ if(window.__MOBILE_SYNC__) window.__MOBILE_SYNC__(); }catch(e){}
             requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
-            try{ setTimeout(()=>{ const __m = (window.LAYOUT_MODE || "traditional"); if(!HAS_SAVED_VIEWPORT[__m]) __fitOverviewToStage__(__m, true); }, 360); }catch(_e){}
+            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
             if(!SEARCH_INDEX) SEARCH_INDEX = DATA.map(x=>({...x}));
             // Apply embedded/saved default layout baseline if present
             
@@ -4971,7 +4962,7 @@ function loadHostedCSV(){
             if(baseline && applyLayout(baseline)){
               render();
               requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
-            try{ setTimeout(()=>{ const __m = (window.LAYOUT_MODE || "traditional"); if(!HAS_SAVED_VIEWPORT[__m]) __fitOverviewToStage__(__m, true); }, 360); }catch(_e){}
+            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
             }
 
           }
@@ -4996,7 +4987,7 @@ function loadHostedCSV(){
             if(baseline && applyLayout(baseline)){
               render();
               requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
-            try{ setTimeout(()=>{ const __m = (window.LAYOUT_MODE || "traditional"); if(!HAS_SAVED_VIEWPORT[__m]) __fitOverviewToStage__(__m, true); }, 360); }catch(_e){}
+            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
             }
 
     });
@@ -5017,9 +5008,6 @@ let zoom = 1;
 
 // ===== Home viewport snapshots (per layout mode) =====
 const HOME_VIEWPORT = { starburst: null, traditional: null };
-// Track whether the loaded layout JSON provided an explicit viewport for each mode.
-const HAS_SAVED_VIEWPORT = { starburst: false, traditional: false };
-window.HAS_SAVED_VIEWPORT = HAS_SAVED_VIEWPORT;
 
 function snapshotHomeViewport(mode){
   mode = mode || (window.LAYOUT_MODE || "starburst");
@@ -5182,14 +5170,6 @@ async function resetToHomeFromJson(mode, animate=true){
     const r = await fetch("./" + file, { cache: "no-store" });
     if(!r.ok) throw 0;
     const layout = await r.json();
-    // Capture saved viewport (if present) so Reset can restore it exactly (prevents drift on GH Pages).
-    try{
-      if(layout && layout.viewport){
-        const v = layout.viewport;
-        const vz = Number(v.zoom), vx = Number(v.panX), vy = Number(v.panY);
-        if(isFinite(vz) && isFinite(vx) && isFinite(vy)) loadedViewport = { zoom: vz, panX: vx, panY: vy };
-      }
-    }catch(_e){}
     applyLayout(layout);
     // If the saved layout has a viewport, restore it exactly and treat it as "home".
     try{
@@ -5226,58 +5206,45 @@ async function resetToHomeFromJson(mode, animate=true){
     return;
   }
 
-  // Restore viewport:
-  // 1) Prefer the explicit per-mode viewport saved in the layout JSON (most stable across environments).
-  // 2) Otherwise use the in-memory HOME_VIEWPORT snapshot (if any).
-  // 3) Otherwise fall back to centering on root with bias.
+  // Recenter to the home position for this mode, then snapshot it
   const yOff = (mode === "starburst") ? 150 : 0;
+  // Reset zoom to the saved "home" zoom for this mode (defaults to 1.0) and recenter on root.
+  const snap = (typeof HOME_VIEWPORT !== "undefined" && HOME_VIEWPORT) ? HOME_VIEWPORT[mode] : null;
+  const targetZoom = (snap && typeof snap.zoom === "number" && isFinite(snap.zoom)) ? snap.zoom : 1;
 
-  if(loadedViewport){
-    const targetZoom = loadedViewport.zoom;
-    const targetPanX = loadedViewport.panX;
-    const targetPanY = loadedViewport.panY;
+  const p = pos.get(rootPerson().id);
+  if(!p) return;
+  const rect = stageEl.getBoundingClientRect();
+  const targetPanX = (rect.width * 0.5) - (p.x * targetZoom);
+  const targetPanY = (rect.height * 0.28) + yOff - (p.y * targetZoom);
 
-    if(!animate){
-      zoom = targetZoom; panX = targetPanX; panY = targetPanY;
-      applyTransform();
-      HAS_SAVED_VIEWPORT[mode] = true;
-      try{ snapshotHomeViewport(mode); }catch(e){}
-    }else{
-      const sx = panX, sy = panY, sz = zoom;
-      const dx = targetPanX - sx;
-      const dy = targetPanY - sy;
-      const dz = targetZoom - sz;
-      const t0 = performance.now();
-      const dur = 260;
-
-      function step(t){
-        const k = Math.min(1, (t - t0) / dur);
-        const kk = k*k*(3-2*k); // smoothstep
-        panX = sx + dx * kk;
-        panY = sy + dy * kk;
-        zoom = sz + dz * kk;
-        applyTransform();
-        if(k < 1) requestAnimationFrame(step);
-        else {
-          HAS_SAVED_VIEWPORT[mode] = true;
-          try{ snapshotHomeViewport(mode); }catch(e){}
-        }
-      }
-      requestAnimationFrame(step);
-    }
+  if(!animate){
+    zoom = targetZoom;
+    panX = targetPanX;
+    panY = targetPanY;
+    applyTransform();
+    try{ snapshotHomeViewport(mode); }catch(e){}
   }else{
-    HAS_SAVED_VIEWPORT[mode] = false;
-    // Use last known home framing for this mode if we have one; otherwise center on root.
-    const snap = HOME_VIEWPORT ? HOME_VIEWPORT[mode] : null;
-    if(snap && isFinite(snap.zoom) && isFinite(snap.panX) && isFinite(snap.panY)){
-      restoreHomeViewport(mode, animate);
-    }else{
-      centerOnNodeBiased(rootPerson().id, 0.5, 0.28, yOff, animate);
-      setTimeout(()=>snapshotHomeViewport(mode), 340);
-    }
-  }
+    const sx = panX, sy = panY, sz = zoom;
+    const dx = targetPanX - sx;
+    const dy = targetPanY - sy;
+    const dz = targetZoom - sz;
+    const t0 = performance.now();
+    const dur = 260;
 
-  try{ ensureRootFocused && ensureRootFocused(); }catch(e){}
+    function step(t){
+      const k = Math.min(1, (t - t0) / dur);
+      const kk = k*k*(3-2*k); // smoothstep
+      panX = sx + dx * kk;
+      panY = sy + dy * kk;
+      zoom = sz + dz * kk;
+      applyTransform();
+      if(k < 1) requestAnimationFrame(step);
+      else { try{ snapshotHomeViewport(mode); }catch(e){} }
+    }
+    requestAnimationFrame(step);
+  }
+try{ ensureRootFocused && ensureRootFocused(); }catch(e){}
   try{ updateFocusedLines && updateFocusedLines(rootPerson().id); }catch(e){}
 }
 function applyTransform(){
@@ -6660,9 +6627,16 @@ function revealForLeader(leader){
 <script>
 const homeBtn = document.getElementById("homeBtn");
 if(homeBtn){
-  homeBtn.onclick = () => {
-    // Full page reload so hosted CSV + layout.json reapply cleanly
-    window.location.replace(window.location.pathname + "?home=" + Date.now());
+  homeBtn.onclick = async (e) => {
+    // Reset should reload the saved layout JSON for the CURRENT mode
+    // (starburst -> layout_starburst.json, traditional -> layout_traditional.json)
+    try{ if(e){ e.preventDefault(); e.stopPropagation(); } }catch(_e){}
+    try{
+      await resetToHomeFromJson(window.LAYOUT_MODE || "traditional", true);
+    }catch(err){
+      // ultra-safe fallback: hard reload into traditional if reset function is unavailable
+      window.location.replace(window.location.pathname + "?home=" + Date.now());
+    }
   };
 }
 
@@ -7230,7 +7204,7 @@ async function __applyModeLayoutSeamless__(mode, anchorId, anchorScreen){
   __preserveAnchorScreen__(anchorId, anchorScreen);
 
   // After applying the new layout, re-frame the overview so it fits the current window.
-  try{ requestAnimationFrame(()=>requestAnimationFrame(()=>{ const __m = (mode); if(!HAS_SAVED_VIEWPORT[__m]) __fitOverviewToStage__(__m, true); })); }catch(_e){}
+  try{ requestAnimationFrame(()=>requestAnimationFrame(()=>__fitOverviewToStage__(mode, true))); }catch(_e){}
 }
 
 layoutToggleBtn.onclick = ()=>{
@@ -7264,7 +7238,7 @@ layoutToggleBtn.onclick = ()=>{
 
   // Swap geometry only (keep expansion/focus state intact)
   __applyModeLayoutSeamless__(LAYOUT_MODE, anchorId, anchorScreen);
-  try{ requestAnimationFrame(()=>requestAnimationFrame(()=>{ const __m = (LAYOUT_MODE); if(!HAS_SAVED_VIEWPORT[__m]) __fitOverviewToStage__(__m, true); })); }catch(_e){}
+  try{ requestAnimationFrame(()=>requestAnimationFrame(()=>__fitOverviewToStage__(LAYOUT_MODE, true))); }catch(_e){}
 };
 
 // ===== Mobile portrait (navigation-first) =====
