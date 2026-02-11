@@ -4952,8 +4952,7 @@ function loadHostedCSV(){
             autoLoadLayout(window.LAYOUT_MODE || "traditional");
             render();
             try{ if(window.__MOBILE_SYNC__) window.__MOBILE_SYNC__(); }catch(e){}
-            requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
-            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
+            try{ loadLayoutJSON((window.LAYOUT_MODE || "traditional"), { preserveView:false }); }catch(_e){}
             if(!SEARCH_INDEX) SEARCH_INDEX = DATA.map(x=>({...x}));
             // Apply embedded/saved default layout baseline if present
             
@@ -4961,8 +4960,7 @@ function loadHostedCSV(){
 
             if(baseline && applyLayout(baseline)){
               render();
-              requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
-            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
+              try{ loadLayoutJSON((window.LAYOUT_MODE || "traditional"), { preserveView:false }); }catch(_e){}
             }
 
           }
@@ -4986,8 +4984,7 @@ function loadHostedCSV(){
 
             if(baseline && applyLayout(baseline)){
               render();
-              requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
-            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
+              try{ loadLayoutJSON((window.LAYOUT_MODE || "traditional"), { preserveView:false }); }catch(_e){}
             }
 
     });
@@ -5164,16 +5161,6 @@ async function resetToHomeFromJson(mode, animate=true){
   let __usedSavedViewport = false;
   mode = mode || (window.LAYOUT_MODE || "starburst");
   const file = (mode === "traditional") ? "layout_traditional.json" : "layout_starburst.json";
-  // Reset any open department/thread state before applying layout
-  try{ clearSelection(); }catch(e){}
-  try{ clearDeptFocus(); }catch(e){}
-  try{ clearDeptHaloSVG(); }catch(e){}
-  try{ document.body.classList.remove('dept-focus'); }catch(e){}
-  try{ expandedLeader = null; }catch(e){}
-  try{ expandedSubleaders && expandedSubleaders.clear && expandedSubleaders.clear(); }catch(e){}
-  try{ expandedLeaders && expandedLeaders.clear && expandedLeaders.clear(); }catch(e){}
-  try{ selectedSubleader = null; }catch(e){}
-  try{ selectedStaffManager = null; window.selectedStaffManager = null; }catch(e){}
 
   // Apply saved geometry (fallback to algorithmic if missing)
   try{
@@ -6637,16 +6624,9 @@ function revealForLeader(leader){
 <script>
 const homeBtn = document.getElementById("homeBtn");
 if(homeBtn){
-  homeBtn.onclick = async (e) => {
-    // Reset should reload the saved layout JSON for the CURRENT mode
-    // (starburst -> layout_starburst.json, traditional -> layout_traditional.json)
-    try{ if(e){ e.preventDefault(); e.stopPropagation(); } }catch(_e){}
-    try{
-      await resetToHomeFromJson(window.LAYOUT_MODE || "traditional", true);
-    }catch(err){
-      // ultra-safe fallback: hard reload into traditional if reset function is unavailable
-      window.location.replace(window.location.pathname + "?home=" + Date.now());
-    }
+  homeBtn.onclick = () => {
+    // Full page reload so hosted CSV + layout.json reapply cleanly
+    window.location.replace(window.location.pathname + "?home=" + Date.now());
   };
 }
 
