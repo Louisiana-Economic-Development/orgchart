@@ -5164,6 +5164,16 @@ async function resetToHomeFromJson(mode, animate=true){
   let __usedSavedViewport = false;
   mode = mode || (window.LAYOUT_MODE || "starburst");
   const file = (mode === "traditional") ? "layout_traditional.json" : "layout_starburst.json";
+  // Reset any open department/thread state before applying layout
+  try{ clearSelection(); }catch(e){}
+  try{ clearDeptFocus(); }catch(e){}
+  try{ clearDeptHaloSVG(); }catch(e){}
+  try{ document.body.classList.remove('dept-focus'); }catch(e){}
+  try{ expandedLeader = null; }catch(e){}
+  try{ expandedSubleaders && expandedSubleaders.clear && expandedSubleaders.clear(); }catch(e){}
+  try{ expandedLeaders && expandedLeaders.clear && expandedLeaders.clear(); }catch(e){}
+  try{ selectedSubleader = null; }catch(e){}
+  try{ selectedStaffManager = null; window.selectedStaffManager = null; }catch(e){}
 
   // Apply saved geometry (fallback to algorithmic if missing)
   try{
