@@ -548,6 +548,11 @@ header img{
     transform 140ms ease,
     filter 140ms ease;
 }
+/* Disable backdrop blur on HOW TO USE pill (prevents connector glow bleed) */
+#instructions.howto{
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
 #instructions.howto:hover{
   background-color: rgba(255,255,255,.18);
   border-color: rgba(255,255,255,.26);
@@ -2391,6 +2396,21 @@ function autoLoadLayout(mode, opts){
       applyLayout(layout);
       render();
       exposeDebug();
+
+      // If this per-mode layout JSON includes a saved viewport, use it as the home framing (initial load).
+      try{
+        if(!preserveView && layout && layout.viewport){
+          const v = layout.viewport;
+          const vz = Number(v.zoom), vx = Number(v.panX), vy = Number(v.panY);
+          if(isFinite(vz) && isFinite(vx) && isFinite(vy)){
+            zoom = vz; panX = vx; panY = vy;
+            applyTransform();
+            try{ snapshotHomeViewport(mode); }catch(_e){}
+            return;
+          }
+        }
+      }catch(_e){}
+
 
       // Seamless mode switches should NOT recenter the chart.
       if(preserveView){
@@ -4713,6 +4733,11 @@ function snapshotLayout(){
     const pov = (window.TRAD_PARENT_OVERRIDES || TRAD_PARENT_OVERRIDES || {});
     if(pov && typeof pov === 'object') out.trad_parent_overrides = pov;
   }catch(_e){} 
+
+  // Persist viewport (pan/zoom) so each mode can restore its exact "home" framing.
+  try{
+    out.viewport = { panX: panX, panY: panY, zoom: zoom };
+  }catch(_e){}
   return out;
 }
 
@@ -4799,6 +4824,8 @@ authorModeBtn && (authorModeBtn.onclick = ()=>{
   window.AUTHOR_MODE = AUTHOR_MODE;
   authorModeBtn.textContent = AUTHOR_MODE ? "Author Mode: On" : "Author Mode: Off";
   saveDefaultLayoutBtn.disabled = !AUTHOR_MODE;
+  const saveTraditionalLayoutBtn = document.getElementById("saveTraditionalLayoutBtn");
+  if(saveTraditionalLayoutBtn) saveTraditionalLayoutBtn.disabled = !AUTHOR_MODE;
   toast(AUTHOR_MODE ? "Author Mode ON" : "Author Mode OFF");
 });
 
@@ -4941,6 +4968,7 @@ function loadHostedCSV(){
             render();
             try{ if(window.__MOBILE_SYNC__) window.__MOBILE_SYNC__(); }catch(e){}
             requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
+            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
             if(!SEARCH_INDEX) SEARCH_INDEX = DATA.map(x=>({...x}));
             // Apply embedded/saved default layout baseline if present
             
@@ -4949,6 +4977,7 @@ function loadHostedCSV(){
             if(baseline && applyLayout(baseline)){
               render();
               requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
+            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
             }
 
           }
@@ -4973,6 +5002,7 @@ function loadHostedCSV(){
             if(baseline && applyLayout(baseline)){
               render();
               requestAnimationFrame(()=>requestAnimationFrame(()=>{ centerOnNodeBiased(rootPerson().id, 0.5, 0.28, ((window.LAYOUT_MODE || "traditional")==="starburst" ? 150 : 0), true); }));
+            try{ setTimeout(()=>__fitOverviewToStage__((window.LAYOUT_MODE || "traditional"), true), 360); }catch(_e){}
             }
 
     });
@@ -5040,9 +5070,113 @@ function restoreHomeViewport(mode, animate=true){
 }
 
 
+// ===== Fit overview to current window (per layout mode) =====
+// Purpose: On first load and when switching layouts, frame the *overview* so it sits nicely within the stage
+// without forcing the chart into a tiny thumbnail.
+function __fitOverviewToStage__(mode, animate=true){
+  mode = mode || (window.LAYOUT_MODE || "starburst");
+
+  // Ensure we have up-to-date stage dimensions
+  let rect;
+  try{ rect = stageEl.getBoundingClientRect(); }catch(e){ rect = {width: window.innerWidth, height: window.innerHeight}; }
+  const W = Math.max(320, rect.width || 0);
+  const H = Math.max(320, rect.height || 0);
+
+  const visible = (typeof getVisibleSet === "function") ? getVisibleSet() : null;
+  if(!visible || !visible.size) return;
+
+  // Compute world-space bounds that include BOTH circles and their label boxes.
+  // This prevents the view from "favoring" one side due to labels extending outward.
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+  // Helper to get the node element for a given id
+  const getNodeEl = (id) => {
+    try{
+      if(typeof NODE_EL_BY_ID !== "undefined" && NODE_EL_BY_ID && typeof NODE_EL_BY_ID.get === "function"){
+        const el = NODE_EL_BY_ID.get(id);
+        if(el) return el;
+      }
+    }catch(e){}
+    return nodesDiv ? nodesDiv.querySelector(`.node[data-id="${id}"]`) : null;
+  };
+
+  // Reasonable fallback circle radius (px) if DOM isn't available yet
+  const FALLBACK_R = 42;
+
+  for(const id of visible){
+    const p = pos.get(id);
+    if(!p) continue;
+
+    const nodeEl = getNodeEl(id);
+    const circleEl = nodeEl ? nodeEl.querySelector(".circle") : null;
+    const r = circleEl ? (circleEl.offsetWidth || 0) / 2 : FALLBACK_R;
+
+    // Circle bounds
+    minX = Math.min(minX, p.x - r);
+    maxX = Math.max(maxX, p.x + r);
+    minY = Math.min(minY, p.y - r);
+    maxY = Math.max(maxY, p.y + r);
+
+    // Label bounds (label box is positioned with left: circleSize/2 and vertically centered)
+    const labelBox = nodeEl ? nodeEl.querySelector(".label-box") : null;
+    if(labelBox){
+      const lw = labelBox.offsetWidth || 0;
+      const lh = labelBox.offsetHeight || 0;
+
+      // In layout, label starts at +r from the circle center (matches CSS left: calc(var(--circle-size)/2))
+      const lx0 = p.x + r;
+      const lx1 = lx0 + lw;
+      const ly0 = p.y - (lh / 2);
+      const ly1 = p.y + (lh / 2);
+
+      minX = Math.min(minX, lx0);
+      maxX = Math.max(maxX, lx1);
+      minY = Math.min(minY, ly0);
+      maxY = Math.max(maxY, ly1);
+    }
+  }
+
+  if(!isFinite(minX) || !isFinite(minY) || !isFinite(maxX) || !isFinite(maxY)) return;
+
+  // Comfortable uniform padding around the computed bounds
+  const PAD = (mode === "traditional") ? 90 : 80;
+  const minX2 = minX - PAD;
+  const maxX2 = maxX + PAD;
+  const minY2 = minY - PAD;
+  const maxY2 = maxY + PAD;
+
+  const boxW = Math.max(1, maxX2 - minX2);
+  const boxH = Math.max(1, maxY2 - minY2);
+
+  // Fit factor (never upscale above 1.0; never shrink below a readable minimum)
+  const zFit = Math.min(W / boxW, H / boxH);
+  const MIN_ZOOM_CLAMP = 0.92; // was smaller; keep the overview readable
+  const targetZoom = Math.max(MIN_ZOOM_CLAMP, Math.min(1.0, zFit));
+
+  // Center on the *full* bounds (circles + labels)
+  const cx = (minX + maxX) / 2;
+  const cy = (minY + maxY) / 2;
+
+  const targetPanX = (W * 0.5) - (cx * targetZoom);
+  const targetPanY = (H * 0.5) - (cy * targetZoom);
+
+  // Apply
+  if(typeof setView === "function"){
+    setView(targetZoom, targetPanX, targetPanY, animate);
+  }else{
+    window.__ZOOM__ = targetZoom;
+    window.__PAN_X__ = targetPanX;
+    window.__PAN_Y__ = targetPanY;
+    if(typeof render === "function") render();
+  }
+}
+
+
+
 // Reset geometry + viewport from the saved per-mode layout JSON (layout_starburst.json / layout_traditional.json).
 // Used when clicking Susan to "close everything and go home".
 async function resetToHomeFromJson(mode, animate=true){
+  let __usedSavedViewport = false;
   mode = mode || (window.LAYOUT_MODE || "starburst");
   const file = (mode === "traditional") ? "layout_traditional.json" : "layout_starburst.json";
 
@@ -5052,6 +5186,19 @@ async function resetToHomeFromJson(mode, animate=true){
     if(!r.ok) throw 0;
     const layout = await r.json();
     applyLayout(layout);
+    // If the saved layout has a viewport, restore it exactly and treat it as "home".
+    try{
+      if(layout && layout.viewport){
+        const v = layout.viewport;
+        const vz = Number(v.zoom), vx = Number(v.panX), vy = Number(v.panY);
+        if(isFinite(vz) && isFinite(vx) && isFinite(vy)){
+          zoom = vz; panX = vx; panY = vy;
+          applyTransform();
+          __usedSavedViewport = true;
+          try{ snapshotHomeViewport(mode); }catch(_e){}
+        }
+      }
+    }catch(_e){}
   }catch(e){
     if(mode === "traditional"){
       layoutTraditional();
@@ -5068,6 +5215,11 @@ async function resetToHomeFromJson(mode, animate=true){
   try{ clearDeptHaloSVG && clearDeptHaloSVG(); }catch(e){}
   try{ clearDeptFocus && clearDeptFocus(); }catch(e){}
   render();
+
+  // If we restored an explicit saved viewport, we're done.
+  if(__usedSavedViewport){
+    return;
+  }
 
   // Recenter to the home position for this mode, then snapshot it
   const yOff = (mode === "starburst") ? 150 : 0;
@@ -6409,8 +6561,16 @@ function revealForLeader(leader){
       btn = document.createElement("button");
       btn.id = "saveTraditionalLayoutBtn";
       btn.textContent = "Save Traditional Layout";
-      btn.disabled = true;
+      btn.disabled = !window.AUTHOR_MODE;
     }
+    // Sync enabled state with Author Mode and wire handler (download current geometry as layout_traditional.json)
+    btn.disabled = !window.AUTHOR_MODE;
+    btn.onclick = ()=>{
+      if(!window.AUTHOR_MODE) return;
+      const snap = snapshotLayout();
+      downloadJSON("layout_traditional.json", snap);
+      toast("Saved + downloaded layout_traditional.json");
+    };
 
     const starburstBtn = document.getElementById("saveDefaultLayoutBtn");
     if(starburstBtn && starburstBtn.parentElement === menu){
@@ -7015,6 +7175,23 @@ async function __applyModeLayoutSeamless__(mode, anchorId, anchorScreen){
     const layout = await r.json();
     applyLayout(layout);
     render();
+
+    // If this mode's layout JSON includes a saved viewport, honor it immediately on switch.
+    try{
+      const vp = layout && layout.viewport;
+      if(vp && typeof vp.panX === "number" && typeof vp.panY === "number" && typeof vp.zoom === "number"){
+        panX = vp.panX; panY = vp.panY; zoom = vp.zoom;
+        applyTransform();
+        try{
+          if(typeof HOME_VIEWPORT !== "undefined" && HOME_VIEWPORT){
+            HOME_VIEWPORT[mode] = { panX, panY, zoom };
+          }
+        }catch(_e){}
+        exposeDebug();
+        return; // IMPORTANT: skip anchor-preserve + fit, since JSON viewport is authoritative
+      }
+    }catch(_e){}
+
     exposeDebug();
   }catch(e){
     if(mode === "traditional"){
@@ -7033,6 +7210,9 @@ async function __applyModeLayoutSeamless__(mode, anchorId, anchorScreen){
 
   // Preserve viewport anchor so the switch feels seamless.
   __preserveAnchorScreen__(anchorId, anchorScreen);
+
+  // After applying the new layout, re-frame the overview so it fits the current window.
+  try{ requestAnimationFrame(()=>requestAnimationFrame(()=>__fitOverviewToStage__(mode, true))); }catch(_e){}
 }
 
 layoutToggleBtn.onclick = ()=>{
@@ -7066,6 +7246,7 @@ layoutToggleBtn.onclick = ()=>{
 
   // Swap geometry only (keep expansion/focus state intact)
   __applyModeLayoutSeamless__(LAYOUT_MODE, anchorId, anchorScreen);
+  try{ requestAnimationFrame(()=>requestAnimationFrame(()=>__fitOverviewToStage__(LAYOUT_MODE, true))); }catch(_e){}
 };
 
 // ===== Mobile portrait (navigation-first) =====
@@ -7304,7 +7485,7 @@ function revealForLeader(leader){
 
 <script>
 (function(){
-  const PASS = "harris";
+  const PASS = "swordfish";
   let unlocked = false;
 
   document.addEventListener("click", function(e){

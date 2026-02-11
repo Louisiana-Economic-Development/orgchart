@@ -35,7 +35,7 @@ shawn_welcome,Shawn Welcome,"DIRECTOR, BUSINESS DEVELOPMENT",Business Developmen
 lance_young,Lance Young,INTERN,Business Development,,FALSE,FALSE,FALSE,TRUE,555-5555,lance.young@la.gov,photos/Lance%20Young-27.jpg
 paula_bryars,Paula Bryars,LIBRARIAN,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,225.342.3071,paula.bryars@la.gov,photos/Paula%20Bryars-28.jpg
 christopher_coombs,Christopher Coombs,ECONOMIST,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,225.342.5410,christopher.coombs@la.gov,photos/Christopher%20Coombs-2.jpg
-alex_hritz,Alex Hritz,BUSINESS DEVELOPMENT OFFICER,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,225.342.0778,alex.hritz@la.gov,photos/Alex%20Hritz-4.jpg
+alex_hritz,Alex Hritz,PROPOSAL SERVICES COORDINATOR,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,225.342.0778,alex.hritz@la.gov,photos/Alex%20Hritz-4.jpg
 michael_hoolahan,Michael Hoolahan,ECONOMIC DEVELOPMENT RESEARCH ANALYST,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,225.342.1135,michael.hoolahan@la.gov,photos/Michael%20Hoolahan-19.jpg
 daniel_michel,Daniel Michel,SITE DEVELOPMENT PROGRAM MANAGER,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,225.342.9214,daniel.michel@la.gov,photos/Daniel%20Michel-25.jpg
 judy_smith,Judy Smith**,LIBRARY CATALOGER,Business Intelligence,paula_bryars,FALSE,FALSE,FALSE,TRUE,342-4271,judy.smith@la.gov,photos/not pictured.jpg
@@ -43,12 +43,12 @@ michael_tepper,Michael Tepper,"EXECUTIVE DIRECTOR, BUSINESS INTELLIGENCE",Busine
 andrew_tull,Andrew Tull,ECONOMIC DEVELOPMENT RESEARCH ANALYST,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,342-9539,andrew.tull@la.gov,photos/Andrew Tull-11.jpg
 michael_webb,Michael Webb,ECONOMIC DEVELOPMENT RESEARCH ANALYST,Business Intelligence,michael_tepper,FALSE,FALSE,FALSE,TRUE,225.342.9719,michael.webb@la.gov,photos/Michael%20Webb-28.jpg
 jessica_willis,Jessica Willis,LIBRARY SPECIALIST,Business Intelligence,paula_bryars,FALSE,FALSE,FALSE,TRUE,225.342.4271,jessica.willis@la.gov,photos/not pictured.jpg
-matthew_fairbrother,Matthew Fairbrother,ANALYST,Economic Competitiveness,ileana_ledet,FALSE,FALSE,FALSE,TRUE,225.342.5393,matthew.fairbrother@la.gov,photos/Matthew%20Fairbrother-23.jpg
+matthew_fairbrother,Matthew Fairbrother,MANAGER ECONOMIC COMPETITIVENESS & ANALYTICS,Economic Competitiveness,ileana_ledet,FALSE,FALSE,FALSE,TRUE,225.342.5393,matthew.fairbrother@la.gov,photos/Matthew%20Fairbrother-23.jpg
 charity_finister,Charity Finister,ADMINISTRATIVE ASSISTANT,Economic Competitiveness,ileana_ledet,FALSE,FALSE,TRUE,FALSE,342-5651,charity.finister@la.gov,photos/Charity%20Finister-26.jpg
 peter_johnson,Peter Johnson,SR. MGR OF TAX & INCENTIVE POLICY RESEARCH,Economic Competitiveness,ileana_ledet,FALSE,FALSE,FALSE,TRUE,225.342.2757,peter.johnson@la.gov,photos/Peter%20Johnson-17.jpg
 ileana_ledet,Ileana Ledet,CHIEF ECONOMIC COMPETITIVENESS OFFICER,Economic Competitiveness,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,225.342.5892,ileana.ledet@la.gov,photos/Ileana%20Ledet-10.jpg
 landon_lemoine,Landon Lemoine,"DIRECTOR, STRATEGIC INVESTMENTS",Economic Competitiveness,ileana_ledet,FALSE,TRUE,FALSE,FALSE,342-5478,landon.lemoine@la.gov,photos/Landon%20Lemoine-12.jpg
-keely_mcgibboney,Keely McGibboney,SEC SENIOR PROJECT MANAGER,Economic Competitiveness,ileana_ledet,FALSE,TRUE,FALSE,FALSE,225.342.6268,keely.mcgibboney@la.gov,photos/Keely McGibboney-28.jpg
+keely_mcgibboney,Keely McGibboney,DIRECTOR COMMUNITY COMPETITIVENESS,Economic Competitiveness,ileana_ledet,FALSE,TRUE,FALSE,FALSE,225.342.6268,keely.mcgibboney@la.gov,photos/Keely McGibboney-28.jpg
 mary_robinson,Mary Robinson,"ASSISTANT DIRECTOR, COMPETITIVENESS  INITIATIVES",Economic Competitiveness,ileana_ledet,FALSE,TRUE,FALSE,FALSE,342-5543,mary.robinson2@la.gov,photos/Mary%20Robinson-29.jpg
 tedra_cheatham,Tedra Cheatham,EXECUTIVE DIRECTOR OF FASTSTART,Faststart,anne_villa,FALSE,TRUE,FALSE,FALSE,225.342.5405,tedra.cheatham@la.gov,photos/Tedra%20Cheatham-3.jpg
 gail_williams,Gail Williams,EXECUTIVE ASSISTANT,Faststart,tedra_cheatham,FALSE,FALSE,TRUE,FALSE,225.342.5552,gailb.williams@la.gov,photos/Gail%20Williams-31.jpg
@@ -64,9 +64,9 @@ albert_vanzant,Albert Vanzant,DIRECTOR OF PROJECT OPERATIONS,Faststart,tedra_che
 howard_veeder,Howard Veeder,PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,225.219.4648,howard.veeder@la.gov,photos/Howard%20Veeder-32.jpg
 susan_white,Susan White,PROJECTS & SOFTWARE MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,225.219.1015,susan.white@la.gov,photos/Susan%20White-8.jpg
 edward_wick,Edward Wick,SENIOR PROJECT MANAGER,Faststart,albert_vanzant,FALSE,FALSE,FALSE,TRUE,342-4331,eward.wick@la.gov,photos/Ed%20Wick-19.jpg
-patrick_bardwell,Patrick Bardwell,RECRUITMENT SPECIALIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,225.342.9097,patrick.bardwell@la.gov,photos/Patrick Bardwell-16.jpg
+patrick_bardwell,Patrick Bardwell,TALENT STRATEGIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,225.342.9097,patrick.bardwell@la.gov,photos/Patrick Bardwell-16.jpg
 todd_barrow,Todd Barrow,RECRUITMENT SPECIALIST,Faststart,lisa_ryan,FALSE,FALSE,FALSE,TRUE,225.219.4643,todd.barrow@la.gov,photos/Todd%20Barrow-20.jpg
-brody_falcon,Brody Falcon,RECRUITMENT SPECIALIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,225.342.0107,brody.falcon@la.gov,photos/Brody%20Falcon-14.jpg
+brody_falcon,Brody Falcon,TALENT STRATEGIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,225.342.0107,brody.falcon@la.gov,photos/Brody%20Falcon-14.jpg
 lindsay_guillot,Lindsay Guillot,RECRUITMENT SPECIALIST,Faststart,lisa_ryan,FALSE,FALSE,FALSE,TRUE,225.342.5600,lindsay.guillot@la.gov,photos/Lindsay%20Guillot-17.jpg
 bethany_hyde_hafeez,Bethany Hyde-Hafeez,RECRUITMENT SPECIALIST,Faststart,lisa_ryan,FALSE,FALSE,FALSE,TRUE,225.373.3333,bethany.hyde@la.gov,photos/Bethany%20Hyde-2.jpg
 jeremy_krail,Jeremy Krail,SENIOR TALENT STRATEGIST,Faststart,brannan_webb,FALSE,FALSE,FALSE,TRUE,225.219.4629,jeremy.krail@la.gov,photos/Jeremy%20Krail-70.jpg
@@ -97,19 +97,19 @@ cylie_bozarth,Cylie Bozarth,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibode
 betsy_reiprecht,Betsy Reiprecht,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,225.342.5411,betsy.reiprecht@la.gov,photos/Betsy%20Reiprecht-21.jpg
 susan_roberts,Susan Roberts,HUMAN RESOURCES SPECIALIST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,225.342.9659,susan.roberts@la.gov,photos/Susan%20Roberts%2021b.jpg
 dawn_thibodeaux,Dawn Thibodeaux,DIRECTOR HUMAN RESOURCES,Human Resources,anne_villa,FALSE,TRUE,FALSE,FALSE,225.342.3740,dawn.thibodeaux@la.gov,photos/Dawn%20Thibodeaux-13.jpg
-michaela_adegbe,Michaela Adegbe,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.3571,michaela.adegbe@la.gov,photos/Michaela Adegbe-6.jpg
-joleasia_campbell,Joleasia Campbell,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.6070,joleasia.campbell2@la.gov,photos/Joleasia%20Campbell-21.jpg
-frank_favaloro,Frank Favaloro,"MANAGER, BUSINESS INCENTIVE SERVICES",Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,342-5402,frank.favaloro@la.gov,photos/Frank%20Favaloro-1.jpg
-stephen_hamner,Stephen Hamner,"DIVISION DIRECTOR, FILM & TELEVISION",Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,225.342.4838,stephen.hamner@la.gov,photos/Stephen%20Hamner-10.jpg
+michaela_adegbe,Michaela Adegbe,BUSINESS DEVELOPMENT OFFICER,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.3571,michaela.adegbe@la.gov,photos/Michaela Adegbe-6.jpg
+joleasia_campbell,Joleasia Campbell,BUSINESS DEVELOPMENT OFFICER,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.6070,joleasia.campbell2@la.gov,photos/Joleasia%20Campbell-21.jpg
+frank_favaloro,Frank Favaloro,BUSINESS DEVELOPMENT MANAGER,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,342-5402,frank.favaloro@la.gov,photos/Frank%20Favaloro-1.jpg
+stephen_hamner,Stephen Hamner,DIRECTOR OF COMPLIANCE,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,225.342.4838,stephen.hamner@la.gov,photos/Stephen%20Hamner-10.jpg
 rebecca_kleinpeter,Rebecca Kleinpeter,BUSINESS DEVELOPMENT OFFICER,Incentive Services,amanda_hafford,FALSE,FALSE,FALSE,TRUE,225.342.4323,rebecca.kleinpeter@la.gov,photos/Rebecca%20Kleinpeter-8.jpg
-joyce_metoyer,Joyce Metoyer,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.0485,joyce.metoyer@la.gov,photos/Joyce%20Metoyer-14.jpg
-travis_rosenberg,Travis Rosenberg,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.4710,travis.rosenberg@la.gov,photos/Travis%20Rosenberg-18.jpg
+joyce_metoyer,Joyce Metoyer,BUSINESS DEVELOPMENT OFFICER,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.0485,joyce.metoyer@la.gov,photos/Joyce%20Metoyer-14.jpg
+travis_rosenberg,Travis Rosenberg,BUSINESS DEVELOPMENT OFFICER,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.4710,travis.rosenberg@la.gov,photos/Travis%20Rosenberg-18.jpg
 mysti_shaw,Mysti Shaw,PERFORMANCE REPORTING & COMPLIANCE ADMIN,Incentive Services,stephen_hamner,FALSE,FALSE,FALSE,TRUE,225.342.6443,mysti.shaw@la.gov,photos/Mysti%20Shaw-19.jpg
 amanda_hafford,Amanda Hafford,BUSINESS DEVELOPMENT MANAGER,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,225.342.5633,amanda.hafford@la.gov,photos/Amanda Hafford-1.jpg
 oscar_shoemaker,Oscar Shoemaker,BUSINESS DEVELOPMENT OFFICER,Incentive Services,amanda_hafford,FALSE,FALSE,FALSE,TRUE,225.342.5370,oscar.shoemaker@la.gov,photos/Oscar%20Shoemaker-28-2.jpg
 deborah_simmons,Deborah Simmons,ADMINISTRATIVE ASSISTANT,Incentive Services,anne_villa,FALSE,FALSE,TRUE,FALSE,225.342.5398,deborah.simmons@la.gov,photos/Deborah%20Simmons-1.jpg
 christina_smith,Christina Smith,EXECUTIVE DIRECTOR OF OPERATIONS,Incentive Services,anne_villa,FALSE,TRUE,FALSE,FALSE,225.342.3040,christina.smith2@la.gov,photos/Christina%20Smith-23.jpg
-hud_usie,Hud Usie,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.5399,hud.usie@la.gov,photos/Hud%20Usie-1.jpg
+hud_usie,Hud Usie,BUSINESS DEVELOPMENT OFFICER,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.5399,hud.usie@la.gov,photos/Hud%20Usie-1.jpg
 patrick_addamus,Patrick Addamus,BUSINESS DEVELOPMENT OFFICER,Innovation & Small Business,tatiana_bruce,FALSE,FALSE,FALSE,TRUE,225.342.9096,patrick.addamus@la.gov,photos/Patrick%20Addamus-607.jpg
 karen_alsander,Karen Alsander,ADMINISTRATIVE ASSISTANT,Innovation & Small Business,josh_fleig,FALSE,TRUE,FALSE,FALSE,225.342.5403,karen.alsander@la.gov,photos/Karen Netter Alsand-23.jpg
 india_bellard,India Bellard,"DIRECTOR, BUSINESS DEVELOPMENT ",Innovation & Small Business,christopher_cassagne,FALSE,FALSE,FALSE,TRUE,225.342.2537,india.bellard@la.gov,photos/India%20Bellard-36.jpg
@@ -139,12 +139,12 @@ stephanie_le_grange,Stephanie Le Grange,ATTORNEY-DEPUTY GENERAL COUNSEL,Legal Se
 lauren_mcdonald,Lauren McDonald,PARALEGAL,Legal Services,stephanie_le_grange,FALSE,FALSE,FALSE,TRUE,225.342.5675,lauren.mcdonald@la.gov,photos/Lauren%20McDonald-5.jpg
 robin_porter,Robin Porter,EXECUTIVE COUNSEL,Legal Services,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,225.342.3060,robin.porter@la.gov,photos/Robin%20Porter-8-2.jpg
 anna_kate_anderson,Anna Kate Anderson,GRAPHIC DESIGNER II,Marketing & Creative,phuong_vo,FALSE,FALSE,FALSE,TRUE,225.342.1854,annakate.anderson@la.gov,photos/Anna%20Kate%20Anderson-14.jpg
-carolyn_blakley,Carolyn Blakley,"SENIOR DIRECTOR, INTEGRATED MARKETING",Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,342-5926,carolyn.blakley@la.gov,photos/Carolyn%20Blakley-9.jpg
+carolyn_blakley,Carolyn Blakley,"SENIOR DIRECTOR, CREATIVE STUDIO",Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,342-5926,carolyn.blakley@la.gov,photos/Carolyn%20Blakley-9.jpg
 michael_bourgeois,Michael Bourgeois,AI & DIGITAL PRODUCTION DIRECTOR,Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,225.219.0392,michael.bourgeois3@la.gov,photos/Mike%20Bourgeois-29.jpg
 arlen_burson,Arlen Burson,3D ANIMATION ARTIST,Marketing & Creative,morgan_krutz,FALSE,FALSE,FALSE,TRUE,225.219.0387,arlen.burson@la.gov,photos/Arlen%20Burson%20Jr-2.jpg
-charlotte_campbell,Charlotte Campbell,EVENT MANAGER,Marketing & Creative,erica_wells,FALSE,FALSE,FALSE,TRUE,225.342.0583,charlotte.campbell@la.gov,photos/Charlotte%20Campbell-9.jpg
+charlotte_campbell,Charlotte Campbell,MARKETING PROJECTS AND EVENT MANAGER,Marketing & Creative,erica_wells,FALSE,FALSE,FALSE,TRUE,225.342.0583,charlotte.campbell@la.gov,photos/Charlotte%20Campbell-9.jpg
 chelsea_dufrene,Chelsea Dufrene,CHIEF MARKETING OFFICER,Marketing & Creative,susan_bourgeois,TRUE,FALSE,FALSE,FALSE,225.342.3029,chelsea.dufrene@la.gov,photos/Chelsea%20Harris%20Dufrene-3.jpg
-cristy_duplichan,Cristy Duplichan,SENIOR GRAPHIC DESIGN SPECIALIST,Marketing & Creative,erica_wells,FALSE,FALSE,FALSE,TRUE,337-540-9257,cristy.duplichan@la.gov,photos/Cristy%20Duplichan_2025-27.jpg
+cristy_duplichan,Cristy Duplichan,FASTSTART CREATIVE PROJECT MANAGER,Marketing & Creative,erica_wells,FALSE,FALSE,FALSE,TRUE,337-540-9257,cristy.duplichan@la.gov,photos/Cristy%20Duplichan_2025-27.jpg
 jeff_elliott,Jeff Elliott,SENIOR DIRECTOR OF CREATIVE SOLUTIONS,Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,225.219.4632,jeff.elliott@la.gov,photos/Jeff%20Elliott-38.jpg
 david_fox,David Fox,DIRECTOR OF STUDIO PRODUCTIONS,Marketing & Creative,carolyn_blakley,FALSE,FALSE,FALSE,TRUE,219-4635,david.fox@la.gov,photos/David%20Fox-15.jpg
 amy_gunnels,Amy Gunnels,BUSINESS MANAGER/EXECUTIVE ASSISTANT,Marketing & Creative,chelsea_dufrene,FALSE,FALSE,FALSE,TRUE,342-1006,amy.gunnels@la.gov,photos/Amy%20Gunnels-37.jpg
@@ -161,9 +161,9 @@ jeffrey_roedel,Jeffrey Roedel,MEDIA PRODUCER,Marketing & Creative,david_fox,FALS
 randy_rouyer,Randy Rouyer,MEDIA SPECIALIST,Marketing & Creative,carolyn_blakley,FALSE,FALSE,FALSE,TRUE,225.342.5735,randy.rouyer@la.gov,photos/Randy%20Rouyer-24.jpg
 aylin_tahaoglu,Aylin Tahaoglu,SENIOR DIGITAL DESIGN SPECIALIST,Marketing & Creative,michael_bourgeois,FALSE,FALSE,FALSE,TRUE,225.772.4158,aylin.tahaoglu@la.gov,photos/Aylin%20Tahaoglu_2025-11.jpg
 rachael_upton,Rachael Upton,CREATIVE CONTENT WRITER,Marketing & Creative,andrew_rhodes,FALSE,FALSE,FALSE,TRUE,219-0411,rachael.upton@la.gov,photos/Rachael%20Upton-15.jpg
-phuong_vo,Phuong Vo,GRAPHICS PRODUCTION MANAGER,Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,225.342.4422,phuong.vo@la.gov,photos/PVo_2025-19-2.jpg
+phuong_vo,Phuong Vo,ART DIRECTOR,Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,225.342.4422,phuong.vo@la.gov,photos/PVo_2025-19-2.jpg
 matthew_wattigny,Matthew Wattigny,SENIOR MEDIA PRODUCER,Marketing & Creative,david_fox,FALSE,FALSE,FALSE,TRUE,225.219.4646,matthew.wattigny@la.gov,photos/Matt%20Wattigny-24.jpg
-erica_wells,Erica Wells,DIRECTOR OF MARKETING,Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,225.219.4642,erica.wells@la.gov,photos/Erica%20Wells_28.jpg
+erica_wells,Erica Wells,INTEGRATED PROJECTS DIRECTOR,Marketing & Creative,chelsea_dufrene,FALSE,TRUE,FALSE,FALSE,225.219.4642,erica.wells@la.gov,photos/Erica%20Wells_28.jpg
 andree_zamarlik,Andree Zamarlik,MEDIA PRODUCER,Marketing & Creative,david_fox,FALSE,FALSE,FALSE,TRUE,225.342.8856,andree.zamarlik@la.gov,photos/Andree%20Zamarlik-1.jpg
 gary_beadle,Gary Beadle,IT TECHNICAL SPECIALIST,Office Of Management & Finance,april_scott,FALSE,FALSE,FALSE,TRUE,225.342.5360,gary.beadle@la.gov,photos/Gary Beadle-13.jpg
 kathy_blankenship,Kathy Blankenship,DEPUTY UNDERSECRETARY,Office Of Management & Finance,anne_villa,FALSE,TRUE,FALSE,FALSE,342-9658,kathy.blankenship@la.gov,photos/Kathy%20Blankenship-2.jpg
@@ -172,7 +172,7 @@ molly_hendricks,Molly Hendricks,ACCOUNTANT MANAGER,Office Of Management & Financ
 nicolaus_james,Nicolaus James,IT TECHNICAL ENGINEER,Office Of Management & Finance,april_scott,FALSE,FALSE,FALSE,TRUE,225.342.5686,nicolaus.james@la.gov,photos/Nicolaus James-5-2.jpg
 glenn_johnson,Glenn Johnson,IT TECHNICAL ENGINEER,Office Of Management & Finance,april_scott,FALSE,FALSE,FALSE,TRUE,225.342.5728,glenn.johnson@la.gov,photos/Glenn%20Johnson-24.jpg
 fred_mack,Fred Mack,PROCUREMENT SUPERVISOR,Office Of Management & Finance,robbie_tate,FALSE,FALSE,FALSE,TRUE,225.342.5605,fred.mack@la.gov,photos/Frederick%20Mack-3.jpg
-tarin_mccoy,Tarin McCoy,PROCUREMENT SPECIALIST,Office Of Management & Finance,fred_mack,FALSE,FALSE,FALSE,TRUE,225.342.5685,tarin.mccoy@la.gov,photos/Tarin%20McCoy-34.jpg
+tarin_mccoy,Tarin McCoy,PROCUREMENT ANALYST,Office Of Management & Finance,fred_mack,FALSE,FALSE,FALSE,TRUE,225.342.5685,tarin.mccoy@la.gov,photos/Tarin%20McCoy-34.jpg
 tameika_ned,Tameika Ned,BUSINESS ANALYTICS SPECIALIST,Office Of Management & Finance,april_scott,FALSE,FALSE,FALSE,TRUE,225.342.0124,tameika.ned2@la.gov,photos/Tameika Ned-29.jpg
 christina_ocmand,Christina Ocmand,CONTRACT/GRANTS REVIEWER,Office Of Management & Finance,kristin_pace,FALSE,FALSE,FALSE,TRUE,225.342.4071,christina.ocmand@la.gov,photos/Christina%20Ocmand-2.jpg
 kristin_pace,Kristin Pace,ACCOUNTANT MANAGER,Office Of Management & Finance,robbie_tate,FALSE,FALSE,FALSE,TRUE,342-5627,kristin.pace@la.gov,photos/Kristin%20Pace-28.jpg
