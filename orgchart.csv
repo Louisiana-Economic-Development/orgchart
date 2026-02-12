@@ -97,19 +97,23 @@ cylie_bozarth,Cylie Bozarth,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibode
 betsy_reiprecht,Betsy Reiprecht,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,225.342.5411,betsy.reiprecht@la.gov,photos/Betsy%20Reiprecht-21.jpg
 susan_roberts,Susan Roberts,HUMAN RESOURCES SPECIALIST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,225.342.9659,susan.roberts@la.gov,photos/Susan%20Roberts%2021b.jpg
 dawn_thibodeaux,Dawn Thibodeaux,DIRECTOR HUMAN RESOURCES,Human Resources,anne_villa,FALSE,TRUE,FALSE,FALSE,225.342.3740,dawn.thibodeaux@la.gov,photos/Dawn%20Thibodeaux-13.jpg
-michaela_adegbe,Michaela Adegbe,BUSINESS DEVELOPMENT OFFICER,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.3571,michaela.adegbe@la.gov,photos/Michaela Adegbe-6.jpg
-joleasia_campbell,Joleasia Campbell,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.6070,joleasia.campbell2@la.gov,photos/Joleasia%20Campbell-21.jpg
+buis_vacant1,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,
+buis_vacant2,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,
+buis_dev_mana1,VACANT,BUSINESS DEVELOPMENT MANAGER,,buis_vacant3,FALSE,FALSE,FALSE,TRUE,,,
+buis_vacant3,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,
+michaela_adegbe,Michaela Adegbe,BUSINESS DEVELOPMENT OFFICER,Incentive Services,buis_vacant1,FALSE,FALSE,FALSE,TRUE,225.342.3571,michaela.adegbe@la.gov,photos/Michaela Adegbe-6.jpg
+joleasia_campbell,Joleasia Campbell,PROGRAM ADMINISTRATOR,Incentive Services,buis_vacant1,FALSE,FALSE,FALSE,TRUE,225.342.6070,joleasia.campbell2@la.gov,photos/Joleasia%20Campbell-21.jpg
 frank_favaloro,Frank Favaloro,"DIRECTOR, ANALYTICS & REPORTING",Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,342-5402,frank.favaloro@la.gov,photos/Frank%20Favaloro-1.jpg
 stephen_hamner,Stephen Hamner,"DIRECTOR, PROCESS & COMPLIANCE",Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,225.342.4838,stephen.hamner@la.gov,photos/Stephen%20Hamner-10.jpg
 rebecca_kleinpeter,Rebecca Kleinpeter,BUSINESS DEVELOPMENT OFFICER,Incentive Services,amanda_hafford,FALSE,FALSE,FALSE,TRUE,225.342.4323,rebecca.kleinpeter@la.gov,photos/Rebecca%20Kleinpeter-8.jpg
-joyce_metoyer,Joyce Metoyer,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.0485,joyce.metoyer@la.gov,photos/Joyce%20Metoyer-14.jpg
-travis_rosenberg,Travis Rosenberg,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.4710,travis.rosenberg@la.gov,photos/Travis%20Rosenberg-18.jpg
+joyce_metoyer,Joyce Metoyer,PROGRAM ADMINISTRATOR,Incentive Services,buis_vacant2,FALSE,FALSE,FALSE,TRUE,225.342.0485,joyce.metoyer@la.gov,photos/Joyce%20Metoyer-14.jpg
+travis_rosenberg,Travis Rosenberg,PROGRAM ADMINISTRATOR,Incentive Services,buis_dev_mana1,FALSE,FALSE,FALSE,TRUE,225.342.4710,travis.rosenberg@la.gov,photos/Travis%20Rosenberg-18.jpg
 mysti_shaw,Mysti Shaw,PERFORMANCE REPORTING & COMPLIANCE ADMIN,Incentive Services,stephen_hamner,FALSE,FALSE,FALSE,TRUE,225.342.6443,mysti.shaw@la.gov,photos/Mysti%20Shaw-19.jpg
-amanda_hafford,Amanda Hafford,BUSINESS DEVELOPMENT MANAGER,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,225.342.5633,amanda.hafford@la.gov,photos/Amanda Hafford-1.jpg
+amanda_hafford,Amanda Hafford,BUSINESS DEVELOPMENT MANAGER,Incentive Services,buis_vacant2,FALSE,FALSE,FALSE,TRUE,225.342.5633,amanda.hafford@la.gov,photos/Amanda Hafford-1.jpg
 oscar_shoemaker,Oscar Shoemaker,BUSINESS DEVELOPMENT OFFICER,Incentive Services,amanda_hafford,FALSE,FALSE,FALSE,TRUE,225.342.5370,oscar.shoemaker@la.gov,photos/Oscar%20Shoemaker-28-2.jpg
 deborah_simmons,Deborah Simmons,ADMINISTRATIVE ASSISTANT,Incentive Services,anne_villa,FALSE,FALSE,TRUE,FALSE,225.342.5398,deborah.simmons@la.gov,photos/Deborah%20Simmons-1.jpg
 christina_smith,Christina Smith,EXECUTIVE DIRECTOR OF OPERATIONS,Incentive Services,anne_villa,FALSE,TRUE,FALSE,FALSE,225.342.3040,christina.smith2@la.gov,photos/Christina%20Smith-23.jpg
-hud_usie,Hud Usie,PROGRAM ADMINISTRATOR,Incentive Services,frank_favaloro,FALSE,FALSE,FALSE,TRUE,225.342.5399,hud.usie@la.gov,photos/Hud%20Usie-1.jpg
+hud_usie,Hud Usie,PROGRAM ADMINISTRATOR,Incentive Services,buis_dev_mana1,FALSE,FALSE,FALSE,TRUE,225.342.5399,hud.usie@la.gov,photos/Hud%20Usie-1.jpg
 patrick_addamus,Patrick Addamus,BUSINESS DEVELOPMENT OFFICER,Innovation & Small Business,tatiana_bruce,FALSE,FALSE,FALSE,TRUE,225.342.9096,patrick.addamus@la.gov,photos/Patrick%20Addamus-607.jpg
 karen_alsander,Karen Alsander,ADMINISTRATIVE ASSISTANT,Innovation & Small Business,josh_fleig,FALSE,TRUE,FALSE,FALSE,225.342.5403,karen.alsander@la.gov,photos/Karen Netter Alsand-23.jpg
 india_bellard,India Bellard,"DIRECTOR, BUSINESS DEVELOPMENT ",Innovation & Small Business,christopher_cassagne,FALSE,FALSE,FALSE,TRUE,225.342.2537,india.bellard@la.gov,photos/India%20Bellard-36.jpg
