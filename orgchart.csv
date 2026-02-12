@@ -97,10 +97,10 @@ cylie_bozarth,Cylie Bozarth,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibode
 betsy_reiprecht,Betsy Reiprecht,HUMAN RESOURCES ANALYST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,225.342.5411,betsy.reiprecht@la.gov,photos/Betsy%20Reiprecht-21.jpg
 susan_roberts,Susan Roberts,HUMAN RESOURCES SPECIALIST,Human Resources,dawn_thibodeaux,FALSE,FALSE,FALSE,TRUE,225.342.9659,susan.roberts@la.gov,photos/Susan%20Roberts%2021b.jpg
 dawn_thibodeaux,Dawn Thibodeaux,DIRECTOR HUMAN RESOURCES,Human Resources,anne_villa,FALSE,TRUE,FALSE,FALSE,225.342.3740,dawn.thibodeaux@la.gov,photos/Dawn%20Thibodeaux-13.jpg
-buis_vacant1,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,
-buis_vacant2,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,
-buis_dev_mana1,VACANT,BUSINESS DEVELOPMENT MANAGER,,buis_vacant3,FALSE,FALSE,FALSE,TRUE,,,
-buis_vacant3,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,
+buis_vacant1,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,photos/not pictured.jpg
+buis_vacant2,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,photos/not pictured.jpg
+buis_dev_mana1,VACANT,BUSINESS DEVELOPMENT MANAGER,,buis_vacant3,FALSE,FALSE,FALSE,TRUE,,,photos/not pictured.jpg
+buis_vacant3,VACANT,BUSINESS DEVELOPMENT DIRECTOR,Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,,,photos/not pictured.jpg
 michaela_adegbe,Michaela Adegbe,BUSINESS DEVELOPMENT OFFICER,Incentive Services,buis_vacant1,FALSE,FALSE,FALSE,TRUE,225.342.3571,michaela.adegbe@la.gov,photos/Michaela Adegbe-6.jpg
 joleasia_campbell,Joleasia Campbell,PROGRAM ADMINISTRATOR,Incentive Services,buis_vacant1,FALSE,FALSE,FALSE,TRUE,225.342.6070,joleasia.campbell2@la.gov,photos/Joleasia%20Campbell-21.jpg
 frank_favaloro,Frank Favaloro,"DIRECTOR, ANALYTICS & REPORTING",Incentive Services,christina_smith,FALSE,FALSE,FALSE,TRUE,342-5402,frank.favaloro@la.gov,photos/Frank%20Favaloro-1.jpg
