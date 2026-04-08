@@ -332,7 +332,7 @@
       "x": 689.0051261544395,
       "y": 842.4303270599488
     },
-    "chelsea_dufrene": {
+    "matt_preuett": {
       "x": 6.917534720305255,
       "y": 585.9271275912965
     },
@@ -1606,7 +1606,7 @@
       "dx": -41.61487245758531,
       "dy": -261.1233924741199
     },
-    "chelsea_dufrene": {
+    "matt_preuett": {
       "dx": -394.8039414008876,
       "dy": -38.322670823468
     },
@@ -1648,7 +1648,7 @@
     }
   },
   "edge_overrides": {
-    "susan_bourgeois->chelsea_dufrene": {
+    "susan_bourgeois->matt_preuett": {
       "fromSide": "bottom",
       "toSide": "top",
       "midY": 9.11328125,
@@ -1714,19 +1714,19 @@
       "midX": 899.0953979492188,
       "midY": -79.49557495117188
     },
-    "chelsea_dufrene->amy_gunnels": {
+    "matt_preuett->amy_gunnels": {
       "fromSide": "left",
       "toSide": "bottom",
       "midX": 856.5443725585938,
       "midY": 52.001983642578125
     },
-    "chelsea_dufrene->jeff_elliott": {
+    "matt_preuett->jeff_elliott": {
       "fromSide": "left",
       "toSide": "bottom",
       "midX": 856.5443725585938,
       "midY": 196.23635864257812
     },
-    "chelsea_dufrene->erica_wells": {
+    "matt_preuett->erica_wells": {
       "fromSide": "auto",
       "toSide": "auto"
     },
@@ -1800,7 +1800,7 @@
     "anne_villa": {
       "yJ": -79.49557495117188
     },
-    "chelsea_dufrene": {
+    "matt_preuett": {
       "yJ": 226.65432739257812
     },
     "rachel_shields": {
